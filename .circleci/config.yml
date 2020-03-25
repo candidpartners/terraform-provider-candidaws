@@ -22,7 +22,7 @@ jobs:
       - run:
           name: Build
           command: |
-            curl -s -u ${GITHUB_USER} -o release.json -X POST https://api.github.com/repos/candidpartners/terraform-provider-candidaws/releases -d '{"tag_name": "${CIRCLE_TAG}", "draft": true}'
+            curl -s -u ${GITHUB_USER} -o release.json -X POST https://api.github.com/repos/candidpartners/terraform-provider-candidaws/releases -d '{"tag_name": "${CIRCLE_TAG}"}'
             release_id=$(cat release.json | jq -r .id)
             GOOS=darwin GOARCH=amd64 go build -o bin/darwin_amd64
             GOOS=linux GOARCH=amd64 go build -o bin/linux_amd64

@@ -13,6 +13,21 @@ jobs:
             GOOS=darwin GOARCH=amd64 go build -o bin/darwin_amd64/terraform-provider-candidaws_v0.0.0
             GOOS=linux GOARCH=amd64 go build -o bin/linux_amd64/terraform-provider-candidaws_v0.0.0
           working_directory: ~/repo
+  release:
+    docker:
+      - image: cimg/go:1.13
+    working_directory: ~/repo
+    steps:
+      - checkout
+      - run:
+          name: Build
+          command: |
+            release_id=$(curl -s -u beauknowssoftware:a8d67abbef9e220190e69398d4dafba0df255253 https://api.github.com/repos/candidpartners/terraform-provider-candidaws/releases | jq '.[] | select(.tag_name=="${CIRCLE_TAG}") | .id')
+            GOOS=darwin GOARCH=amd64 go build -o bin/darwin_amd64
+            GOOS=linux GOARCH=amd64 go build -o bin/linux_amd64
+            curl -u ${GITHUB_USER} --data-binary @"bin/darwin_amd64" -H 'Content-Type: application/octet-stream' -X POST https://uploads.github.com/repos/candidpartners/terraform-provider-candidaws/releases/${release_id}/assets?name=darwin_amd64
+            curl -u ${GITHUB_USER} --data-binary @"bin/linux_amd64" -H 'Content-Type: application/octet-stream' -X POST https://uploads.github.com/repos/candidpartners/terraform-provider-candidaws/releases/${release_id}/assets?name=linux_amd64
+          working_directory: ~/repo
 workflows:
   version: 2
   build:
@@ -22,3 +37,12 @@ workflows:
             branches:
               only:
                 - master
+  release:
+    jobs:
+      - release:
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              only:
+                - /^v\d+\.\d+\.\d+$/

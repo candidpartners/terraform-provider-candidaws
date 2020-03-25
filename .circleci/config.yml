@@ -12,7 +12,7 @@ workflows:
   build:
     jobs:
       - build:
-          filter:
+          filters:
             branches:
               only:
                 - master

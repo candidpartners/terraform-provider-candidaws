@@ -74,6 +74,82 @@ func resourceAwsLexIntent() *schema.Resource {
 					},
 				},
 			},
+			"rejection_statement": {
+				Type:     schema.TypeList,
+				Optional: true,
+				MaxItems: 1,
+				Elem: &schema.Resource{
+					Schema: map[string]*schema.Schema{
+						"messages": {
+							Type:     schema.TypeList,
+							Required: true,
+							MinItems: 1,
+							Elem: &schema.Resource{
+								Schema: map[string]*schema.Schema{
+									"content": {
+										Type:     schema.TypeString,
+										Required: true,
+									},
+									"content_type": {
+										Type:     schema.TypeString,
+										Required: true,
+									},
+									"group_number": {
+										Type:     schema.TypeInt,
+										Optional: true,
+										Default: 1,
+									},
+								},
+							},
+						},
+						"response_card": {
+							Type:     schema.TypeString,
+							Optional: true,
+							Default: 1,
+						},
+					},
+				},
+			},
+			"confirmation_prompt": {
+				Type:     schema.TypeList,
+				Optional: true,
+				MaxItems: 1,
+				Elem: &schema.Resource{
+					Schema: map[string]*schema.Schema{
+						"messages": {
+							Type:     schema.TypeList,
+							Required: true,
+							MinItems: 1,
+							Elem: &schema.Resource{
+								Schema: map[string]*schema.Schema{
+									"content": {
+										Type:     schema.TypeString,
+										Required: true,
+									},
+									"content_type": {
+										Type:     schema.TypeString,
+										Required: true,
+									},
+									"group_number": {
+										Type:     schema.TypeInt,
+										Optional: true,
+										Default: 1,
+									},
+								},
+							},
+						},
+						"response_card": {
+							Type:     schema.TypeString,
+							Optional: true,
+							Default: 1,
+						},
+						"max_attempts": {
+							Type:     schema.TypeInt,
+							Required: true,
+						},
+					},
+				},
+			},
 			"publish": {
 				Type:     schema.TypeBool,
 				Optional: true,
@@ -92,6 +168,8 @@ func resourceAwsLexIntentCreate(d *schema.ResourceData, meta interface{}) error 
 		CreateVersion:       aws.Bool(d.Get("publish").(bool)),
 		SampleUtterances:    expandSampleUtterances(d.Get("sample_utterances").([]interface{})),
 		FulfillmentActivity: expandFulfillmentActivity(d.Get("fulfillment_activity").([]interface{})),
+		ConfirmationPrompt: expandPrompt(d.Get("confirmation_prompt").([]interface{})),
+		RejectionStatement: expandStatement(d.Get("rejection_statement").([]interface{})),
 	}
 	resp, err := conn.PutIntent(params)
 	if err != nil {
@@ -130,6 +208,14 @@ func resourceAwsLexIntentRead(d *schema.ResourceData, meta interface{}) error {
 		return fmt.Errorf("error setting sample_utterances: %s", err)
 	}
 
+	if err := d.Set("confirmation_prompt", flattenPrompt(intent.ConfirmationPrompt)); err != nil {
+		return fmt.Errorf("error setting confirmation_prompt: %s", err)
+	}
+
+	if err := d.Set("rejection_statement", flattenStatement(intent.RejectionStatement)); err != nil {
+		return fmt.Errorf("error setting rejection_statement: %s", err)
+	}
+
 	return nil
 }
 
@@ -145,6 +231,8 @@ func resourceAwsLexIntentUpdate(d *schema.ResourceData, meta interface{}) error 
 		CreateVersion:       aws.Bool(d.Get("publish").(bool)),
 		SampleUtterances:    expandSampleUtterances(d.Get("sample_utterances").([]interface{})),
 		FulfillmentActivity: expandFulfillmentActivity(d.Get("fulfillment_activity").([]interface{})),
+		ConfirmationPrompt: expandPrompt(d.Get("confirmation_prompt").([]interface{})),
+		RejectionStatement: expandStatement(d.Get("rejection_statement").([]interface{})),
 	}
 
 	resp, err := conn.PutIntent(params)
@@ -211,6 +299,57 @@ func expandCodeHook(values []interface{}) *lexmodelbuildingservice.CodeHook {
 	}
 }
 
+func expandPrompt(values []interface{}) *lexmodelbuildingservice.Prompt {
+	if len(values) == 0 {
+		return nil
+	}
+
+	val := values[0].(map[string]interface{})
+	res := &lexmodelbuildingservice.Prompt{
+		MaxAttempts:     aws.Int64(int64(val["max_attempts"].(int))),
+		Messages:     expandMessages(val["messages"].([]interface{})),
+	}
+	if responseCard, ok := val["response_card"]; ok {
+		res.ResponseCard = aws.String(responseCard.(string))
+	}
+	return res
+}
+
+func expandMessages(values []interface{}) []*lexmodelbuildingservice.Message {
+	valueSlice := []*lexmodelbuildingservice.Message{}
+	for _, element := range values {
+		e := element.(map[string]interface{})
+
+		m := &lexmodelbuildingservice.Message{
+			Content: aws.String(e["content"].(string)),
+			ContentType: aws.String(e["content_type"].(string)),
+		}
+
+		if groupNumber, ok := e["group_number"]; ok {
+			m.GroupNumber = aws.Int64(int64(groupNumber.(int)))
+		}
+
+		valueSlice = append(valueSlice, m)
+	}
+
+	return valueSlice
+}
+
+func expandStatement(values []interface{}) *lexmodelbuildingservice.Statement {
+	if len(values) == 0 {
+		return nil
+	}
+
+	val := values[0].(map[string]interface{})
+	res := &lexmodelbuildingservice.Statement{
+		Messages:     expandMessages(val["messages"].([]interface{})),
+	}
+	if responseCard, ok := val["response_card"]; ok {
+		res.ResponseCard = aws.String(responseCard.(string))
+	}
+	return res
+}
+
 func flattenSampleUtterances(cs []*string) []string {
 	valuesSlice := make([]string, len(cs))
 	if len(cs) > 0 {
@@ -247,6 +386,56 @@ func flattenCodeHook(cs *lexmodelbuildingservice.CodeHook) []map[string]interfac
 
 	val["message_version"] = aws.StringValue(cs.MessageVersion)
 	val["uri"] = aws.StringValue(cs.Uri)
+
+	return []map[string]interface{}{val}
+}
+
+func flattenPrompt(cs *lexmodelbuildingservice.Prompt) []map[string]interface{} {
+	if cs == nil {
+		return nil
+	}
+
+	val := make(map[string]interface{})
+
+	val["max_attempts"] = aws.Int64Value(cs.MaxAttempts)
+	val["messages"] = flattenMessages(cs.Messages)
+
+	if cs.ResponseCard != nil {
+		val["response_card"] = aws.StringValue(cs.ResponseCard)
+	}
+
+	return []map[string]interface{}{val}
+}
+
+func flattenMessages(cs []*lexmodelbuildingservice.Message) []interface{} {
+	valuesSlice := make([]interface{}, len(cs))
+	if len(cs) > 0 {
+		for i, v := range cs {
+			m := make(map[string]interface{})
+			m["content"] = aws.StringValue(v.Content)
+			m["content_type"] = aws.StringValue(v.ContentType)
+			if v.GroupNumber != nil {
+				m["group_number"] = aws.Int64Value(v.GroupNumber)
+			}
+			valuesSlice[i] = m
+		}
+	}
+
+	return valuesSlice
+}
+
+func flattenStatement(cs *lexmodelbuildingservice.Statement) []map[string]interface{} {
+	if cs == nil {
+		return nil
+	}
+
+	val := make(map[string]interface{})
+
+	val["messages"] = flattenMessages(cs.Messages)
+
+	if cs.ResponseCard != nil {
+		val["response_card"] = aws.StringValue(cs.ResponseCard)
+	}
 
 	return []map[string]interface{}{val}
 }

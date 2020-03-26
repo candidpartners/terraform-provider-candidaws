@@ -183,6 +183,7 @@ type Config struct {
 }
 
 type AWSClient struct {
+	lexmodelbuildingserviceconn         *lexmodelbuildingservice.LexModelBuildingService
 	accessanalyzerconn                  *accessanalyzer.AccessAnalyzer
 	accountid                           string
 	acmconn                             *acm.ACM
@@ -402,6 +403,7 @@ func (c *Config) Client() (interface{}, error) {
 	}
 
 	client := &AWSClient{
+		lexmodelbuildingserviceconn:         lexmodelbuildingservice.New(sess.Copy(&aws.Config{Endpoint: aws.String(c.Endpoints["lexmodelbuildingservice"])})),
 		accessanalyzerconn:                  accessanalyzer.New(sess.Copy(&aws.Config{Endpoint: aws.String(c.Endpoints["accessanalyzer"])})),
 		accountid:                           accountID,
 		acmconn:                             acm.New(sess.Copy(&aws.Config{Endpoint: aws.String(c.Endpoints["acm"])})),

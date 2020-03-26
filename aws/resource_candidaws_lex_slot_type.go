@@ -195,14 +195,14 @@ func expandSynonyms(values []interface{}) []*string {
 }
 
 func flattenEnumerationValues(cs []*lexmodelbuildingservice.EnumerationValue) []map[string]interface{} {
-	columnsSlice := make([]map[string]interface{}, len(cs))
+	valuesSlice := make([]map[string]interface{}, len(cs))
 	if len(cs) > 0 {
 		for i, v := range cs {
-			columnsSlice[i] = flattenEnumerationValue(v)
+			valuesSlice[i] = flattenEnumerationValue(v)
 		}
 	}
 
-	return columnsSlice
+	return valuesSlice
 }
 
 func flattenEnumerationValue(c *lexmodelbuildingservice.EnumerationValue) map[string]interface{} {

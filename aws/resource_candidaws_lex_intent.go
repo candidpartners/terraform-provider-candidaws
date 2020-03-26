@@ -201,6 +201,42 @@ func resourceAwsLexIntent() *schema.Resource {
 					},
 				},
 			},
+			"conclusion_statement": {
+				Type:     schema.TypeList,
+				Optional: true,
+				MaxItems: 1,
+				Elem: &schema.Resource{
+					Schema: map[string]*schema.Schema{
+						"messages": {
+							Type:     schema.TypeList,
+							Required: true,
+							MinItems: 1,
+							Elem: &schema.Resource{
+								Schema: map[string]*schema.Schema{
+									"content": {
+										Type:     schema.TypeString,
+										Required: true,
+									},
+									"content_type": {
+										Type:     schema.TypeString,
+										Required: true,
+									},
+									"group_number": {
+										Type:     schema.TypeInt,
+										Optional: true,
+										Default: 1,
+									},
+								},
+							},
+						},
+						"response_card": {
+							Type:     schema.TypeString,
+							Optional: true,
+							Default: 1,
+						},
+					},
+				},
+			},
 			"rejection_statement": {
 				Type:     schema.TypeList,
 				Optional: true,
@@ -257,6 +293,7 @@ func resourceAwsLexIntentCreate(d *schema.ResourceData, meta interface{}) error 
 		FulfillmentActivity: expandFulfillmentActivity(d.Get("fulfillment_activity").([]interface{})),
 		ConfirmationPrompt:  expandPrompt(d.Get("confirmation_prompt").([]interface{})),
 		RejectionStatement:  expandStatement(d.Get("rejection_statement").([]interface{})),
+		ConclusionStatement:  expandStatement(d.Get("conclusion_statement").([]interface{})),
 		Slots:               expandSlots(d.Get("slots").([]interface{})),
 	}
 	resp, err := conn.PutIntent(params)
@@ -304,6 +341,10 @@ func resourceAwsLexIntentRead(d *schema.ResourceData, meta interface{}) error {
 		return fmt.Errorf("error setting rejection_statement: %s", err)
 	}
 
+	if err := d.Set("conclusion_statement", flattenStatement(intent.ConclusionStatement)); err != nil {
+		return fmt.Errorf("error setting conclusion_statement: %s", err)
+	}
+
 	if err := d.Set("slots", flattenSlots(intent.Slots)); err != nil {
 		return fmt.Errorf("error setting slots: %s", err)
 	}
@@ -325,6 +366,7 @@ func resourceAwsLexIntentUpdate(d *schema.ResourceData, meta interface{}) error 
 		FulfillmentActivity: expandFulfillmentActivity(d.Get("fulfillment_activity").([]interface{})),
 		ConfirmationPrompt:  expandPrompt(d.Get("confirmation_prompt").([]interface{})),
 		RejectionStatement:  expandStatement(d.Get("rejection_statement").([]interface{})),
+		ConclusionStatement:  expandStatement(d.Get("conclusion_statement").([]interface{})),
 		Slots:               expandSlots(d.Get("slots").([]interface{})),
 	}
 

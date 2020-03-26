@@ -91,6 +91,7 @@ func resourceAwsLexIntent() *schema.Resource {
 						"obfuscation_setting": {
 							Type:     schema.TypeString,
 							Optional: true,
+							Default: "NONE",
 						},
 						"priority": {
 							Type:     schema.TypeInt,
@@ -260,7 +261,7 @@ func resourceAwsLexIntentCreate(d *schema.ResourceData, meta interface{}) error 
 	}
 	resp, err := conn.PutIntent(params)
 	if err != nil {
-		return fmt.Errorf("error putting Lex slot type: %s", err)
+		return fmt.Errorf("error putting Lex intent: %s", err)
 	}
 
 	d.SetId(aws.StringValue(resp.Name))
@@ -275,7 +276,7 @@ func resourceAwsLexIntentRead(d *schema.ResourceData, meta interface{}) error {
 	version := d.Get("version").(string)
 	intent, err := getLexIntent(d.Id(), version, conn)
 	if err != nil {
-		return fmt.Errorf("error getting Lex slot type %q: %s", d.Id(), err)
+		return fmt.Errorf("error getting Lex intent %q: %s", d.Id(), err)
 	}
 	if intent == nil {
 		log.Printf("[WARN] LexModelBuildingService Intent %q not found, removing from state", d.Id())

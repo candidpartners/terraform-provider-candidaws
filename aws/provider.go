@@ -162,6 +162,7 @@ func Provider() terraform.ResourceProvider {
 		ResourcesMap: map[string]*schema.Resource{
 			"candidaws_lex_slot_type": resourceAwsLexSlotType(),
 			"candidaws_lex_intent": resourceAwsLexIntent(),
+			"candidaws_lex_bot": resourceAwsLexBot(),
 		},
 	}
 

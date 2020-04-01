@@ -160,7 +160,6 @@ func Provider() terraform.ResourceProvider {
 
 		ResourcesMap: map[string]*schema.Resource{
 			"aws_transfer_server":     resourceAwsTransferServer(),
-			"aws_transfer_ssh_key":    resourceAwsTransferSshKey(),
 			"aws_transfer_user":       resourceAwsTransferUser(),
 			"candidaws_lex_slot_type": resourceAwsLexSlotType(),
 			"candidaws_lex_intent":    resourceAwsLexIntent(),

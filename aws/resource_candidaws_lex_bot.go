@@ -142,7 +142,7 @@ func resourceAwsLexBot() *schema.Resource {
 									"group_number": {
 										Type:     schema.TypeInt,
 										Optional: true,
-										Default: 1,
+										Default:  1,
 									},
 								},
 							},
@@ -150,7 +150,7 @@ func resourceAwsLexBot() *schema.Resource {
 						"response_card": {
 							Type:     schema.TypeString,
 							Optional: true,
-							Default: 1,
+							Default:  1,
 						},
 					},
 				},
@@ -167,10 +167,10 @@ func resourceAwsLexBotCreate(d *schema.ResourceData, meta interface{}) error {
 		Description:         aws.String(d.Get("description").(string)),
 		CreateVersion:       aws.Bool(d.Get("publish").(bool)),
 		ChildDirected:       aws.Bool(d.Get("child_directed").(bool)),
-		Locale:       aws.String(d.Get("locale").(string)),
-		AbortStatement:  expandStatement(d.Get("abort_statement").([]interface{})),
-		Intents:  expandIntents(d.Get("intents").([]interface{})),
-		ClarificationPrompt:  expandPrompt(d.Get("clarification_prompt").([]interface{})),
+		Locale:              aws.String(d.Get("locale").(string)),
+		AbortStatement:      expandStatement(d.Get("abort_statement").([]interface{})),
+		Intents:             expandIntents(d.Get("intents").([]interface{})),
+		ClarificationPrompt: expandPrompt(d.Get("clarification_prompt").([]interface{})),
 	}
 	if vid, ok := d.GetOk("voice_id"); ok {
 		params.VoiceId = aws.String(vid.(string))
@@ -235,10 +235,10 @@ func resourceAwsLexBotUpdate(d *schema.ResourceData, meta interface{}) error {
 		Description:         aws.String(d.Get("description").(string)),
 		CreateVersion:       aws.Bool(d.Get("publish").(bool)),
 		ChildDirected:       aws.Bool(d.Get("child_directed").(bool)),
-		Locale:       aws.String(d.Get("locale").(string)),
-		AbortStatement:  expandStatement(d.Get("abort_statement").([]interface{})),
-		Intents:  expandIntents(d.Get("intents").([]interface{})),
-		ClarificationPrompt:  expandPrompt(d.Get("clarification_prompt").([]interface{})),
+		Locale:              aws.String(d.Get("locale").(string)),
+		AbortStatement:      expandStatement(d.Get("abort_statement").([]interface{})),
+		Intents:             expandIntents(d.Get("intents").([]interface{})),
+		ClarificationPrompt: expandPrompt(d.Get("clarification_prompt").([]interface{})),
 	}
 
 	if d.HasChange("voice_id") {
@@ -282,8 +282,8 @@ func expandIntents(values []interface{}) []*lexmodelbuildingservice.Intent {
 		e := element.(map[string]interface{})
 
 		m := &lexmodelbuildingservice.Intent{
-			IntentName:           aws.String(e["intent_name"].(string)),
-			IntentVersion:           aws.String(e["intent_version"].(string)),
+			IntentName:    aws.String(e["intent_name"].(string)),
+			IntentVersion: aws.String(e["intent_version"].(string)),
 		}
 
 		valueSlice = append(valueSlice, m)
@@ -308,7 +308,7 @@ func flattenIntents(cs []*lexmodelbuildingservice.Intent) []interface{} {
 
 func getLexBot(name, version string, conn *lexmodelbuildingservice.LexModelBuildingService) (*lexmodelbuildingservice.GetBotOutput, error) {
 	input := &lexmodelbuildingservice.GetBotInput{
-		Name:    aws.String(name),
+		Name:           aws.String(name),
 		VersionOrAlias: aws.String(version),
 	}
 	return conn.GetBot(input)

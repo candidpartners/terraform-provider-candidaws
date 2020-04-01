@@ -156,13 +156,14 @@ func Provider() terraform.ResourceProvider {
 			},
 		},
 
-		DataSourcesMap: map[string]*schema.Resource{
-		},
+		DataSourcesMap: map[string]*schema.Resource{},
 
 		ResourcesMap: map[string]*schema.Resource{
+			"aws_transfer_server":     resourceAwsTransferServer(),
+			"aws_transfer_user":       resourceAwsTransferUser(),
 			"candidaws_lex_slot_type": resourceAwsLexSlotType(),
-			"candidaws_lex_intent": resourceAwsLexIntent(),
-			"candidaws_lex_bot": resourceAwsLexBot(),
+			"candidaws_lex_intent":    resourceAwsLexIntent(),
+			"candidaws_lex_bot":       resourceAwsLexBot(),
 		},
 	}
 

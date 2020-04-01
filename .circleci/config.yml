@@ -37,9 +37,15 @@ jobs:
             fi
             release_id=$(cat release.json | jq -r .id)
             echo "release: $release_id"
+
+            echo "Building darwin amd64"
             GOOS=darwin GOARCH=amd64 go build -o bin/darwin_amd64
+            echo "Building linux amd64"
             GOOS=linux GOARCH=amd64 go build -o bin/linux_amd64
+
+            echo "Uploading darwin amd64"
             curl -u ${GITHUB_USER} --data-binary @"bin/darwin_amd64" -H 'Content-Type: application/octet-stream' -X POST "https://uploads.github.com/repos/candidpartners/terraform-provider-candidaws/releases/${release_id}/assets?name=darwin_amd64"
+            echo "Uploading linux amd64"
             curl -u ${GITHUB_USER} --data-binary @"bin/linux_amd64" -H 'Content-Type: application/octet-stream' -X POST "https://uploads.github.com/repos/candidpartners/terraform-provider-candidaws/releases/${release_id}/assets?name=linux_amd64"
           working_directory: ~/repo
 workflows:

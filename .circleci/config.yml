@@ -10,6 +10,7 @@ jobs:
       - run:
           name: Build
           command: |
+            set -e
             GOOS=darwin GOARCH=amd64 go build -o bin/darwin_amd64/terraform-provider-candidaws_v0.0.0
             GOOS=linux GOARCH=amd64 go build -o bin/linux_amd64/terraform-provider-candidaws_v0.0.0
           working_directory: ~/repo
@@ -22,9 +23,10 @@ jobs:
       - run:
           name: Build
           command: |
+            set -e
             curl -s -u ${GITHUB_USER} -o release.json -X POST https://api.github.com/repos/candidpartners/terraform-provider-candidaws/releases -d "{\"tag_name\": \"${CIRCLE_TAG}\"}"
             release_id=$(cat release.json | jq -r .id)
-            echo $release_id
+            echo "release: $release_id"
             GOOS=darwin GOARCH=amd64 go build -o bin/darwin_amd64
             GOOS=linux GOARCH=amd64 go build -o bin/linux_amd64
             curl -u ${GITHUB_USER} --data-binary @"bin/darwin_amd64" -H 'Content-Type: application/octet-stream' -X POST "https://uploads.github.com/repos/candidpartners/terraform-provider-candidaws/releases/${release_id}/assets?name=darwin_amd64"

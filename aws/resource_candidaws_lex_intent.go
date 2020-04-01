@@ -108,7 +108,7 @@ func resourceAwsLexIntent() *schema.Resource {
 						"obfuscation_setting": {
 							Type:     schema.TypeString,
 							Optional: true,
-							Default: "NONE",
+							Default:  "NONE",
 						},
 						"priority": {
 							Type:     schema.TypeInt,
@@ -247,7 +247,7 @@ func resourceAwsLexIntent() *schema.Resource {
 												"group_number": {
 													Type:     schema.TypeInt,
 													Optional: true,
-													Default: 1,
+													Default:  1,
 												},
 											},
 										},
@@ -255,7 +255,7 @@ func resourceAwsLexIntent() *schema.Resource {
 									"response_card": {
 										Type:     schema.TypeString,
 										Optional: true,
-										Default: 1,
+										Default:  1,
 									},
 								},
 							},
@@ -326,7 +326,7 @@ func resourceAwsLexIntent() *schema.Resource {
 									"group_number": {
 										Type:     schema.TypeInt,
 										Optional: true,
-										Default: 1,
+										Default:  1,
 									},
 								},
 							},
@@ -334,7 +334,7 @@ func resourceAwsLexIntent() *schema.Resource {
 						"response_card": {
 							Type:     schema.TypeString,
 							Optional: true,
-							Default: 1,
+							Default:  1,
 						},
 					},
 				},
@@ -362,7 +362,7 @@ func resourceAwsLexIntent() *schema.Resource {
 									"group_number": {
 										Type:     schema.TypeInt,
 										Optional: true,
-										Default: 1,
+										Default:  1,
 									},
 								},
 							},
@@ -370,7 +370,7 @@ func resourceAwsLexIntent() *schema.Resource {
 						"response_card": {
 							Type:     schema.TypeString,
 							Optional: true,
-							Default: 1,
+							Default:  1,
 						},
 					},
 				},
@@ -392,18 +392,18 @@ func resourceAwsLexIntentCreate(d *schema.ResourceData, meta interface{}) error 
 	conn := meta.(*AWSClient).lexmodelbuildingserviceconn
 
 	params := &lexmodelbuildingservice.PutIntentInput{
-		Name:                aws.String(d.Get("name").(string)),
-		Description:         aws.String(d.Get("description").(string)),
-		ParentIntentSignature:         aws.String(d.Get("parent_intent_signature").(string)),
-		CreateVersion:       aws.Bool(d.Get("publish").(bool)),
-		SampleUtterances:    expandSampleUtterances(d.Get("sample_utterances").([]interface{})),
-		FulfillmentActivity: expandFulfillmentActivity(d.Get("fulfillment_activity").([]interface{})),
-		ConfirmationPrompt:  expandPrompt(d.Get("confirmation_prompt").([]interface{})),
-		FollowUpPrompt:  expandFollowUpPrompt(d.Get("follow_up_prompt").([]interface{})),
-		RejectionStatement:  expandStatement(d.Get("rejection_statement").([]interface{})),
-		ConclusionStatement:  expandStatement(d.Get("conclusion_statement").([]interface{})),
-		Slots:               expandSlots(d.Get("slots").([]interface{})),
-		DialogCodeHook:               expandCodeHook(d.Get("dialog_code_hook").([]interface{})),
+		Name:                  aws.String(d.Get("name").(string)),
+		Description:           aws.String(d.Get("description").(string)),
+		ParentIntentSignature: aws.String(d.Get("parent_intent_signature").(string)),
+		CreateVersion:         aws.Bool(d.Get("publish").(bool)),
+		SampleUtterances:      expandSampleUtterances(d.Get("sample_utterances").([]interface{})),
+		FulfillmentActivity:   expandFulfillmentActivity(d.Get("fulfillment_activity").([]interface{})),
+		ConfirmationPrompt:    expandPrompt(d.Get("confirmation_prompt").([]interface{})),
+		FollowUpPrompt:        expandFollowUpPrompt(d.Get("follow_up_prompt").([]interface{})),
+		RejectionStatement:    expandStatement(d.Get("rejection_statement").([]interface{})),
+		ConclusionStatement:   expandStatement(d.Get("conclusion_statement").([]interface{})),
+		Slots:                 expandSlots(d.Get("slots").([]interface{})),
+		DialogCodeHook:        expandCodeHook(d.Get("dialog_code_hook").([]interface{})),
 	}
 	resp, err := conn.PutIntent(params)
 	if err != nil {
@@ -476,19 +476,19 @@ func resourceAwsLexIntentUpdate(d *schema.ResourceData, meta interface{}) error 
 	name := d.Id()
 
 	params := &lexmodelbuildingservice.PutIntentInput{
-		Name:                aws.String(name),
-		Checksum:            aws.String(d.Get("checksum").(string)),
-		Description:         aws.String(d.Get("description").(string)),
-		ParentIntentSignature:         aws.String(d.Get("parent_intent_signature").(string)),
-		CreateVersion:       aws.Bool(d.Get("publish").(bool)),
-		SampleUtterances:    expandSampleUtterances(d.Get("sample_utterances").([]interface{})),
-		FulfillmentActivity: expandFulfillmentActivity(d.Get("fulfillment_activity").([]interface{})),
-		ConfirmationPrompt:  expandPrompt(d.Get("confirmation_prompt").([]interface{})),
-		FollowUpPrompt:  expandFollowUpPrompt(d.Get("follow_up_prompt").([]interface{})),
-		RejectionStatement:  expandStatement(d.Get("rejection_statement").([]interface{})),
-		ConclusionStatement:  expandStatement(d.Get("conclusion_statement").([]interface{})),
-		Slots:               expandSlots(d.Get("slots").([]interface{})),
-		DialogCodeHook:               expandCodeHook(d.Get("dialog_code_hook").([]interface{})),
+		Name:                  aws.String(name),
+		Checksum:              aws.String(d.Get("checksum").(string)),
+		Description:           aws.String(d.Get("description").(string)),
+		ParentIntentSignature: aws.String(d.Get("parent_intent_signature").(string)),
+		CreateVersion:         aws.Bool(d.Get("publish").(bool)),
+		SampleUtterances:      expandSampleUtterances(d.Get("sample_utterances").([]interface{})),
+		FulfillmentActivity:   expandFulfillmentActivity(d.Get("fulfillment_activity").([]interface{})),
+		ConfirmationPrompt:    expandPrompt(d.Get("confirmation_prompt").([]interface{})),
+		FollowUpPrompt:        expandFollowUpPrompt(d.Get("follow_up_prompt").([]interface{})),
+		RejectionStatement:    expandStatement(d.Get("rejection_statement").([]interface{})),
+		ConclusionStatement:   expandStatement(d.Get("conclusion_statement").([]interface{})),
+		Slots:                 expandSlots(d.Get("slots").([]interface{})),
+		DialogCodeHook:        expandCodeHook(d.Get("dialog_code_hook").([]interface{})),
 	}
 
 	resp, err := conn.PutIntent(params)
@@ -578,8 +578,8 @@ func expandFollowUpPrompt(values []interface{}) *lexmodelbuildingservice.FollowU
 
 	val := values[0].(map[string]interface{})
 	res := &lexmodelbuildingservice.FollowUpPrompt{
-		Prompt:    expandPrompt(val["prompt"].([]interface{})),
-		RejectionStatement:    expandStatement(val["rejection_statement"].([]interface{})),
+		Prompt:             expandPrompt(val["prompt"].([]interface{})),
+		RejectionStatement: expandStatement(val["rejection_statement"].([]interface{})),
 	}
 	return res
 }

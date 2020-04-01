@@ -13,6 +13,7 @@ var validValueSelectionStrategies = []string{
 	lexmodelbuildingservice.SlotValueSelectionStrategyOriginalValue,
 	lexmodelbuildingservice.SlotValueSelectionStrategyTopResolution,
 }
+
 func resourceAwsLexSlotType() *schema.Resource {
 
 	return &schema.Resource{
@@ -37,11 +38,11 @@ func resourceAwsLexSlotType() *schema.Resource {
 			},
 			"checksum": {
 				Type:     schema.TypeString,
-				Computed:true,
+				Computed: true,
 			},
 			"version": {
 				Type:     schema.TypeString,
-				Computed:true,
+				Computed: true,
 			},
 			"publish": {
 				Type:     schema.TypeBool,
@@ -50,8 +51,8 @@ func resourceAwsLexSlotType() *schema.Resource {
 			},
 			"value_selection_strategy": {
 				Type:         schema.TypeString,
-				Optional: true,
-				Default:  lexmodelbuildingservice.SlotValueSelectionStrategyOriginalValue,
+				Optional:     true,
+				Default:      lexmodelbuildingservice.SlotValueSelectionStrategyOriginalValue,
 				ValidateFunc: validation.StringInSlice(validValueSelectionStrategies, false),
 			},
 			"enumeration_values": {
@@ -80,11 +81,11 @@ func resourceAwsLexSlotTypeCreate(d *schema.ResourceData, meta interface{}) erro
 	conn := meta.(*AWSClient).lexmodelbuildingserviceconn
 
 	params := &lexmodelbuildingservice.PutSlotTypeInput{
-		Name:              aws.String(d.Get("name").(string)),
-		Description:              aws.String(d.Get("description").(string)),
-		EnumerationValues: expandEnumerationValues(d.Get("enumeration_values").([]interface{})),
-		CreateVersion: aws.Bool(d.Get("publish").(bool)),
-		ValueSelectionStrategy:              aws.String(d.Get("value_selection_strategy").(string)),
+		Name:                   aws.String(d.Get("name").(string)),
+		Description:            aws.String(d.Get("description").(string)),
+		EnumerationValues:      expandEnumerationValues(d.Get("enumeration_values").([]interface{})),
+		CreateVersion:          aws.Bool(d.Get("publish").(bool)),
+		ValueSelectionStrategy: aws.String(d.Get("value_selection_strategy").(string)),
 	}
 	resp, err := conn.PutSlotType(params)
 	if err != nil {
@@ -128,12 +129,12 @@ func resourceAwsLexSlotTypeUpdate(d *schema.ResourceData, meta interface{}) erro
 	name := d.Id()
 
 	params := &lexmodelbuildingservice.PutSlotTypeInput{
-		Name:     aws.String(name),
-		Checksum: aws.String(d.Get("checksum").(string)),
-		Description: aws.String(d.Get("description").(string)),
-		EnumerationValues: expandEnumerationValues(d.Get("enumeration_values").([]interface{})),
-		CreateVersion: aws.Bool(d.Get("publish").(bool)),
-		ValueSelectionStrategy:              aws.String(d.Get("value_selection_strategy").(string)),
+		Name:                   aws.String(name),
+		Checksum:               aws.String(d.Get("checksum").(string)),
+		Description:            aws.String(d.Get("description").(string)),
+		EnumerationValues:      expandEnumerationValues(d.Get("enumeration_values").([]interface{})),
+		CreateVersion:          aws.Bool(d.Get("publish").(bool)),
+		ValueSelectionStrategy: aws.String(d.Get("value_selection_strategy").(string)),
 	}
 
 	resp, err := conn.PutSlotType(params)
@@ -171,10 +172,10 @@ func expandEnumerationValues(values []interface{}) []*lexmodelbuildingservice.En
 		elementMap := element.(map[string]interface{})
 
 		value := &lexmodelbuildingservice.EnumerationValue{
-			Value:    aws.String(elementMap["value"].(string)),
+			Value: aws.String(elementMap["value"].(string)),
 		}
 
-		if synonyms, ok := elementMap["synonyms"]; ok{
+		if synonyms, ok := elementMap["synonyms"]; ok {
 			value.Synonyms = expandSynonyms(synonyms.([]interface{}))
 		}
 

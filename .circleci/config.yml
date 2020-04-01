@@ -27,7 +27,7 @@ jobs:
             curl -s -u ${GITHUB_USER} -o release.json -X POST https://api.github.com/repos/candidpartners/terraform-provider-candidaws/releases -d "{\"tag_name\": \"${CIRCLE_TAG}\"}"
             if [[ $(cat release.json | jq -r '.errors | length') -eq 0 ]]; then
               echo "Created release"
-            else if [[ $(cat release.json | jq -r '.errors[0].code') == "already_exists"]]; then
+            elif [[ $(cat release.json | jq -r '.errors[0].code') == "already_exists"]]; then
               echo "Release already exists"
               curl -s -u ${GITHUB_USER} -o release.json "https://api.github.com/repos/candidpartners/terraform-provider-candidaws/releases/tags/${CIRCLE_TAG}"
             else

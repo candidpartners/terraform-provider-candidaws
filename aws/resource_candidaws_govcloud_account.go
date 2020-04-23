@@ -3,11 +3,12 @@ package aws
 import (
 	"fmt"
 	"log"
+	"time"
+
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/service/organizations"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
 	"github.com/hashicorp/terraform-plugin-sdk/helper/resource"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/validation"
+	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
 	"github.com/terraform-providers/terraform-provider-aws/aws/internal/keyvaluetags"
 )
 
@@ -24,30 +25,30 @@ func resourceAwsGovcloudAccount() *schema.Resource {
 
 		Schema: map[string]*schema.Schema{
 			"arn": {
-				Type: 		schema.TypeString,
+				Type:     schema.TypeString,
 				Computed: true,
 			},
 			"account_name": {
-				Type: 		schema.TypeString,
+				Type:     schema.TypeString,
 				Required: true,
 				ForceNew: true,
 			},
 			"email": {
-				Type: 		schema.TypeString,
+				Type:     schema.TypeString,
 				Required: true,
 				ForceNew: true,
 			},
 			"iam_user_access_to_billing": {
-				Type: 				schema.TypeString,
-				Required: 		true,
-				ForceNew: 		false,
+				Type:     schema.TypeString,
+				Required: true,
+				ForceNew: false,
 				ExactlyOneOf: []string{
 					"ALLOW",
 					"DENY",
 				},
 			},
 			"role_name": {
-				Type: 		schema.TypeString,
+				Type:     schema.TypeString,
 				Optional: true,
 				ForceNew: true,
 			},
@@ -57,7 +58,7 @@ func resourceAwsGovcloudAccount() *schema.Resource {
 }
 
 func resourceAwsGovcloudAccountCreate(d *schema.ResourceData, meta interface{}) error {
-	conn :=  meta.(*AWSClient).organizations
+	conn := meta.(*AWSClient).organizationsconn
 
 	params := &organizations.CreateGovCloudAccountInput{
 		AccountName:            aws.String(d.Get("account_name").(string)),
@@ -66,13 +67,13 @@ func resourceAwsGovcloudAccountCreate(d *schema.ResourceData, meta interface{}) 
 		RoleName:               aws.String(d.Get("role_name").(string)),
 	}
 	if role, ok := d.GetOk("role_name"); ok {
-		createOpts.RoleName = aws.String(role.(string))
+		params.RoleName = aws.String(role.(string))
 	}
 
 	log.Printf("[DEBUG] Creating AWS GovCloud Accounnt: %s", params)
 
 	var resp *organizations.CreateGovCloudAccountOutput
-	err := resource.Retry(4*time.Minue, func() *resource.RetryError {
+	err := resource.Retry(4*time.Minute, func() *resource.RetryError {
 		var err error
 
 		resp, err = conn.CreateGovCloudAccount(params)
@@ -96,28 +97,28 @@ func resourceAwsGovcloudAccountCreate(d *schema.ResourceData, meta interface{}) 
 		return fmt.Errorf("error creating GovCloud account: %s", err)
 	}
 
-	requestId := *resp.CreateAccountStatus.Id
+	requestID := *resp.CreateAccountStatus.Id
 
 	// Wait for the account to become available
-	log.Printf("[DEBUG] Waiting for account request (%s) to succeed", requestId)
+	log.Printf("[DEBUG] Waiting for account request (%s) to succeed", requestID)
 
 	stateConf := &resource.StateChangeConf{
-		Pending: 			[]string{organizations.CreateAccountStateInProgress},
-		Target:  			[]string{organizations.CreateAccountStateSucceeded},
-		Refresh: 			resourceAwsOrganizationsAccountStateRefreshFunc(conn, requestId),
+		Pending:      []string{organizations.CreateAccountStateInProgress},
+		Target:       []string{organizations.CreateAccountStateSucceeded},
+		Refresh:      resourceAwsOrganizationsAccountStateRefreshFunc(conn, requestID),
 		PollInterval: 10 * time.Second,
-		Timeput: 			5 * time.Minute,
+		Timeout:      5 * time.Minute,
 	}
 	stateResp, stateErr := stateConf.WaitForState()
 	if stateErr != nil {
 		return fmt.Errorf(
 			"Error waiting for account request (%s) to become available: %s",
-			requestId, stateErr)
+			requestID, stateErr)
 	}
 
 	// Store the ID
-	accountId := stateRes.(*organizations.CreateAccountStatus).GovCloudAccountId
-	d.SetId(*accountId)
+	accountID := stateResp.(*organizations.CreateAccountStatus).GovCloudAccountId
+	d.SetId(*accountID)
 
 	if v := d.Get("tags").(map[string]interface{}); len(v) > 0 {
 		if err := keyvaluetags.OrganizationsUpdateTags(conn, d.Id(), nil, v); err != nil {
@@ -125,12 +126,12 @@ func resourceAwsGovcloudAccountCreate(d *schema.ResourceData, meta interface{}) 
 		}
 	}
 
-	return resourceAwsOrganizationsGovcloudAccountRead(d, meta)
+	return resourceAwsGovcloudAccountRead(d, meta)
 }
 
 func resourceAwsGovcloudAccountRead(d *schema.ResourceData, meta interface{}) error {
 	conn := meta.(*AWSClient).organizationsconn
-	descibeOpts := &organizations.DescribeAccountInput{
+	describeOpts := &organizations.DescribeAccountInput{
 		AccountId: aws.String(d.Id()),
 	}
 	resp, err := conn.DescribeAccount(describeOpts)
@@ -152,20 +153,18 @@ func resourceAwsGovcloudAccountRead(d *schema.ResourceData, meta interface{}) er
 		return nil
 	}
 
-	parentId, err := resourceAwsOrganizationsAccountGetParentId(conn, d.Id())
+	parentID, err := resourceAwsOrganizationsAccountGetParentId(conn, d.Id())
 	if err != nil {
 		return fmt.Errorf("error getting AWS Organizations Account (%s): %s", d.Id(), err)
 	}
 
 	d.Set("arn", account.Arn)
-	d.Set("account_name", account.AccountName)
+	d.Set("account_name", account.Name)
 	d.Set("email", account.Email)
-	d.Set("iam_user_access_to_billing", account.IamUserAccessToBilling)
-	d.Set("role_name", account.RoleName)
-	d.Set("parent_id", parentId)
+	d.Set("parent_id", parentID)
 	d.Set("status", account.Status)
 
-	tags, err := keyvaluletags.OrganizationsListTags(conn, d.Id())
+	tags, err := keyvaluetags.OrganizationsListTags(conn, d.Id())
 
 	if err != nil {
 		return fmt.Errorf("error listing tags for AWS Organizations Account (%s): %s", d.Id(), err)
@@ -187,7 +186,7 @@ func resourceAwsGovcloudAccountUpdate(d *schema.ResourceData, meta interface{}) 
 		input := &organizations.MoveAccountInput{
 			AccountId:           aws.String(d.Id()),
 			SourceParentId:      aws.String(o.(string)),
-			DestinationParentId: aws.String(n.(string))
+			DestinationParentId: aws.String(n.(string)),
 		}
 
 		if _, err := conn.MoveAccount(input); err != nil {
@@ -203,14 +202,14 @@ func resourceAwsGovcloudAccountUpdate(d *schema.ResourceData, meta interface{}) 
 		}
 	}
 
-	return resourceAwsOrganizationsGovcloudAccountRead(d, meta)
+	return resourceAwsGovcloudAccountRead(d, meta)
 }
 
 func resourceAwsGovcloudAccountDelete(d *schema.ResourceData, meta interface{}) error {
 	conn := meta.(*AWSClient).organizationsconn
 
 	input := &organizations.RemoveAccountFromOrganizationInput{
-		AccountId: aws.String(d.Id())
+		AccountId: aws.String(d.Id()),
 	}
 	log.Printf("[DEBUG] Removinng AWS account from organizations: %s", input)
 	_, err := conn.RemoveAccountFromOrganization(input)
@@ -221,61 +220,4 @@ func resourceAwsGovcloudAccountDelete(d *schema.ResourceData, meta interface{}) 
 		return err
 	}
 	return nil
-}
-
-// resourceAwsOrganizationsAccountStateRefreshFunc returns a resource.StateRefreshFunc
-// that is used to watch a CreateAccount request
-func resourceAwsOrganizationsAccountStateRefreshFunc(conn *organizations.Organizations, id string) resource.StateRefreshFunc {
-	return func() (interface{}, string, error) {
-		opts := &organizations.DescribeCreateAccountStatusInput{
-			CreateAccountRequestId: aws.String(id),
-		}
-		resp, err := conn.DescribeCreateAccountStatus(opts)
-		if err != nil {
-			if isAWSErr(err, organizations.ErrCodeCreateAccountStatusNotFoundException, "") {
-				resp = nil
-			} else {
-				log.Printf("Error on OrganizationAccountStateRefresh: %s", err)
-				return nil, "", err
-			}
-		}
-
-		if resp == nil {
-			// Sometimes AWS just has consistency issues and doesn't see
-			// our account yet. Return an empty state.
-			return nil, "", nil
-		}
-
-		accountStatus := resp.CreateAccountStatus
-		if *accountStatus.State == organizations.CreateAccountStateFailed {
-			return nil, *accountStatus.State, fmt.Errorf(*accountStatus.FailureReason)
-		}
-		return accountStatus, *accountStatus.State, nil
-	}
-}
-
-func resourceAwsOrganizationsAccountGetParentId(conn *organizations.Organizations, childId string) (string, error) {
-	input := &organizations.ListParentsInput{
-		ChildId: aws.String(childId),
-	}
-	var parents []*organizations.Parent
-
-	err := conn.ListParentsPages(input, func(page *organizations.ListParentsOutput, lastPage bool) bool {
-		parents = append(parents, page.Parents...)
-
-		return !lastPage
-	})
-
-	if err != nil {
-		return "", err
-	}
-
-	if len(parents) == 0 {
-		return "", nil
-	}
-
-	// assume there is only a single parent
-	// https://docs.aws.amazon.com/organizations/latest/APIReference/API_ListParents.html
-	parent := parents[0]
-	return aws.StringValue(parent.Id), nil
 }

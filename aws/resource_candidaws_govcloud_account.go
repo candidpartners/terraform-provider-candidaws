@@ -1,16 +1,16 @@
 package aws
 
 import (
+	"errors"
 	"fmt"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/validation"
 	"log"
-	"regexp"
 	"time"
 
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/service/organizations"
 	"github.com/hashicorp/terraform-plugin-sdk/helper/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
+	"github.com/hashicorp/terraform-plugin-sdk/helper/validation"
 	"github.com/terraform-providers/terraform-provider-aws/aws/internal/keyvaluetags"
 )
 
@@ -30,6 +30,10 @@ func resourceAwsGovcloudAccount() *schema.Resource {
 				Type:     schema.TypeString,
 				Computed: true,
 			},
+			"commercial_account_id": {
+				Type:     schema.TypeString,
+				Computed: true,
+			},
 			"joined_method": {
 				Type:     schema.TypeString,
 				Computed: true,
@@ -38,17 +42,17 @@ func resourceAwsGovcloudAccount() *schema.Resource {
 				Type:     schema.TypeString,
 				Computed: true,
 			},
-			"parent_id": {
-				Type:         schema.TypeString,
-				Computed:     true,
-				Optional:     true,
-				ValidateFunc: validation.StringMatch(regexp.MustCompile("^(r-[0-9a-z]{4,32})|(ou-[0-9a-z]{4,32}-[a-z0-9]{8,32})$"), "see https://docs.aws.amazon.com/organizations/latest/APIReference/API_MoveAccount.html#organizations-MoveAccount-request-DestinationParentId"),
-			},
+			//"parent_id": {
+			//	Type:         schema.TypeString,
+			//	Computed:     true,
+			//	Optional:     true,
+			//	ValidateFunc: validation.StringMatch(regexp.MustCompile("^(r-[0-9a-z]{4,32})|(ou-[0-9a-z]{4,32}-[a-z0-9]{8,32})$"), "see https://docs.aws.amazon.com/organizations/latest/APIReference/API_MoveAccount.html#organizations-MoveAccount-request-DestinationParentId"),
+			//},
 			"status": {
 				Type:     schema.TypeString,
 				Computed: true,
 			},
-			"account_name": {
+			"name": {
 				Type:         schema.TypeString,
 				Required:     true,
 				ForceNew:     true,
@@ -81,7 +85,7 @@ func resourceAwsGovcloudAccountCreate(d *schema.ResourceData, meta interface{}) 
 	conn := meta.(*AWSClient).organizationsconn
 
 	params := &organizations.CreateGovCloudAccountInput{
-		AccountName: aws.String(d.Get("account_name").(string)),
+		AccountName: aws.String(d.Get("name").(string)),
 		Email:       aws.String(d.Get("email").(string)),
 	}
 	if role, ok := d.GetOk("role_name"); ok {
@@ -138,30 +142,32 @@ func resourceAwsGovcloudAccountCreate(d *schema.ResourceData, meta interface{}) 
 	}
 
 	// Store the ID
-	accountID := stateResp.(*organizations.CreateAccountStatus).GovCloudAccountId
-	d.SetId(*accountID)
+	commercialAccountID := stateResp.(*organizations.CreateAccountStatus).AccountId
+	govCloudAccountID := stateResp.(*organizations.CreateAccountStatus).GovCloudAccountId
+	d.SetId(*govCloudAccountID)
+	d.Set("commercial_account_id", commercialAccountID)
 
-	if v, ok := d.GetOk("parent_id"); ok {
-		newParentID := v.(string)
-
-		existingParentID, err := resourceAwsOrganizationsAccountGetParentId(conn, d.Id())
-
-		if err != nil {
-			return fmt.Errorf("error getting AWS Organizations Account (%s) parent: %s", d.Id(), err)
-		}
-
-		if newParentID != existingParentID {
-			input := &organizations.MoveAccountInput{
-				AccountId:           accountID,
-				SourceParentId:      aws.String(existingParentID),
-				DestinationParentId: aws.String(newParentID),
-			}
-
-			if _, err := conn.MoveAccount(input); err != nil {
-				return fmt.Errorf("error moving AWS Organizations Account (%s): %s", d.Id(), err)
-			}
-		}
-	}
+	//if v, ok := d.GetOk("parent_id"); ok {
+	//	newParentID := v.(string)
+	//
+	//	existingParentID, err := resourceAwsOrganizationsAccountGetParentId(conn, d.Id())
+	//
+	//	if err != nil {
+	//		return fmt.Errorf("error getting AWS Organizations Account (%s) parent: %s", d.Id(), err)
+	//	}
+	//
+	//	if newParentID != existingParentID {
+	//		input := &organizations.MoveAccountInput{
+	//			AccountId:           govCloudAccountID,
+	//			SourceParentId:      aws.String(existingParentID),
+	//			DestinationParentId: aws.String(newParentID),
+	//		}
+	//
+	//		if _, err := conn.MoveAccount(input); err != nil {
+	//			return fmt.Errorf("error moving AWS Organizations Account (%s): %s", d.Id(), err)
+	//		}
+	//	}
+	//}
 
 	if v := d.Get("tags").(map[string]interface{}); len(v) > 0 {
 		if err := keyvaluetags.OrganizationsUpdateTags(conn, d.Id(), nil, v); err != nil {
@@ -196,7 +202,7 @@ func resourceAwsGovcloudAccountRead(d *schema.ResourceData, meta interface{}) er
 		return nil
 	}
 
-	parentID, err := resourceAwsOrganizationsAccountGetParentId(conn, d.Id())
+	//parentID, err := resourceAwsOrganizationsAccountGetParentId(conn, d.Id())
 	if err != nil {
 		return fmt.Errorf("error getting AWS Organizations Account (%s): %s", d.Id(), err)
 	}
@@ -206,7 +212,7 @@ func resourceAwsGovcloudAccountRead(d *schema.ResourceData, meta interface{}) er
 	d.Set("joined_timestamp", aws.TimeValue(account.JoinedTimestamp).Format(time.RFC3339))
 	d.Set("account_name", account.Name)
 	d.Set("email", account.Email)
-	d.Set("parent_id", parentID)
+	//d.Set("parent_id", parentID)
 	d.Set("status", account.Status)
 
 	tags, err := keyvaluetags.OrganizationsListTags(conn, d.Id())
@@ -225,19 +231,19 @@ func resourceAwsGovcloudAccountRead(d *schema.ResourceData, meta interface{}) er
 func resourceAwsGovcloudAccountUpdate(d *schema.ResourceData, meta interface{}) error {
 	conn := meta.(*AWSClient).organizationsconn
 
-	if d.HasChange("parent_id") {
-		o, n := d.GetChange("parent_id")
-
-		input := &organizations.MoveAccountInput{
-			AccountId:           aws.String(d.Id()),
-			SourceParentId:      aws.String(o.(string)),
-			DestinationParentId: aws.String(n.(string)),
-		}
-
-		if _, err := conn.MoveAccount(input); err != nil {
-			return fmt.Errorf("error moving AWS Organizations Account (%s): %s", d.Id(), err)
-		}
-	}
+	//if d.HasChange("parent_id") {
+	//	o, n := d.GetChange("parent_id")
+	//
+	//	input := &organizations.MoveAccountInput{
+	//		AccountId:           aws.String(d.Id()),
+	//		SourceParentId:      aws.String(o.(string)),
+	//		DestinationParentId: aws.String(n.(string)),
+	//	}
+	//
+	//	if _, err := conn.MoveAccount(input); err != nil {
+	//		return fmt.Errorf("error moving AWS Organizations Account (%s): %s", d.Id(), err)
+	//	}
+	//}
 
 	if d.HasChange("tags") {
 		o, n := d.GetChange("tags")
@@ -251,18 +257,20 @@ func resourceAwsGovcloudAccountUpdate(d *schema.ResourceData, meta interface{}) 
 }
 
 func resourceAwsGovcloudAccountDelete(d *schema.ResourceData, meta interface{}) error {
-	conn := meta.(*AWSClient).organizationsconn
+	return errors.New("this resource does not support deletes")
 
-	input := &organizations.RemoveAccountFromOrganizationInput{
-		AccountId: aws.String(d.Id()),
-	}
-	log.Printf("[DEBUG] Removinng AWS account from organizations: %s", input)
-	_, err := conn.RemoveAccountFromOrganization(input)
-	if err != nil {
-		if isAWSErr(err, organizations.ErrCodeAccountNotFoundException, "") {
-			return nil
-		}
-		return err
-	}
-	return nil
+	//conn := meta.(*AWSClient).organizationsconn
+	//
+	//input := &organizations.RemoveAccountFromOrganizationInput{
+	//	AccountId: aws.String(d.Id()),
+	//}
+	//log.Printf("[DEBUG] Removinng AWS account from organizations: %s", input)
+	//_, err := conn.RemoveAccountFromOrganization(input)
+	//if err != nil {
+	//	if isAWSErr(err, organizations.ErrCodeAccountNotFoundException, "") {
+	//		return nil
+	//	}
+	//	return err
+	//}
+	//return nil
 }

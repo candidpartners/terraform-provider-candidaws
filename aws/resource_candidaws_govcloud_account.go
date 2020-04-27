@@ -95,19 +95,25 @@ func resourceAwsGovcloudAccountCreate(d *schema.ResourceData, meta interface{}) 
 		params.IamUserAccessToBilling = aws.String(iam_user.(string))
 	}
 
-	log.Printf("[DEBUG] Creating AWS GovCloud Accounnt: %s", params)
+	log.Printf("[DEBUG] Creating AWS GovCloud Account: %s", params)
 
 	var resp *organizations.CreateGovCloudAccountOutput
 	err := resource.Retry(4*time.Minute, func() *resource.RetryError {
 		var err error
 
+		log.Printf("[DEBUG] Encountered error: %s", err)
+
 		resp, err = conn.CreateGovCloudAccount(params)
 
+		log.Printf("[DEBUG] New CreateGovCloudAccount response: %s", resp)
+
 		if isAWSErr(err, organizations.ErrCodeFinalizingOrganizationException, "") {
+			log.Printf("[DEBUG] isAWSErr: %s", err)
 			return resource.RetryableError(err)
 		}
 
 		if err != nil {
+			log.Printf("[DEBUG] Is NonAWSErr: %s", err)
 			return resource.NonRetryableError(err)
 		}
 
@@ -115,6 +121,7 @@ func resourceAwsGovcloudAccountCreate(d *schema.ResourceData, meta interface{}) 
 	})
 
 	if isResourceTimeoutError(err) {
+		log.Printf("[DEBUG] Is ResourceTimeoutErr: %s", err)
 		resp, err = conn.CreateGovCloudAccount(params)
 	}
 
@@ -170,8 +177,10 @@ func resourceAwsGovcloudAccountCreate(d *schema.ResourceData, meta interface{}) 
 	//}
 
 	if v := d.Get("tags").(map[string]interface{}); len(v) > 0 {
-		if err := keyvaluetags.OrganizationsUpdateTags(conn, d.Id(), nil, v); err != nil {
-			return fmt.Errorf("error adding AWS Organizations GovCloud Account (%s) tags: %s", d.Id(), err)
+		commercialAccountId := d.Get("commercial_account_id").(string)
+
+		if err := keyvaluetags.OrganizationsUpdateTags(conn, commercialAccountId, nil, v); err != nil {
+			return fmt.Errorf("error adding AWS Organizations GovCloud Account with commercial ID (%s) tags: %s", commercialAccountId, err)
 		}
 	}
 
@@ -180,31 +189,33 @@ func resourceAwsGovcloudAccountCreate(d *schema.ResourceData, meta interface{}) 
 
 func resourceAwsGovcloudAccountRead(d *schema.ResourceData, meta interface{}) error {
 	conn := meta.(*AWSClient).organizationsconn
+	commercialAccountId := d.Get("commercial_account_id").(string)
+
 	describeOpts := &organizations.DescribeAccountInput{
-		AccountId: aws.String(d.Id()),
+		AccountId: aws.String(commercialAccountId),
 	}
 	resp, err := conn.DescribeAccount(describeOpts)
 
 	if isAWSErr(err, organizations.ErrCodeAccountNotFoundException, "") {
-		log.Printf("[WARN] Account does not exist, removing from state: %s", d.Id())
+		log.Printf("[WARN] Account does not exist, removing from state: %s", commercialAccountId)
 		d.SetId("")
 		return nil
 	}
 
 	if err != nil {
-		return fmt.Errorf("error describing AWS Organizations Account (%s): %s", d.Id(), err)
+		return fmt.Errorf("error describing AWS Organizations Account (%s): %s", commercialAccountId, err)
 	}
 
 	account := resp.Account
 	if account == nil {
-		log.Printf("[WARN] Account does not exist, removing from state: %s", d.Id())
+		log.Printf("[WARN] Account does not exist, removing from state: %s", commercialAccountId)
 		d.SetId("")
 		return nil
 	}
 
-	//parentID, err := resourceAwsOrganizationsAccountGetParentId(conn, d.Id())
+	//parentID, err := resourceAwsOrganizationsAccountGetParentId(conn, commercialAccountId)
 	if err != nil {
-		return fmt.Errorf("error getting AWS Organizations Account (%s): %s", d.Id(), err)
+		return fmt.Errorf("error getting AWS Organizations Account (%s): %s", commercialAccountId, err)
 	}
 
 	d.Set("arn", account.Arn)
@@ -215,10 +226,10 @@ func resourceAwsGovcloudAccountRead(d *schema.ResourceData, meta interface{}) er
 	//d.Set("parent_id", parentID)
 	d.Set("status", account.Status)
 
-	tags, err := keyvaluetags.OrganizationsListTags(conn, d.Id())
+	tags, err := keyvaluetags.OrganizationsListTags(conn, commercialAccountId)
 
 	if err != nil {
-		return fmt.Errorf("error listing tags for AWS Organizations Account (%s): %s", d.Id(), err)
+		return fmt.Errorf("error listing tags for AWS Organizations Account (%s): %s", commercialAccountId, err)
 	}
 
 	if err := d.Set("tags", tags.IgnoreAws().Map()); err != nil {
@@ -230,6 +241,7 @@ func resourceAwsGovcloudAccountRead(d *schema.ResourceData, meta interface{}) er
 
 func resourceAwsGovcloudAccountUpdate(d *schema.ResourceData, meta interface{}) error {
 	conn := meta.(*AWSClient).organizationsconn
+	commercialAccountId := d.Get("commercial_account_id").(string)
 
 	//if d.HasChange("parent_id") {
 	//	o, n := d.GetChange("parent_id")
@@ -248,8 +260,8 @@ func resourceAwsGovcloudAccountUpdate(d *schema.ResourceData, meta interface{}) 
 	if d.HasChange("tags") {
 		o, n := d.GetChange("tags")
 
-		if err := keyvaluetags.OrganizationsUpdateTags(conn, d.Id(), o, n); err != nil {
-			return fmt.Errorf("error updating AWS Organizations Account (%s) tags: %s", d.Id(), err)
+		if err := keyvaluetags.OrganizationsUpdateTags(conn, commercialAccountId, o, n); err != nil {
+			return fmt.Errorf("error updating AWS Organizations Account (%s) tags: %s", commercialAccountId, err)
 		}
 	}
 

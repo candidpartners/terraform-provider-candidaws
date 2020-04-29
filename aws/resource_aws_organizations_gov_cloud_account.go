@@ -14,13 +14,13 @@ import (
 	"github.com/terraform-providers/terraform-provider-aws/aws/internal/keyvaluetags"
 )
 
-func resourceAwsGovcloudAccount() *schema.Resource {
+func resourceAwsOrganizationsGovCloudAccount() *schema.Resource {
 
 	return &schema.Resource{
-		Create: resourceAwsGovcloudAccountCreate,
-		Read:   resourceAwsGovcloudAccountRead,
-		Update: resourceAwsGovcloudAccountUpdate,
-		Delete: resourceAwsGovcloudAccountDelete,
+		Create: resourceAwsOrganizationsGovCloudAccountCreate,
+		Read:   resourceAwsOrganizationsGovCloudAccountRead,
+		Update: resourceAwsOrganizationsGovCloudAccountUpdate,
+		Delete: resourceAwsOrganizationsGovCloudAccountDelete,
 		Importer: &schema.ResourceImporter{
 			State: schema.ImportStatePassthrough,
 		},
@@ -81,7 +81,7 @@ func resourceAwsGovcloudAccount() *schema.Resource {
 	}
 }
 
-func resourceAwsGovcloudAccountCreate(d *schema.ResourceData, meta interface{}) error {
+func resourceAwsOrganizationsGovCloudAccountCreate(d *schema.ResourceData, meta interface{}) error {
 	conn := meta.(*AWSClient).organizationsconn
 
 	params := &organizations.CreateGovCloudAccountInput{
@@ -184,10 +184,10 @@ func resourceAwsGovcloudAccountCreate(d *schema.ResourceData, meta interface{}) 
 		}
 	}
 
-	return resourceAwsGovcloudAccountRead(d, meta)
+	return resourceAwsOrganizationsGovCloudAccountRead(d, meta)
 }
 
-func resourceAwsGovcloudAccountRead(d *schema.ResourceData, meta interface{}) error {
+func resourceAwsOrganizationsGovCloudAccountRead(d *schema.ResourceData, meta interface{}) error {
 	conn := meta.(*AWSClient).organizationsconn
 	commercialAccountId := d.Get("commercial_account_id").(string)
 
@@ -239,7 +239,7 @@ func resourceAwsGovcloudAccountRead(d *schema.ResourceData, meta interface{}) er
 	return nil
 }
 
-func resourceAwsGovcloudAccountUpdate(d *schema.ResourceData, meta interface{}) error {
+func resourceAwsOrganizationsGovCloudAccountUpdate(d *schema.ResourceData, meta interface{}) error {
 	conn := meta.(*AWSClient).organizationsconn
 	commercialAccountId := d.Get("commercial_account_id").(string)
 
@@ -265,10 +265,10 @@ func resourceAwsGovcloudAccountUpdate(d *schema.ResourceData, meta interface{}) 
 		}
 	}
 
-	return resourceAwsGovcloudAccountRead(d, meta)
+	return resourceAwsOrganizationsGovCloudAccountRead(d, meta)
 }
 
-func resourceAwsGovcloudAccountDelete(d *schema.ResourceData, meta interface{}) error {
+func resourceAwsOrganizationsGovCloudAccountDelete(d *schema.ResourceData, meta interface{}) error {
 	return errors.New("this resource does not support deletes")
 
 	//conn := meta.(*AWSClient).organizationsconn

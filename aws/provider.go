@@ -166,6 +166,7 @@ func Provider() terraform.ResourceProvider {
 			"aws_lex_bot":         resourceAwsLexBot(),
 			"aws_organizations_gov_cloud_account":    resourceAwsOrganizationsGovCloudAccount(),
 			"aws_organizations_invitation":    resourceAwsOrganizationsInvitation(),
+			"aws_organizations_invitation_acceptance":    resourceAwsOrganizationsInvitationAcceptance(),
 		},
 	}
 

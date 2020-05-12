@@ -2,10 +2,11 @@ package aws
 
 import (
 	"fmt"
+	"log"
+
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/service/organizations"
 	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
-	"log"
 )
 
 func resourceAwsOrganizationsInvitation() *schema.Resource {
@@ -37,7 +38,7 @@ func resourceAwsOrganizationsInvitationCreate(d *schema.ResourceData, meta inter
 
 	params := &organizations.InviteAccountToOrganizationInput{
 		Target: &organizations.HandshakeParty{
-			Id: aws.String(d.Get("account_id").(string)),
+			Id:   aws.String(d.Get("account_id").(string)),
 			Type: aws.String("ACCOUNT"),
 		},
 	}

@@ -170,7 +170,7 @@ func resourceAwsOrganizationsGovCloudAccountCreate(d *schema.ResourceData, meta 
 				AccountId:           commercialAccountID,
 				SourceParentId:      aws.String(existingParentID),
 				DestinationParentId: aws.String(newParentID),
-	}
+			}
 
 			if _, err := conn.MoveAccount(input); err != nil {
 				return fmt.Errorf("error moving AWS Organizations Account (%s): %s", d.Id(), err)

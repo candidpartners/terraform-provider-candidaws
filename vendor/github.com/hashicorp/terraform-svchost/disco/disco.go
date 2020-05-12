@@ -17,7 +17,7 @@ import (
 	"net/url"
 	"time"
 
-	"github.com/hashicorp/terraform-svchost"
+	svchost "github.com/hashicorp/terraform-svchost"
 	"github.com/hashicorp/terraform-svchost/auth"
 )
 

@@ -4,8 +4,9 @@ package keyvaluetags
 
 import (
 	"fmt"
-	"github.com/aws/aws-sdk-go/service/quicksight"
 	"reflect"
+
+	"github.com/aws/aws-sdk-go/service/quicksight"
 
 	"github.com/aws/aws-sdk-go/service/accessanalyzer"
 	"github.com/aws/aws-sdk-go/service/acm"

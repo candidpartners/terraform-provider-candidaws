@@ -8,7 +8,10 @@ TEST_COUNT?=1
 
 default: build
 
-build: fmtcheck
+lintcheck:
+	golangci-lint run
+
+build: lintcheck fmtcheck
 	go install
 
 gen:

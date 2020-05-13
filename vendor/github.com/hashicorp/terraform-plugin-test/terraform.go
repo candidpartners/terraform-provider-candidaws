@@ -4,13 +4,14 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-	getter "github.com/hashicorp/go-getter"
 	"io/ioutil"
 	"os"
 	"os/exec"
 	"path/filepath"
 	"runtime"
 	"strings"
+
+	getter "github.com/hashicorp/go-getter"
 )
 
 const releaseHost = "https://releases.hashicorp.com"

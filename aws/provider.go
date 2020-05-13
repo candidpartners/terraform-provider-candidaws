@@ -3,7 +3,6 @@ package aws
 import (
 	"log"
 
-	"github.com/hashicorp/terraform-plugin-sdk/helper/mutexkv"
 	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
 	"github.com/hashicorp/terraform-plugin-sdk/terraform"
 	homedir "github.com/mitchellh/go-homedir"
@@ -159,14 +158,14 @@ func Provider() terraform.ResourceProvider {
 		DataSourcesMap: map[string]*schema.Resource{},
 
 		ResourcesMap: map[string]*schema.Resource{
-			"aws_transfer_server": resourceAwsTransferServer(),
-			"aws_transfer_user":   resourceAwsTransferUser(),
-			"aws_lex_slot_type":   resourceAwsLexSlotType(),
-			"aws_lex_intent":      resourceAwsLexIntent(),
-			"aws_lex_bot":         resourceAwsLexBot(),
-			"aws_organizations_gov_cloud_account":    resourceAwsOrganizationsGovCloudAccount(),
-			"aws_organizations_invitation":    resourceAwsOrganizationsInvitation(),
-			"aws_organizations_invitation_acceptance":    resourceAwsOrganizationsInvitationAcceptance(),
+			"aws_transfer_server":                     resourceAwsTransferServer(),
+			"aws_transfer_user":                       resourceAwsTransferUser(),
+			"aws_lex_slot_type":                       resourceAwsLexSlotType(),
+			"aws_lex_intent":                          resourceAwsLexIntent(),
+			"aws_lex_bot":                             resourceAwsLexBot(),
+			"aws_organizations_gov_cloud_account":     resourceAwsOrganizationsGovCloudAccount(),
+			"aws_organizations_invitation":            resourceAwsOrganizationsInvitation(),
+			"aws_organizations_invitation_acceptance": resourceAwsOrganizationsInvitationAcceptance(),
 		},
 	}
 
@@ -464,9 +463,6 @@ func providerConfigure(d *schema.ResourceData, terraformVersion string) (interfa
 
 	return config.Client()
 }
-
-// This is a global MutexKV for use within this plugin.
-var awsMutexKV = mutexkv.NewMutexKV()
 
 func assumeRoleSchema() *schema.Schema {
 	return &schema.Schema{

@@ -2,13 +2,14 @@ package initwd
 
 import (
 	"fmt"
-	"github.com/hashicorp/terraform-plugin-sdk/internal/earlyconfig"
 	"io/ioutil"
 	"log"
 	"os"
 	"path/filepath"
 	"sort"
 	"strings"
+
+	"github.com/hashicorp/terraform-plugin-sdk/internal/earlyconfig"
 
 	version "github.com/hashicorp/go-version"
 	"github.com/hashicorp/terraform-config-inspect/tfconfig"

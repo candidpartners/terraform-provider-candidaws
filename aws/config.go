@@ -278,7 +278,6 @@ type AWSClient struct {
 	marketplacecatalogconn              *marketplacecatalog.MarketplaceCatalog
 	mediaconnectconn                    *mediaconnect.MediaConnect
 	mediaconvertconn                    *mediaconvert.MediaConvert
-	mediaconvertaccountconn             *mediaconvert.MediaConvert
 	medialiveconn                       *medialive.MediaLive
 	mediapackageconn                    *mediapackage.MediaPackage
 	mediastoreconn                      *mediastore.MediaStore
@@ -723,15 +722,6 @@ func (c *Config) Client() (interface{}, error) {
 	}
 
 	return client, nil
-}
-
-func hasEc2Classic(platforms []string) bool {
-	for _, p := range platforms {
-		if p == "EC2" {
-			return true
-		}
-	}
-	return false
 }
 
 func GetSupportedEC2Platforms(conn *ec2.EC2) ([]string, error) {

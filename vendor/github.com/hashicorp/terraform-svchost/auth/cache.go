@@ -1,7 +1,7 @@
 package auth
 
 import (
-	"github.com/hashicorp/terraform-svchost"
+	svchost "github.com/hashicorp/terraform-svchost"
 )
 
 // CachingCredentialsSource creates a new credentials source that wraps another

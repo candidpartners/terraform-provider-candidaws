@@ -1,12 +1,13 @@
 package entropy
 
 import (
-	"github.com/nbutton23/zxcvbn-go/adjacency"
-	"github.com/nbutton23/zxcvbn-go/match"
-	"github.com/nbutton23/zxcvbn-go/utils/math"
 	"math"
 	"regexp"
 	"unicode"
+
+	"github.com/nbutton23/zxcvbn-go/adjacency"
+	"github.com/nbutton23/zxcvbn-go/match"
+	zxcvbnmath "github.com/nbutton23/zxcvbn-go/utils/math"
 )
 
 const (

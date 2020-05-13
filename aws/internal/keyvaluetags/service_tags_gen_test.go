@@ -1,8 +1,9 @@
 package keyvaluetags
 
 import (
-	"github.com/aws/aws-sdk-go/service/quicksight"
 	"testing"
+
+	"github.com/aws/aws-sdk-go/service/quicksight"
 
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/service/appmesh"

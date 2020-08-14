@@ -411,19 +411,30 @@ func providerConfigure(d *schema.ResourceData, terraformVersion string) (interfa
 	}
 	config.CredsFilename = credsPath
 
-	assumeRoleList := d.Get("assume_role").(*schema.Set).List()
-	if len(assumeRoleList) == 1 {
-		assumeRole := assumeRoleList[0].(map[string]interface{})
-		config.AssumeRoleARN = assumeRole["role_arn"].(string)
-		config.AssumeRoleSessionName = assumeRole["session_name"].(string)
-		config.AssumeRoleExternalID = assumeRole["external_id"].(string)
+	assumeRoleList := d.Get("assume_role").([]interface {})
 
-		if v := assumeRole["policy"].(string); v != "" {
-			config.AssumeRolePolicy = v
+	if len(assumeRoleList) > 0 {
+
+		var assumeRoleBlocks []AssumeRoleBlock
+
+		for i := 0; i < len(assumeRoleList); i++ {
+			assumeRole := assumeRoleList[i].(map[string]interface{})
+
+			var newBlock AssumeRoleBlock
+			newBlock.AssumeRoleARN         = assumeRole["role_arn"].(string)
+			newBlock.AssumeRoleSessionName = assumeRole["session_name"].(string)
+			newBlock.AssumeRoleExternalID  = assumeRole["external_id"].(string)
+
+			if v := assumeRole["policy"].(string); v != "" {
+				newBlock.AssumeRolePolicy = v
+			}
+
+			assumeRoleBlocks = append(assumeRoleBlocks, newBlock)
 		}
 
-		log.Printf("[INFO] assume_role configuration set: (ARN: %q, SessionID: %q, ExternalID: %q, Policy: %q)",
-			config.AssumeRoleARN, config.AssumeRoleSessionName, config.AssumeRoleExternalID, config.AssumeRolePolicy)
+		config.AssumeRoleBlocks = assumeRoleBlocks
+
+		log.Printf("[INFO] assume_role configuration set: %q", config.AssumeRoleBlocks)
 	} else {
 		log.Printf("[INFO] No assume_role block read from configuration")
 	}
@@ -466,9 +477,8 @@ func providerConfigure(d *schema.ResourceData, terraformVersion string) (interfa
 
 func assumeRoleSchema() *schema.Schema {
 	return &schema.Schema{
-		Type:     schema.TypeSet,
+		Type:     schema.TypeList,
 		Optional: true,
-		MaxItems: 1,
 		Elem: &schema.Resource{
 			Schema: map[string]*schema.Schema{
 				"role_arn": {

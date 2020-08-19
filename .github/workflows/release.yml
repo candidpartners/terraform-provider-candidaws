@@ -1,7 +1,7 @@
 on:
   push:
     tags:
-      - 'v*'
+      - "v*"
 
 name: Create Release
 
@@ -16,8 +16,8 @@ jobs:
         uses: actions/setup-go@v2
       - name: Build
         run: |
-          GOOS=darwin GOARCH=amd64 go build -o bin/darwin_amd64
-          GOOS=linux GOARCH=amd64 go build -o bin/linux_amd64
+          CGO_ENABLED=0 GOOS=darwin GOARCH=amd64 go build -o bin/darwin_amd64
+          CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o bin/linux_amd64
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1

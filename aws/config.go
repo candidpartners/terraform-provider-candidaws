@@ -173,6 +173,7 @@ type Config struct {
 	ForbiddenAccountIds []string
 
 	Endpoints         map[string]string
+	IgnoreTagsConfig *keyvaluetags.IgnoreConfig
 	IgnoreTagPrefixes []string
 	IgnoreTags        []string
 	Insecure          bool
@@ -260,6 +261,7 @@ type AWSClient struct {
 	guarddutyconn                       *guardduty.GuardDuty
 	greengrassconn                      *greengrass.Greengrass
 	iamconn                             *iam.IAM
+	IgnoreTagsConfig                    *keyvaluetags.IgnoreConfig
 	ignoreTagPrefixes                   keyvaluetags.KeyValueTags
 	ignoreTags                          keyvaluetags.KeyValueTags
 	imagebuilderconn                    *imagebuilder.Imagebuilder
@@ -497,6 +499,7 @@ func (c *Config) Client() (interface{}, error) {
 		guarddutyconn:                       guardduty.New(sess.Copy(&aws.Config{Endpoint: aws.String(c.Endpoints["guardduty"])})),
 		greengrassconn:                      greengrass.New(sess.Copy(&aws.Config{Endpoint: aws.String(c.Endpoints["greengrass"])})),
 		iamconn:                             iam.New(sess.Copy(&aws.Config{Endpoint: aws.String(c.Endpoints["iam"])})),
+		IgnoreTagsConfig:                    c.IgnoreTagsConfig,
 		ignoreTagPrefixes:                   keyvaluetags.New(c.IgnoreTagPrefixes),
 		ignoreTags:                          keyvaluetags.New(c.IgnoreTags),
 		imagebuilderconn:                    imagebuilder.New(sess.Copy(&aws.Config{Endpoint: aws.String(c.Endpoints["imagebuilder"])})),

@@ -443,7 +443,8 @@ func resourceAwsQuickSightDataSource() *schema.Resource {
 					quicksight.DataSourceTypeJira,
 					quicksight.DataSourceTypeAwsIotAnalytics,
 				}, false),
-				Optional: true,
+				Required: true,
+				ForceNew: true,
 			},
 		},
 	}
@@ -736,20 +737,6 @@ func expandDataSourceParameters(values []interface{}) *quicksight.DataSourcePara
 		TwitterParameters:             expandTwitterParameters(val["twitter_parameters"].([]interface{})),
 	}
 	return res
-}
-func flattenPermissions(rp []*quicksight.ResourcePermission) []interface{} {
-	valuesSlice := make([]interface{}, len(rp))
-	if len(rp) > 0 {
-		for i, v := range rp {
-			m := make(map[string]interface{})
-			m["principal"] = aws.StringValue(v.Principal)
-			if v.Actions != nil {
-				m["actions"] = flattenStringList(v.Actions)
-			}
-			valuesSlice[i] = m
-		}
-	}
-	return valuesSlice
 }
 func resourceAwsQuickSightDataSourceCreate(d *schema.ResourceData, meta interface{}) error {
 	conn := meta.(*AWSClient).quicksightconn

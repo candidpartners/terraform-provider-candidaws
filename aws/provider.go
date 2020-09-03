@@ -169,6 +169,7 @@ func Provider() terraform.ResourceProvider {
 			"aws_iam_role":                            resourceAwsIamRole(),
 			"aws_iam_role_policy":                     resourceAwsIamRolePolicy(),
 			"aws_iam_role_policy_attachment":          resourceAwsIamRolePolicyAttachment(),
+			"aws_quicksight_data_source":              resourceAwsQuickSightDataSource(),
 		},
 	}
 
@@ -414,7 +415,7 @@ func providerConfigure(d *schema.ResourceData, terraformVersion string) (interfa
 	}
 	config.CredsFilename = credsPath
 
-	assumeRoleList := d.Get("assume_role").([]interface {})
+	assumeRoleList := d.Get("assume_role").([]interface{})
 
 	if len(assumeRoleList) > 0 {
 
@@ -424,9 +425,9 @@ func providerConfigure(d *schema.ResourceData, terraformVersion string) (interfa
 			assumeRole := assumeRoleList[i].(map[string]interface{})
 
 			var newBlock AssumeRoleBlock
-			newBlock.AssumeRoleARN         = assumeRole["role_arn"].(string)
+			newBlock.AssumeRoleARN = assumeRole["role_arn"].(string)
 			newBlock.AssumeRoleSessionName = assumeRole["session_name"].(string)
-			newBlock.AssumeRoleExternalID  = assumeRole["external_id"].(string)
+			newBlock.AssumeRoleExternalID = assumeRole["external_id"].(string)
 
 			if v := assumeRole["policy"].(string); v != "" {
 				newBlock.AssumeRolePolicy = v

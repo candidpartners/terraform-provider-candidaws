@@ -173,7 +173,7 @@ type Config struct {
 	ForbiddenAccountIds []string
 
 	Endpoints         map[string]string
-	IgnoreTagsConfig *keyvaluetags.IgnoreConfig
+	IgnoreTagsConfig  *keyvaluetags.IgnoreConfig
 	IgnoreTagPrefixes []string
 	IgnoreTags        []string
 	Insecure          bool
@@ -364,20 +364,65 @@ func (c *Config) Client() (interface{}, error) {
 
 	nextAccessKey := c.AccessKey
 	nextSecretKey := c.SecretKey
-	nextToken     := c.Token
+	nextToken := c.Token
+
 	var sess *session.Session
 	var accountID string
 	var partition string
 	var err error
+	var awsbaseConfig *awsbase.Config
 
-	for i := 0; i < len(c.AssumeRoleBlocks); i++ {
-		log.Println("[INFO] Building AWS auth structure")
-		awsbaseConfig := &awsbase.Config{
+	if len(c.AssumeRoleBlocks) > 0 {
+
+		for i := 0; i < len(c.AssumeRoleBlocks); i++ {
+
+			log.Println("[INFO] Building AWS auth structure")
+			awsbaseConfig = &awsbase.Config{
+				AccessKey:               nextAccessKey,
+				AssumeRoleARN:           c.AssumeRoleBlocks[i].AssumeRoleARN,
+				AssumeRoleExternalID:    c.AssumeRoleBlocks[i].AssumeRoleExternalID,
+				AssumeRolePolicy:        c.AssumeRoleBlocks[i].AssumeRolePolicy,
+				AssumeRoleSessionName:   c.AssumeRoleBlocks[i].AssumeRoleSessionName,
+				CredsFilename:           c.CredsFilename,
+				DebugLogging:            logging.IsDebugOrHigher(),
+				IamEndpoint:             c.Endpoints["iam"],
+				Insecure:                c.Insecure,
+				MaxRetries:              c.MaxRetries,
+				Profile:                 c.Profile,
+				Region:                  c.Region,
+				SecretKey:               nextSecretKey,
+				SkipCredsValidation:     c.SkipCredsValidation,
+				SkipMetadataApiCheck:    c.SkipMetadataApiCheck,
+				SkipRequestingAccountId: c.SkipRequestingAccountId,
+				StsEndpoint:             c.Endpoints["sts"],
+				Token:                   nextToken,
+				UserAgentProducts: []*awsbase.UserAgentProduct{
+					{Name: "APN", Version: "1.0"},
+					{Name: "HashiCorp", Version: "1.0"},
+					{Name: "Terraform", Version: c.terraformVersion,
+						Extra: []string{"+https://www.terraform.io"}},
+				},
+			}
+
+			sess, accountID, partition, err = awsbase.GetSessionWithAccountIDAndPartition(awsbaseConfig)
+			if err != nil {
+				return nil, err
+			}
+
+			newCredentials, err := sess.Config.Credentials.Get()
+			if err != nil {
+				return nil, err
+			}
+
+			nextAccessKey = newCredentials.AccessKeyID
+			nextSecretKey = newCredentials.SecretAccessKey
+			nextToken = newCredentials.SessionToken
+		}
+
+	} else {
+
+		awsbaseConfig = &awsbase.Config{
 			AccessKey:               nextAccessKey,
-			AssumeRoleARN:           c.AssumeRoleBlocks[i].AssumeRoleARN,
-			AssumeRoleExternalID:    c.AssumeRoleBlocks[i].AssumeRoleExternalID,
-			AssumeRolePolicy:        c.AssumeRoleBlocks[i].AssumeRolePolicy,
-			AssumeRoleSessionName:   c.AssumeRoleBlocks[i].AssumeRoleSessionName,
 			CredsFilename:           c.CredsFilename,
 			DebugLogging:            logging.IsDebugOrHigher(),
 			IamEndpoint:             c.Endpoints["iam"],
@@ -411,7 +456,7 @@ func (c *Config) Client() (interface{}, error) {
 
 		nextAccessKey = newCredentials.AccessKeyID
 		nextSecretKey = newCredentials.SecretAccessKey
-		nextToken     = newCredentials.SessionToken
+		nextToken = newCredentials.SessionToken
 	}
 
 	if accountID == "" {
@@ -570,6 +615,8 @@ func (c *Config) Client() (interface{}, error) {
 		workspacesconn:                      workspaces.New(sess.Copy(&aws.Config{Endpoint: aws.String(c.Endpoints["workspaces"])})),
 		xrayconn:                            xray.New(sess.Copy(&aws.Config{Endpoint: aws.String(c.Endpoints["xray"])})),
 	}
+
+	log.Println("[INFO] Client created")
 
 	// "Global" services that require customizations
 	globalAcceleratorConfig := &aws.Config{

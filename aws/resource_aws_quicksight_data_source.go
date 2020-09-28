@@ -443,7 +443,7 @@ func resourceAwsQuickSightDataSource() *schema.Resource {
 					quicksight.DataSourceTypeJira,
 					quicksight.DataSourceTypeAwsIotAnalytics,
 				}, false),
-				Required: true,
+				Optional: true,
 				ForceNew: true,
 			},
 		},

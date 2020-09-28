@@ -155,7 +155,9 @@ func Provider() terraform.ResourceProvider {
 			},
 		},
 
-		DataSourcesMap: map[string]*schema.Resource{},
+		DataSourcesMap: map[string]*schema.Resource{
+			"aws_caller_identity": dataSourceAwsCallerIdentity(),
+		},
 
 		ResourcesMap: map[string]*schema.Resource{
 			"aws_transfer_server":                     resourceAwsTransferServer(),

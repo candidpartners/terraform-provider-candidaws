@@ -18,6 +18,7 @@ jobs:
         run: |
           CGO_ENABLED=0 GOOS=darwin GOARCH=amd64 go build -o bin/darwin_amd64
           CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o bin/linux_amd64
+          CGO_ENABLED=0 GOOS=windows GOARCH=amd64 go build -o bin/windows_amd64
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1
@@ -45,4 +46,13 @@ jobs:
           upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps
           asset_path: ./bin/linux_amd64
           asset_name: bin/linux_amd64
+          asset_content_type: binary/octet-stream
+      - name: Upload Release Asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps
+          asset_path: ./bin/windows_amd64
+          asset_name: bin/windows_amd64
           asset_content_type: binary/octet-stream

@@ -58,6 +58,22 @@ func resourceAwsOrganizationsInvitationCreate(d *schema.ResourceData, meta inter
 func resourceAwsOrganizationsInvitationRead(d *schema.ResourceData, meta interface{}) error {
 	conn := meta.(*AWSClient).organizationsconn
 
+	describeOpts := &organizations.DescribeAccountInput{
+		AccountId: aws.String(d.Get("account_id").(string)),
+	}
+	describeResp, describeErr := conn.DescribeAccount(describeOpts)
+
+	if describeErr != nil {
+		return fmt.Errorf("error describing account (%s): %s", aws.String(d.Get("account_id").(string)), describeErr)
+	}
+
+	account := describeResp.Account
+
+	if account.Status == aws.String("ACTIVE") {
+		d.SetId("ACTIVE")
+		return nil
+	}
+
 	params := &organizations.DescribeHandshakeInput{
 		HandshakeId: aws.String(d.Id()),
 	}

@@ -70,7 +70,6 @@ func resourceAwsOrganizationsInvitationRead(d *schema.ResourceData, meta interfa
 	account := describeResp.Account
 
 	if account.Status == aws.String("ACTIVE") {
-		d.SetId("ACTIVE")
 		return nil
 	}
 

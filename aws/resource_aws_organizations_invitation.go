@@ -64,12 +64,12 @@ func resourceAwsOrganizationsInvitationRead(d *schema.ResourceData, meta interfa
 	describeResp, describeErr := conn.DescribeAccount(describeOpts)
 
 	if describeErr != nil {
-		return fmt.Errorf("error describing account (%s): %s", aws.String(d.Get("account_id").(string)), describeErr)
+		return fmt.Errorf("error describing account (%s): %s", d.Get("account_id").(string), describeErr)
 	}
 
 	account := describeResp.Account
 
-	if account.Status == aws.String("ACTIVE") {
+	if *account.Status == "ACTIVE" {
 		return nil
 	}
 

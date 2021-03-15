@@ -156,7 +156,8 @@ func Provider() terraform.ResourceProvider {
 		},
 
 		DataSourcesMap: map[string]*schema.Resource{
-			"aws_caller_identity": dataSourceAwsCallerIdentity(),
+			"aws_caller_identity":  dataSourceAwsCallerIdentity(),
+			"aws_internet_gateway": dataSourceAwsInternetGateway(),
 		},
 
 		ResourcesMap: map[string]*schema.Resource{
@@ -172,6 +173,8 @@ func Provider() terraform.ResourceProvider {
 			"aws_iam_role_policy":                     resourceAwsIamRolePolicy(),
 			"aws_iam_role_policy_attachment":          resourceAwsIamRolePolicyAttachment(),
 			"aws_quicksight_data_source":              resourceAwsQuickSightDataSource(),
+			"aws_internet_gateway_detach":             resourceAwsInternetGatewayDetach(),
+			"aws_internet_gateway_delete":             resourceAwsInternetGatewayDelete(),
 		},
 	}
 

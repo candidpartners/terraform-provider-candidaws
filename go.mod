@@ -10,6 +10,7 @@ require (
 	github.com/client9/misspell v0.3.4
 	github.com/golangci/golangci-lint v1.23.8
 	github.com/hashicorp/aws-sdk-go-base v0.4.0
+	github.com/hashicorp/go-multierror v1.0.0
 	github.com/hashicorp/terraform-plugin-sdk v1.8.0
 	github.com/hashicorp/terraform-plugin-sdk/v2 v2.0.1
 	github.com/jen20/awspolicyequivalence v1.1.0

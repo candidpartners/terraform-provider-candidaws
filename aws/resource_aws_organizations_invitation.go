@@ -57,40 +57,16 @@ func resourceAwsOrganizationsInvitationCreate(d *schema.ResourceData, meta inter
 
 func resourceAwsOrganizationsInvitationRead(d *schema.ResourceData, meta interface{}) error {
 	conn := meta.(*AWSClient).organizationsconn
-
-	describeOpts := &organizations.DescribeAccountInput{
-		AccountId: aws.String(d.Get("account_id").(string)),
-	}
-	describeResp, describeErr := conn.DescribeAccount(describeOpts)
-
-	if describeErr != nil {
-		return fmt.Errorf("error describing account (%s): %s", d.Get("account_id").(string), describeErr)
-	}
-
-	account := describeResp.Account
-
-	if *account.Status == "ACTIVE" {
-		return nil
-	}
-
 	params := &organizations.DescribeHandshakeInput{
 		HandshakeId: aws.String(d.Id()),
 	}
 	resp, err := conn.DescribeHandshake(params)
-
 	if err != nil {
-		return fmt.Errorf("error describing handshake (%s): %s", d.Id(), err)
-	}
-
-	handshake := resp.Handshake
-	if handshake == nil {
-		log.Printf("[WARN] Handshake does not exist, removing from state: %s", d.Id())
-		d.SetId("")
+		log.Printf("[WARN] Handshake no longer exist")
 		return nil
 	}
-
+	handshake := resp.Handshake
 	d.Set("arn", handshake.Arn)
-
 	return nil
 }
 

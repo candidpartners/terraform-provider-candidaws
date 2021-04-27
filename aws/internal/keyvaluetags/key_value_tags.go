@@ -105,7 +105,7 @@ func (tags KeyValueTags) IgnorePrefixes(ignoreTagPrefixes KeyValueTags) KeyValue
 	return result
 }
 
-// IgnoreRDS returns non-AWS and non-RDS tag keys.
+// IgnoreRds returns non-AWS and non-RDS tag keys.
 func (tags KeyValueTags) IgnoreRds() KeyValueTags {
 	result := make(KeyValueTags)
 

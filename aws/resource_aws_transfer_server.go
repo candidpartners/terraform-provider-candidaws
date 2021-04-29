@@ -7,10 +7,10 @@ import (
 
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/service/transfer"
-	"github.com/hashicorp/aws-sdk-go-base/tfawserr"
-	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
-	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
-	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/validation"
+	"github.com/hashicorp/aws-sdk-go-base"
+	"github.com/hashicorp/terraform-plugin-sdk/helper/resource"
+	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
+	"github.com/hashicorp/terraform-plugin-sdk/helper/validation"
 	"github.com/terraform-providers/terraform-provider-aws/aws/internal/keyvaluetags"
 )
 
@@ -36,10 +36,14 @@ func resourceAwsTransferServer() *schema.Resource {
 			},
 
 			"endpoint_type": {
-				Type:         schema.TypeString,
-				Optional:     true,
-				Default:      transfer.EndpointTypePublic,
-				ValidateFunc: validation.StringInSlice(transfer.EndpointType_Values(), false),
+				Type:     schema.TypeString,
+				Optional: true,
+				Default:  transfer.EndpointTypePublic,
+				ValidateFunc: validation.StringInSlice([]string{
+					transfer.EndpointTypePublic,
+					transfer.EndpointTypeVpc,
+					transfer.EndpointTypeVpcEndpoint,
+				}, false),
 			},
 
 			"endpoint_details": {
@@ -102,11 +106,14 @@ func resourceAwsTransferServer() *schema.Resource {
 			},
 
 			"identity_provider_type": {
-				Type:         schema.TypeString,
-				Optional:     true,
-				ForceNew:     true,
-				Default:      transfer.IdentityProviderTypeServiceManaged,
-				ValidateFunc: validation.StringInSlice(transfer.IdentityProviderType_Values(), false),
+				Type:     schema.TypeString,
+				Optional: true,
+				ForceNew: true,
+				Default:  transfer.IdentityProviderTypeServiceManaged,
+				ValidateFunc: validation.StringInSlice([]string{
+					transfer.IdentityProviderTypeServiceManaged,
+					transfer.IdentityProviderTypeApiGateway,
+				}, false),
 			},
 
 			"logging_role": {
@@ -137,7 +144,10 @@ func resourceAwsTransferServer() *schema.Resource {
 			"tags_all": tagsSchemaComputed(),
 		},
 
-		CustomizeDiff: SetTagsDiff,
+		// Commenting this out for now bc as of latest current version of the terraform-provider-aws code (3.37.0) this isn't
+		// even implemented. It appears to be in the next release (3.38.0), so for now I do not even have any concrete examples
+		// of it being utilized.
+		// CustomizeDiff: SetTagsDiff,
 	}
 }
 
@@ -239,7 +249,7 @@ func resourceAwsTransferServerCreate(d *schema.ResourceData, meta interface{}) e
 		err := resource.Retry(Ec2VpcEndpointCreationTimeout, func() *resource.RetryError {
 			_, err := conn.UpdateServer(updateOpts)
 
-			if tfawserr.ErrMessageContains(err, transfer.ErrCodeConflictException, "VPC Endpoint state is not yet available") {
+			if awsbase.IsAWSErr(err, transfer.ErrCodeConflictException, "VPC Endpoint state is not yet available") {
 				return resource.RetryableError(err)
 			}
 

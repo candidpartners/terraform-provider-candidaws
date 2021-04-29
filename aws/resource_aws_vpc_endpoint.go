@@ -12,6 +12,12 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
 )
 
+const (
+	// Maximum amount of time to wait for VPC Endpoint creation
+	Ec2VpcEndpointCreationTimeout = 10 * time.Minute
+)
+
+
 func vpcEndpointStateRefresh(conn *ec2.EC2, vpceId string) resource.StateRefreshFunc {
 	return func() (interface{}, string, error) {
 		log.Printf("[DEBUG] Reading VPC Endpoint: %s", vpceId)

@@ -39,11 +39,7 @@ func resourceAwsTransferServer() *schema.Resource {
 				Type:     schema.TypeString,
 				Optional: true,
 				Default:  transfer.EndpointTypePublic,
-				ValidateFunc: validation.StringInSlice([]string{
-					transfer.EndpointTypePublic,
-					transfer.EndpointTypeVpc,
-					transfer.EndpointTypeVpcEndpoint,
-				}, false),
+				ValidateFunc: validation.StringInSlice(transfer.EndpointType_Values(), false),
 			},
 
 			"endpoint_details": {
@@ -110,10 +106,7 @@ func resourceAwsTransferServer() *schema.Resource {
 				Optional: true,
 				ForceNew: true,
 				Default:  transfer.IdentityProviderTypeServiceManaged,
-				ValidateFunc: validation.StringInSlice([]string{
-					transfer.IdentityProviderTypeServiceManaged,
-					transfer.IdentityProviderTypeApiGateway,
-				}, false),
+				ValidateFunc: validation.StringInSlice(transfer.IdentityProviderType_Values(), false),
 			},
 
 			"logging_role": {

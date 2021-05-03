@@ -36,6 +36,10 @@ func flattenStringList(list []*string) []interface{} {
 	return vs
 }
 
+func flattenStringSet(list []*string) *schema.Set {
+	return schema.NewSet(schema.HashString, flattenStringList(list))
+}
+
 // Takes a value containing YAML string and passes it through
 // the YAML parser. Returns either a parsing
 // error or original YAML string.

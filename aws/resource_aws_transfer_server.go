@@ -36,9 +36,9 @@ func resourceAwsTransferServer() *schema.Resource {
 			},
 
 			"endpoint_type": {
-				Type:     schema.TypeString,
-				Optional: true,
-				Default:  transfer.EndpointTypePublic,
+				Type:         schema.TypeString,
+				Optional:     true,
+				Default:      transfer.EndpointTypePublic,
 				ValidateFunc: validation.StringInSlice(transfer.EndpointType_Values(), false),
 			},
 
@@ -51,7 +51,7 @@ func resourceAwsTransferServer() *schema.Resource {
 						"vpc_endpoint_id": {
 							Type:          schema.TypeString,
 							Optional:      true,
-							ConflictsWith: []string{"endpoint_details.0.address_allocation_ids", "endpoint_details.0.subnet_ids", "endpoint_details.0.vpc_id"},
+							ConflictsWith: []string{"endpoint_details.0.address_allocation_ids", "endpoint_details.0.subnet_ids", "endpoint_details.0.vpc_id", "endpoint_details.0.security_group_ids"},
 							Computed:      true,
 						},
 						"address_allocation_ids": {
@@ -73,6 +73,15 @@ func resourceAwsTransferServer() *schema.Resource {
 							Optional:      true,
 							ValidateFunc:  validation.NoZeroValues,
 							ConflictsWith: []string{"endpoint_details.0.vpc_endpoint_id"},
+						},
+						"security_group_ids": {
+							Type:             schema.TypeSet,
+							Optional:         true,
+							Elem:             &schema.Schema{Type: schema.TypeString},
+							Set:              schema.HashString,
+							ConflictsWith:    []string{"endpoint_details.0.vpc_endpoint_id"},
+							ForceNew:         true,
+							DiffSuppressFunc: func(k, old, new string, d *schema.ResourceData) bool { return true },
 						},
 					},
 				},
@@ -102,10 +111,10 @@ func resourceAwsTransferServer() *schema.Resource {
 			},
 
 			"identity_provider_type": {
-				Type:     schema.TypeString,
-				Optional: true,
-				ForceNew: true,
-				Default:  transfer.IdentityProviderTypeServiceManaged,
+				Type:         schema.TypeString,
+				Optional:     true,
+				ForceNew:     true,
+				Default:      transfer.IdentityProviderTypeServiceManaged,
 				ValidateFunc: validation.StringInSlice(transfer.IdentityProviderType_Values(), false),
 			},
 
@@ -225,9 +234,11 @@ func resourceAwsTransferServerCreate(d *schema.ResourceData, meta interface{}) e
 			return err
 		}
 
+		createOpts.EndpointDetails.SecurityGroupIds = nil
+
 		updateOpts := &transfer.UpdateServerInput{
 			ServerId:        aws.String(d.Id()),
-			EndpointDetails: expandTransferServerEndpointDetails(d.Get("endpoint_details").([]interface{})),
+			EndpointDetails: createOpts.EndpointDetails,
 		}
 
 		// EIPs cannot be assigned directly on server creation, so the server must
@@ -362,6 +373,7 @@ func resourceAwsTransferServerUpdate(d *schema.ResourceData, meta interface{}) e
 		updateFlag = true
 		if attr, ok := d.GetOk("endpoint_details"); ok {
 			updateOpts.EndpointDetails = expandTransferServerEndpointDetails(attr.([]interface{}))
+			updateOpts.EndpointDetails.SecurityGroupIds = nil
 		}
 
 		// Prevent the following error: InvalidRequestException: Server must be OFFLINE to change AddressAllocationIds
@@ -531,6 +543,10 @@ func expandTransferServerEndpointDetails(l []interface{}) *transfer.EndpointDeta
 		out.VpcId = aws.String(v)
 	}
 
+	if v, ok := e["security_group_ids"].(*schema.Set); ok && v.Len() > 0 {
+		out.SecurityGroupIds = expandStringSet(v)
+	}
+
 	return out
 }
 
@@ -551,6 +567,9 @@ func flattenTransferServerEndpointDetails(endpointDetails *transfer.EndpointDeta
 	}
 	if endpointDetails.VpcId != nil {
 		e["vpc_id"] = aws.StringValue(endpointDetails.VpcId)
+	}
+	if endpointDetails.SecurityGroupIds != nil {
+		e["security_group_ids"] = flattenStringSet(endpointDetails.SecurityGroupIds)
 	}
 
 	return []interface{}{e}

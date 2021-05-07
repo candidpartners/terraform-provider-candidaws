@@ -80,7 +80,6 @@ func resourceAwsTransferServer() *schema.Resource {
 							Elem:             &schema.Schema{Type: schema.TypeString},
 							Set:              schema.HashString,
 							ConflictsWith:    []string{"endpoint_details.0.vpc_endpoint_id"},
-							ForceNew:         true,
 							DiffSuppressFunc: func(k, old, new string, d *schema.ResourceData) bool { return d.Id() != "" },
 						},
 					},

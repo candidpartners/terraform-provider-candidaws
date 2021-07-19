@@ -9,7 +9,7 @@ import (
 	"github.com/aws/aws-sdk-go/aws/corehandlers"
 	"github.com/aws/aws-sdk-go/aws/request"
 	"github.com/aws/aws-sdk-go/private/protocol/query"
-	v2 "github.com/aws/aws-sdk-go/private/signer/v2"
+	"github.com/aws/aws-sdk-go/private/signer/v2"
 )
 
 // SimpleDB provides the API operation methods for making requests to

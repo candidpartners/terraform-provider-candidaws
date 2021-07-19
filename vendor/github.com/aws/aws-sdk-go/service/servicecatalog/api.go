@@ -327,6 +327,8 @@ func (c *ServiceCatalog) AssociateProductWithPortfolioRequest(input *AssociatePr
 //
 // Associates the specified product with the specified portfolio.
 //
+// A delegated admin is authorized to invoke this command.
+//
 // Returns awserr.Error for service API and SDK errors. Use runtime type assertions
 // with awserr.Error's Code and Message methods to get detailed information about
 // the error.
@@ -851,6 +853,8 @@ func (c *ServiceCatalog) CreateConstraintRequest(input *CreateConstraintInput) (
 //
 // Creates a constraint.
 //
+// A delegated admin is authorized to invoke this command.
+//
 // Returns awserr.Error for service API and SDK errors. Use runtime type assertions
 // with awserr.Error's Code and Message methods to get detailed information about
 // the error.
@@ -941,6 +945,8 @@ func (c *ServiceCatalog) CreatePortfolioRequest(input *CreatePortfolioInput) (re
 //
 // Creates a portfolio.
 //
+// A delegated admin is authorized to invoke this command.
+//
 // Returns awserr.Error for service API and SDK errors. Use runtime type assertions
 // with awserr.Error's Code and Message methods to get detailed information about
 // the error.
@@ -1029,9 +1035,18 @@ func (c *ServiceCatalog) CreatePortfolioShareRequest(input *CreatePortfolioShare
 // CreatePortfolioShare API operation for AWS Service Catalog.
 //
 // Shares the specified portfolio with the specified account or organization
-// node. Shares to an organization node can only be created by the master account
-// of an Organization. AWSOrganizationsAccess must be enabled in order to create
-// a portfolio share to an organization node.
+// node. Shares to an organization node can only be created by the management
+// account of an organization or by a delegated administrator. You can share
+// portfolios to an organization, an organizational unit, or a specific account.
+//
+// Note that if a delegated admin is de-registered, they can no longer create
+// portfolio shares.
+//
+// AWSOrganizationsAccess must be enabled in order to create a portfolio share
+// to an organization node.
+//
+// You can't share a shared resource. This includes portfolios that contain
+// a shared product.
 //
 // Returns awserr.Error for service API and SDK errors. Use runtime type assertions
 // with awserr.Error's Code and Message methods to get detailed information about
@@ -1127,6 +1142,8 @@ func (c *ServiceCatalog) CreateProductRequest(input *CreateProductInput) (req *r
 // CreateProduct API operation for AWS Service Catalog.
 //
 // Creates a product.
+//
+// A delegated admin is authorized to invoke this command.
 //
 // Returns awserr.Error for service API and SDK errors. Use runtime type assertions
 // with awserr.Error's Code and Message methods to get detailed information about
@@ -1577,6 +1594,8 @@ func (c *ServiceCatalog) DeleteConstraintRequest(input *DeleteConstraintInput) (
 //
 // Deletes the specified constraint.
 //
+// A delegated admin is authorized to invoke this command.
+//
 // Returns awserr.Error for service API and SDK errors. Use runtime type assertions
 // with awserr.Error's Code and Message methods to get detailed information about
 // the error.
@@ -1662,6 +1681,8 @@ func (c *ServiceCatalog) DeletePortfolioRequest(input *DeletePortfolioInput) (re
 //
 // You cannot delete a portfolio if it was shared with you or if it has associated
 // products, users, constraints, or shared accounts.
+//
+// A delegated admin is authorized to invoke this command.
 //
 // Returns awserr.Error for service API and SDK errors. Use runtime type assertions
 // with awserr.Error's Code and Message methods to get detailed information about
@@ -1753,8 +1774,11 @@ func (c *ServiceCatalog) DeletePortfolioShareRequest(input *DeletePortfolioShare
 // DeletePortfolioShare API operation for AWS Service Catalog.
 //
 // Stops sharing the specified portfolio with the specified account or organization
-// node. Shares to an organization node can only be deleted by the master account
-// of an Organization.
+// node. Shares to an organization node can only be deleted by the management
+// account of an organization or by a delegated administrator.
+//
+// Note that if a delegated admin is de-registered, portfolio shares created
+// from that account are removed.
 //
 // Returns awserr.Error for service API and SDK errors. Use runtime type assertions
 // with awserr.Error's Code and Message methods to get detailed information about
@@ -1849,6 +1873,8 @@ func (c *ServiceCatalog) DeleteProductRequest(input *DeleteProductInput) (req *r
 //
 // You cannot delete a product if it was shared with you or is associated with
 // a portfolio.
+//
+// A delegated admin is authorized to invoke this command.
 //
 // Returns awserr.Error for service API and SDK errors. Use runtime type assertions
 // with awserr.Error's Code and Message methods to get detailed information about
@@ -2449,6 +2475,8 @@ func (c *ServiceCatalog) DescribePortfolioRequest(input *DescribePortfolioInput)
 //
 // Gets information about the specified portfolio.
 //
+// A delegated admin is authorized to invoke this command.
+//
 // Returns awserr.Error for service API and SDK errors. Use runtime type assertions
 // with awserr.Error's Code and Message methods to get detailed information about
 // the error.
@@ -2527,7 +2555,8 @@ func (c *ServiceCatalog) DescribePortfolioShareStatusRequest(input *DescribePort
 // DescribePortfolioShareStatus API operation for AWS Service Catalog.
 //
 // Gets the status of the specified portfolio share operation. This API can
-// only be called by the master account in the organization.
+// only be called by the management account in the organization or by a delegated
+// admin.
 //
 // Returns awserr.Error for service API and SDK errors. Use runtime type assertions
 // with awserr.Error's Code and Message methods to get detailed information about
@@ -2708,6 +2737,9 @@ func (c *ServiceCatalog) DescribeProductAsAdminRequest(input *DescribeProductAsA
 //   * ResourceNotFoundException
 //   The specified resource was not found.
 //
+//   * InvalidParametersException
+//   One or more parameters provided to the operation are not valid.
+//
 // See also, https://docs.aws.amazon.com/goto/WebAPI/servicecatalog-2015-12-10/DescribeProductAsAdmin
 func (c *ServiceCatalog) DescribeProductAsAdmin(input *DescribeProductAsAdminInput) (*DescribeProductAsAdminOutput, error) {
 	req, out := c.DescribeProductAsAdminRequest(input)
@@ -2868,6 +2900,9 @@ func (c *ServiceCatalog) DescribeProvisionedProductRequest(input *DescribeProvis
 // Returned Error Types:
 //   * ResourceNotFoundException
 //   The specified resource was not found.
+//
+//   * InvalidParametersException
+//   One or more parameters provided to the operation are not valid.
 //
 // See also, https://docs.aws.amazon.com/goto/WebAPI/servicecatalog-2015-12-10/DescribeProvisionedProduct
 func (c *ServiceCatalog) DescribeProvisionedProduct(input *DescribeProvisionedProductInput) (*DescribeProvisionedProductOutput, error) {
@@ -3030,6 +3065,9 @@ func (c *ServiceCatalog) DescribeProvisioningArtifactRequest(input *DescribeProv
 // Returned Error Types:
 //   * ResourceNotFoundException
 //   The specified resource was not found.
+//
+//   * InvalidParametersException
+//   One or more parameters provided to the operation are not valid.
 //
 // See also, https://docs.aws.amazon.com/goto/WebAPI/servicecatalog-2015-12-10/DescribeProvisioningArtifact
 func (c *ServiceCatalog) DescribeProvisioningArtifact(input *DescribeProvisioningArtifactInput) (*DescribeProvisioningArtifactOutput, error) {
@@ -3526,7 +3564,12 @@ func (c *ServiceCatalog) DisableAWSOrganizationsAccessRequest(input *DisableAWSO
 // will not delete your current shares but it will prevent you from creating
 // new shares throughout your organization. Current shares will not be in sync
 // with your organization structure if it changes after calling this API. This
-// API can only be called by the master account in the organization.
+// API can only be called by the management account in the organization.
+//
+// This API can't be invoked if there are active delegated administrators in
+// the organization.
+//
+// Note that a delegated administrator is not authorized to invoke DisableAWSOrganizationsAccess.
 //
 // Returns awserr.Error for service API and SDK errors. Use runtime type assertions
 // with awserr.Error's Code and Message methods to get detailed information about
@@ -3778,6 +3821,8 @@ func (c *ServiceCatalog) DisassociateProductFromPortfolioRequest(input *Disassoc
 // DisassociateProductFromPortfolio API operation for AWS Service Catalog.
 //
 // Disassociates the specified product from the specified portfolio.
+//
+// A delegated admin is authorized to invoke this command.
 //
 // Returns awserr.Error for service API and SDK errors. Use runtime type assertions
 // with awserr.Error's Code and Message methods to get detailed information about
@@ -4033,11 +4078,13 @@ func (c *ServiceCatalog) EnableAWSOrganizationsAccessRequest(input *EnableAWSOrg
 // Enable portfolio sharing feature through AWS Organizations. This API will
 // allow Service Catalog to receive updates on your organization in order to
 // sync your shares with the current structure. This API can only be called
-// by the master account in the organization.
+// by the management account in the organization.
 //
 // By calling this API Service Catalog will make a call to organizations:EnableAWSServiceAccess
 // on your behalf so that your shares can be in sync with any changes in your
 // AWS Organizations structure.
+//
+// Note that a delegated administrator is not authorized to invoke EnableAWSOrganizationsAccess.
 //
 // Returns awserr.Error for service API and SDK errors. Use runtime type assertions
 // with awserr.Error's Code and Message methods to get detailed information about
@@ -4300,7 +4347,8 @@ func (c *ServiceCatalog) GetAWSOrganizationsAccessStatusRequest(input *GetAWSOrg
 // GetAWSOrganizationsAccessStatus API operation for AWS Service Catalog.
 //
 // Get the Access Status for AWS Organization portfolio share feature. This
-// API can only be called by the master account in the organization.
+// API can only be called by the management account in the organization or by
+// a delegated admin.
 //
 // Returns awserr.Error for service API and SDK errors. Use runtime type assertions
 // with awserr.Error's Code and Message methods to get detailed information about
@@ -4336,6 +4384,148 @@ func (c *ServiceCatalog) GetAWSOrganizationsAccessStatusWithContext(ctx aws.Cont
 	req.SetContext(ctx)
 	req.ApplyOptions(opts...)
 	return out, req.Send()
+}
+
+const opGetProvisionedProductOutputs = "GetProvisionedProductOutputs"
+
+// GetProvisionedProductOutputsRequest generates a "aws/request.Request" representing the
+// client's request for the GetProvisionedProductOutputs operation. The "output" return
+// value will be populated with the request's response once the request completes
+// successfully.
+//
+// Use "Send" method on the returned Request to send the API call to the service.
+// the "output" return value is not valid until after Send returns without error.
+//
+// See GetProvisionedProductOutputs for more information on using the GetProvisionedProductOutputs
+// API call, and error handling.
+//
+// This method is useful when you want to inject custom logic or configuration
+// into the SDK's request lifecycle. Such as custom headers, or retry logic.
+//
+//
+//    // Example sending a request using the GetProvisionedProductOutputsRequest method.
+//    req, resp := client.GetProvisionedProductOutputsRequest(params)
+//
+//    err := req.Send()
+//    if err == nil { // resp is now filled
+//        fmt.Println(resp)
+//    }
+//
+// See also, https://docs.aws.amazon.com/goto/WebAPI/servicecatalog-2015-12-10/GetProvisionedProductOutputs
+func (c *ServiceCatalog) GetProvisionedProductOutputsRequest(input *GetProvisionedProductOutputsInput) (req *request.Request, output *GetProvisionedProductOutputsOutput) {
+	op := &request.Operation{
+		Name:       opGetProvisionedProductOutputs,
+		HTTPMethod: "POST",
+		HTTPPath:   "/",
+		Paginator: &request.Paginator{
+			InputTokens:     []string{"PageToken"},
+			OutputTokens:    []string{"NextPageToken"},
+			LimitToken:      "PageSize",
+			TruncationToken: "",
+		},
+	}
+
+	if input == nil {
+		input = &GetProvisionedProductOutputsInput{}
+	}
+
+	output = &GetProvisionedProductOutputsOutput{}
+	req = c.newRequest(op, input, output)
+	return
+}
+
+// GetProvisionedProductOutputs API operation for AWS Service Catalog.
+//
+// This API takes either a ProvisonedProductId or a ProvisionedProductName,
+// along with a list of one or more output keys, and responds with the key/value
+// pairs of those outputs.
+//
+// Returns awserr.Error for service API and SDK errors. Use runtime type assertions
+// with awserr.Error's Code and Message methods to get detailed information about
+// the error.
+//
+// See the AWS API reference guide for AWS Service Catalog's
+// API operation GetProvisionedProductOutputs for usage and error information.
+//
+// Returned Error Types:
+//   * InvalidParametersException
+//   One or more parameters provided to the operation are not valid.
+//
+//   * ResourceNotFoundException
+//   The specified resource was not found.
+//
+// See also, https://docs.aws.amazon.com/goto/WebAPI/servicecatalog-2015-12-10/GetProvisionedProductOutputs
+func (c *ServiceCatalog) GetProvisionedProductOutputs(input *GetProvisionedProductOutputsInput) (*GetProvisionedProductOutputsOutput, error) {
+	req, out := c.GetProvisionedProductOutputsRequest(input)
+	return out, req.Send()
+}
+
+// GetProvisionedProductOutputsWithContext is the same as GetProvisionedProductOutputs with the addition of
+// the ability to pass a context and additional request options.
+//
+// See GetProvisionedProductOutputs for details on how to use this API operation.
+//
+// The context must be non-nil and will be used for request cancellation. If
+// the context is nil a panic will occur. In the future the SDK may create
+// sub-contexts for http.Requests. See https://golang.org/pkg/context/
+// for more information on using Contexts.
+func (c *ServiceCatalog) GetProvisionedProductOutputsWithContext(ctx aws.Context, input *GetProvisionedProductOutputsInput, opts ...request.Option) (*GetProvisionedProductOutputsOutput, error) {
+	req, out := c.GetProvisionedProductOutputsRequest(input)
+	req.SetContext(ctx)
+	req.ApplyOptions(opts...)
+	return out, req.Send()
+}
+
+// GetProvisionedProductOutputsPages iterates over the pages of a GetProvisionedProductOutputs operation,
+// calling the "fn" function with the response data for each page. To stop
+// iterating, return false from the fn function.
+//
+// See GetProvisionedProductOutputs method for more information on how to use this operation.
+//
+// Note: This operation can generate multiple requests to a service.
+//
+//    // Example iterating over at most 3 pages of a GetProvisionedProductOutputs operation.
+//    pageNum := 0
+//    err := client.GetProvisionedProductOutputsPages(params,
+//        func(page *servicecatalog.GetProvisionedProductOutputsOutput, lastPage bool) bool {
+//            pageNum++
+//            fmt.Println(page)
+//            return pageNum <= 3
+//        })
+//
+func (c *ServiceCatalog) GetProvisionedProductOutputsPages(input *GetProvisionedProductOutputsInput, fn func(*GetProvisionedProductOutputsOutput, bool) bool) error {
+	return c.GetProvisionedProductOutputsPagesWithContext(aws.BackgroundContext(), input, fn)
+}
+
+// GetProvisionedProductOutputsPagesWithContext same as GetProvisionedProductOutputsPages except
+// it takes a Context and allows setting request options on the pages.
+//
+// The context must be non-nil and will be used for request cancellation. If
+// the context is nil a panic will occur. In the future the SDK may create
+// sub-contexts for http.Requests. See https://golang.org/pkg/context/
+// for more information on using Contexts.
+func (c *ServiceCatalog) GetProvisionedProductOutputsPagesWithContext(ctx aws.Context, input *GetProvisionedProductOutputsInput, fn func(*GetProvisionedProductOutputsOutput, bool) bool, opts ...request.Option) error {
+	p := request.Pagination{
+		NewRequest: func() (*request.Request, error) {
+			var inCpy *GetProvisionedProductOutputsInput
+			if input != nil {
+				tmp := *input
+				inCpy = &tmp
+			}
+			req, _ := c.GetProvisionedProductOutputsRequest(inCpy)
+			req.SetContext(ctx)
+			req.ApplyOptions(opts...)
+			return req, nil
+		},
+	}
+
+	for p.Next() {
+		if !fn(p.Page().(*GetProvisionedProductOutputsOutput), !p.HasNextPage()) {
+			break
+		}
+	}
+
+	return p.Err()
 }
 
 const opListAcceptedPortfolioShares = "ListAcceptedPortfolioShares"
@@ -4951,7 +5141,10 @@ func (c *ServiceCatalog) ListOrganizationPortfolioAccessRequest(input *ListOrgan
 // ListOrganizationPortfolioAccess API operation for AWS Service Catalog.
 //
 // Lists the organization nodes that have access to the specified portfolio.
-// This API can only be called by the master account in the organization.
+// This API can only be called by the management account in the organization
+// or by a delegated admin.
+//
+// If a delegated admin is de-registered, they can no longer perform this operation.
 //
 // Returns awserr.Error for service API and SDK errors. Use runtime type assertions
 // with awserr.Error's Code and Message methods to get detailed information about
@@ -5095,6 +5288,10 @@ func (c *ServiceCatalog) ListPortfolioAccessRequest(input *ListPortfolioAccessIn
 // ListPortfolioAccess API operation for AWS Service Catalog.
 //
 // Lists the account IDs that have access to the specified portfolio.
+//
+// A delegated admin can list the accounts that have access to the shared portfolio.
+// Note that if a delegated admin is de-registered, they can no longer perform
+// this operation.
 //
 // Returns awserr.Error for service API and SDK errors. Use runtime type assertions
 // with awserr.Error's Code and Message methods to get detailed information about
@@ -8107,8 +8304,8 @@ type AcceptPortfolioShareInput struct {
 	// The type of shared portfolios to accept. The default is to accept imported
 	// portfolios.
 	//
-	//    * AWS_ORGANIZATIONS - Accept portfolios shared by the master account of
-	//    your organization.
+	//    * AWS_ORGANIZATIONS - Accept portfolios shared by the management account
+	//    of your organization.
 	//
 	//    * IMPORTED - Accept imported portfolios.
 	//
@@ -8904,6 +9101,14 @@ type ConstraintDetail struct {
 	// The owner of the constraint.
 	Owner *string `type:"string"`
 
+	// The identifier of the portfolio the product resides in. The constraint applies
+	// only to the instance of the product that lives within this portfolio.
+	PortfolioId *string `min:"1" type:"string"`
+
+	// The identifier of the product the constraint applies to. Note that a constraint
+	// applies to a specific instance of a product within a certain portfolio.
+	ProductId *string `min:"1" type:"string"`
+
 	// The type of constraint.
 	//
 	//    * LAUNCH
@@ -8941,6 +9146,18 @@ func (s *ConstraintDetail) SetDescription(v string) *ConstraintDetail {
 // SetOwner sets the Owner field's value.
 func (s *ConstraintDetail) SetOwner(v string) *ConstraintDetail {
 	s.Owner = &v
+	return s
+}
+
+// SetPortfolioId sets the PortfolioId field's value.
+func (s *ConstraintDetail) SetPortfolioId(v string) *ConstraintDetail {
+	s.PortfolioId = &v
+	return s
+}
+
+// SetProductId sets the ProductId field's value.
+func (s *ConstraintDetail) SetProductId(v string) *ConstraintDetail {
+	s.ProductId = &v
 	return s
 }
 
@@ -9150,9 +9367,24 @@ type CreateConstraintInput struct {
 	//
 	// LAUNCH
 	//
+	// You are required to specify either the RoleArn or the LocalRoleName but can't
+	// use both.
+	//
 	// Specify the RoleArn property as follows:
 	//
 	// {"RoleArn" : "arn:aws:iam::123456789012:role/LaunchRole"}
+	//
+	// Specify the LocalRoleName property as follows:
+	//
+	// {"LocalRoleName": "SCBasicLaunchRole"}
+	//
+	// If you specify the LocalRoleName property, when an account uses the launch
+	// constraint, the IAM role with that name in the account will be used. This
+	// allows launch-role constraints to be account-agnostic so the administrator
+	// can create fewer resources per shared account.
+	//
+	// The given role name must exist in the account used to create the launch constraint
+	// and the account of the user who launches a product with this launch constraint.
 	//
 	// You cannot have both a LAUNCH and a STACKSET constraint.
 	//
@@ -9511,9 +9743,9 @@ type CreatePortfolioShareInput struct {
 	AccountId *string `type:"string"`
 
 	// The organization node to whom you are going to share. If OrganizationNode
-	// is passed in, PortfolioShare will be created for the node and its children
-	// (when applies), and a PortfolioShareToken will be returned in the output
-	// in order for the administrator to monitor the status of the PortfolioShare
+	// is passed in, PortfolioShare will be created for the node an ListOrganizationPortfolioAccessd
+	// its children (when applies), and a PortfolioShareToken will be returned in
+	// the output in order for the administrator to monitor the status of the PortfolioShare
 	// creation process.
 	OrganizationNode *OrganizationNode `type:"structure"`
 
@@ -9576,7 +9808,7 @@ func (s *CreatePortfolioShareInput) SetPortfolioId(v string) *CreatePortfolioSha
 type CreatePortfolioShareOutput struct {
 	_ struct{} `type:"structure"`
 
-	// The portfolio share unique identifier. This will only be returned if portfolio
+	// The portfolio shares a unique identifier that only returns if the portfolio
 	// is shared to an organization node.
 	PortfolioShareToken *string `min:"1" type:"string"`
 }
@@ -10221,7 +10453,11 @@ type CreateServiceActionInput struct {
 	//
 	// Name
 	//
-	// The name of the AWS Systems Manager Document. For example, AWS-RestartEC2Instance.
+	// The name of the AWS Systems Manager document (SSM document). For example,
+	// AWS-RestartEC2Instance.
+	//
+	// If you are using a shared SSM document, you must provide the ARN instead
+	// of the name.
 	//
 	// Version
 	//
@@ -11456,9 +11692,10 @@ type DescribeProductAsAdminInput struct {
 	AcceptLanguage *string `type:"string"`
 
 	// The product identifier.
-	//
-	// Id is a required field
-	Id *string `min:"1" type:"string" required:"true"`
+	Id *string `min:"1" type:"string"`
+
+	// The product name.
+	Name *string `type:"string"`
 }
 
 // String returns the string representation
@@ -11474,9 +11711,6 @@ func (s DescribeProductAsAdminInput) GoString() string {
 // Validate inspects the fields of the type to determine if they are valid.
 func (s *DescribeProductAsAdminInput) Validate() error {
 	invalidParams := request.ErrInvalidParams{Context: "DescribeProductAsAdminInput"}
-	if s.Id == nil {
-		invalidParams.Add(request.NewErrParamRequired("Id"))
-	}
 	if s.Id != nil && len(*s.Id) < 1 {
 		invalidParams.Add(request.NewErrParamMinLen("Id", 1))
 	}
@@ -11496,6 +11730,12 @@ func (s *DescribeProductAsAdminInput) SetAcceptLanguage(v string) *DescribeProdu
 // SetId sets the Id field's value.
 func (s *DescribeProductAsAdminInput) SetId(v string) *DescribeProductAsAdminInput {
 	s.Id = &v
+	return s
+}
+
+// SetName sets the Name field's value.
+func (s *DescribeProductAsAdminInput) SetName(v string) *DescribeProductAsAdminInput {
+	s.Name = &v
 	return s
 }
 
@@ -11572,9 +11812,10 @@ type DescribeProductInput struct {
 	AcceptLanguage *string `type:"string"`
 
 	// The product identifier.
-	//
-	// Id is a required field
-	Id *string `min:"1" type:"string" required:"true"`
+	Id *string `min:"1" type:"string"`
+
+	// The product name.
+	Name *string `type:"string"`
 }
 
 // String returns the string representation
@@ -11590,9 +11831,6 @@ func (s DescribeProductInput) GoString() string {
 // Validate inspects the fields of the type to determine if they are valid.
 func (s *DescribeProductInput) Validate() error {
 	invalidParams := request.ErrInvalidParams{Context: "DescribeProductInput"}
-	if s.Id == nil {
-		invalidParams.Add(request.NewErrParamRequired("Id"))
-	}
 	if s.Id != nil && len(*s.Id) < 1 {
 		invalidParams.Add(request.NewErrParamMinLen("Id", 1))
 	}
@@ -11615,11 +11853,20 @@ func (s *DescribeProductInput) SetId(v string) *DescribeProductInput {
 	return s
 }
 
+// SetName sets the Name field's value.
+func (s *DescribeProductInput) SetName(v string) *DescribeProductInput {
+	s.Name = &v
+	return s
+}
+
 type DescribeProductOutput struct {
 	_ struct{} `type:"structure"`
 
 	// Information about the associated budgets.
 	Budgets []*BudgetDetail `type:"list"`
+
+	// Information about the associated launch paths.
+	LaunchPaths []*LaunchPath `type:"list"`
 
 	// Summary information about the product view.
 	ProductViewSummary *ProductViewSummary `type:"structure"`
@@ -11641,6 +11888,12 @@ func (s DescribeProductOutput) GoString() string {
 // SetBudgets sets the Budgets field's value.
 func (s *DescribeProductOutput) SetBudgets(v []*BudgetDetail) *DescribeProductOutput {
 	s.Budgets = v
+	return s
+}
+
+// SetLaunchPaths sets the LaunchPaths field's value.
+func (s *DescribeProductOutput) SetLaunchPaths(v []*LaunchPath) *DescribeProductOutput {
+	s.LaunchPaths = v
 	return s
 }
 
@@ -11744,6 +11997,10 @@ func (s *DescribeProductViewOutput) SetProvisioningArtifacts(v []*ProvisioningAr
 	return s
 }
 
+// DescribeProvisionedProductAPI input structure. AcceptLanguage - [Optional]
+// The language code for localization. Id - [Optional] The provisioned product
+// identifier. Name - [Optional] Another provisioned product identifier. Customers
+// must provide either Id or Name.
 type DescribeProvisionedProductInput struct {
 	_ struct{} `type:"structure"`
 
@@ -11757,9 +12014,10 @@ type DescribeProvisionedProductInput struct {
 	AcceptLanguage *string `type:"string"`
 
 	// The provisioned product identifier.
-	//
-	// Id is a required field
-	Id *string `min:"1" type:"string" required:"true"`
+	Id *string `min:"1" type:"string"`
+
+	// The name of the provisioned product.
+	Name *string `min:"1" type:"string"`
 }
 
 // String returns the string representation
@@ -11775,11 +12033,11 @@ func (s DescribeProvisionedProductInput) GoString() string {
 // Validate inspects the fields of the type to determine if they are valid.
 func (s *DescribeProvisionedProductInput) Validate() error {
 	invalidParams := request.ErrInvalidParams{Context: "DescribeProvisionedProductInput"}
-	if s.Id == nil {
-		invalidParams.Add(request.NewErrParamRequired("Id"))
-	}
 	if s.Id != nil && len(*s.Id) < 1 {
 		invalidParams.Add(request.NewErrParamMinLen("Id", 1))
+	}
+	if s.Name != nil && len(*s.Name) < 1 {
+		invalidParams.Add(request.NewErrParamMinLen("Name", 1))
 	}
 
 	if invalidParams.Len() > 0 {
@@ -11797,6 +12055,12 @@ func (s *DescribeProvisionedProductInput) SetAcceptLanguage(v string) *DescribeP
 // SetId sets the Id field's value.
 func (s *DescribeProvisionedProductInput) SetId(v string) *DescribeProvisionedProductInput {
 	s.Id = &v
+	return s
+}
+
+// SetName sets the Name field's value.
+func (s *DescribeProvisionedProductInput) SetName(v string) *DescribeProvisionedProductInput {
+	s.Name = &v
 	return s
 }
 
@@ -11962,14 +12226,16 @@ type DescribeProvisioningArtifactInput struct {
 	AcceptLanguage *string `type:"string"`
 
 	// The product identifier.
-	//
-	// ProductId is a required field
-	ProductId *string `min:"1" type:"string" required:"true"`
+	ProductId *string `min:"1" type:"string"`
+
+	// The product name.
+	ProductName *string `type:"string"`
 
 	// The identifier of the provisioning artifact.
-	//
-	// ProvisioningArtifactId is a required field
-	ProvisioningArtifactId *string `min:"1" type:"string" required:"true"`
+	ProvisioningArtifactId *string `min:"1" type:"string"`
+
+	// The provisioning artifact name.
+	ProvisioningArtifactName *string `type:"string"`
 
 	// Indicates whether a verbose level of detail is enabled.
 	Verbose *bool `type:"boolean"`
@@ -11988,14 +12254,8 @@ func (s DescribeProvisioningArtifactInput) GoString() string {
 // Validate inspects the fields of the type to determine if they are valid.
 func (s *DescribeProvisioningArtifactInput) Validate() error {
 	invalidParams := request.ErrInvalidParams{Context: "DescribeProvisioningArtifactInput"}
-	if s.ProductId == nil {
-		invalidParams.Add(request.NewErrParamRequired("ProductId"))
-	}
 	if s.ProductId != nil && len(*s.ProductId) < 1 {
 		invalidParams.Add(request.NewErrParamMinLen("ProductId", 1))
-	}
-	if s.ProvisioningArtifactId == nil {
-		invalidParams.Add(request.NewErrParamRequired("ProvisioningArtifactId"))
 	}
 	if s.ProvisioningArtifactId != nil && len(*s.ProvisioningArtifactId) < 1 {
 		invalidParams.Add(request.NewErrParamMinLen("ProvisioningArtifactId", 1))
@@ -12019,9 +12279,21 @@ func (s *DescribeProvisioningArtifactInput) SetProductId(v string) *DescribeProv
 	return s
 }
 
+// SetProductName sets the ProductName field's value.
+func (s *DescribeProvisioningArtifactInput) SetProductName(v string) *DescribeProvisioningArtifactInput {
+	s.ProductName = &v
+	return s
+}
+
 // SetProvisioningArtifactId sets the ProvisioningArtifactId field's value.
 func (s *DescribeProvisioningArtifactInput) SetProvisioningArtifactId(v string) *DescribeProvisioningArtifactInput {
 	s.ProvisioningArtifactId = &v
+	return s
+}
+
+// SetProvisioningArtifactName sets the ProvisioningArtifactName field's value.
+func (s *DescribeProvisioningArtifactInput) SetProvisioningArtifactName(v string) *DescribeProvisioningArtifactInput {
+	s.ProvisioningArtifactName = &v
 	return s
 }
 
@@ -12086,18 +12358,27 @@ type DescribeProvisioningParametersInput struct {
 
 	// The path identifier of the product. This value is optional if the product
 	// has a default path, and required if the product has more than one path. To
-	// list the paths for a product, use ListLaunchPaths.
+	// list the paths for a product, use ListLaunchPaths. You must provide the name
+	// or ID, but not both.
 	PathId *string `min:"1" type:"string"`
 
-	// The product identifier.
-	//
-	// ProductId is a required field
-	ProductId *string `min:"1" type:"string" required:"true"`
+	// The name of the path. You must provide the name or ID, but not both.
+	PathName *string `min:"1" type:"string"`
 
-	// The identifier of the provisioning artifact.
-	//
-	// ProvisioningArtifactId is a required field
-	ProvisioningArtifactId *string `min:"1" type:"string" required:"true"`
+	// The product identifier. You must provide the product name or ID, but not
+	// both.
+	ProductId *string `min:"1" type:"string"`
+
+	// The name of the product. You must provide the name or ID, but not both.
+	ProductName *string `type:"string"`
+
+	// The identifier of the provisioning artifact. You must provide the name or
+	// ID, but not both.
+	ProvisioningArtifactId *string `min:"1" type:"string"`
+
+	// The name of the provisioning artifact. You must provide the name or ID, but
+	// not both.
+	ProvisioningArtifactName *string `type:"string"`
 }
 
 // String returns the string representation
@@ -12116,14 +12397,11 @@ func (s *DescribeProvisioningParametersInput) Validate() error {
 	if s.PathId != nil && len(*s.PathId) < 1 {
 		invalidParams.Add(request.NewErrParamMinLen("PathId", 1))
 	}
-	if s.ProductId == nil {
-		invalidParams.Add(request.NewErrParamRequired("ProductId"))
+	if s.PathName != nil && len(*s.PathName) < 1 {
+		invalidParams.Add(request.NewErrParamMinLen("PathName", 1))
 	}
 	if s.ProductId != nil && len(*s.ProductId) < 1 {
 		invalidParams.Add(request.NewErrParamMinLen("ProductId", 1))
-	}
-	if s.ProvisioningArtifactId == nil {
-		invalidParams.Add(request.NewErrParamRequired("ProvisioningArtifactId"))
 	}
 	if s.ProvisioningArtifactId != nil && len(*s.ProvisioningArtifactId) < 1 {
 		invalidParams.Add(request.NewErrParamMinLen("ProvisioningArtifactId", 1))
@@ -12147,9 +12425,21 @@ func (s *DescribeProvisioningParametersInput) SetPathId(v string) *DescribeProvi
 	return s
 }
 
+// SetPathName sets the PathName field's value.
+func (s *DescribeProvisioningParametersInput) SetPathName(v string) *DescribeProvisioningParametersInput {
+	s.PathName = &v
+	return s
+}
+
 // SetProductId sets the ProductId field's value.
 func (s *DescribeProvisioningParametersInput) SetProductId(v string) *DescribeProvisioningParametersInput {
 	s.ProductId = &v
+	return s
+}
+
+// SetProductName sets the ProductName field's value.
+func (s *DescribeProvisioningParametersInput) SetProductName(v string) *DescribeProvisioningParametersInput {
+	s.ProductName = &v
 	return s
 }
 
@@ -12159,11 +12449,20 @@ func (s *DescribeProvisioningParametersInput) SetProvisioningArtifactId(v string
 	return s
 }
 
+// SetProvisioningArtifactName sets the ProvisioningArtifactName field's value.
+func (s *DescribeProvisioningParametersInput) SetProvisioningArtifactName(v string) *DescribeProvisioningParametersInput {
+	s.ProvisioningArtifactName = &v
+	return s
+}
+
 type DescribeProvisioningParametersOutput struct {
 	_ struct{} `type:"structure"`
 
 	// Information about the constraints used to provision the product.
 	ConstraintSummaries []*ConstraintSummary `type:"list"`
+
+	// The output of the provisioning artifact.
+	ProvisioningArtifactOutputs []*ProvisioningArtifactOutput `type:"list"`
 
 	// Information about the parameters used to provision the product.
 	ProvisioningArtifactParameters []*ProvisioningArtifactParameter `type:"list"`
@@ -12193,6 +12492,12 @@ func (s DescribeProvisioningParametersOutput) GoString() string {
 // SetConstraintSummaries sets the ConstraintSummaries field's value.
 func (s *DescribeProvisioningParametersOutput) SetConstraintSummaries(v []*ConstraintSummary) *DescribeProvisioningParametersOutput {
 	s.ConstraintSummaries = v
+	return s
+}
+
+// SetProvisioningArtifactOutputs sets the ProvisioningArtifactOutputs field's value.
+func (s *DescribeProvisioningParametersOutput) SetProvisioningArtifactOutputs(v []*ProvisioningArtifactOutput) *DescribeProvisioningParametersOutput {
+	s.ProvisioningArtifactOutputs = v
 	return s
 }
 
@@ -13029,8 +13334,8 @@ func (s DisassociateTagOptionFromResourceOutput) GoString() string {
 
 // The specified resource is a duplicate.
 type DuplicateResourceException struct {
-	_            struct{} `type:"structure"`
-	respMetadata protocol.ResponseMetadata
+	_            struct{}                  `type:"structure"`
+	RespMetadata protocol.ResponseMetadata `json:"-" xml:"-"`
 
 	Message_ *string `locationName:"message" type:"string"`
 }
@@ -13047,17 +13352,17 @@ func (s DuplicateResourceException) GoString() string {
 
 func newErrorDuplicateResourceException(v protocol.ResponseMetadata) error {
 	return &DuplicateResourceException{
-		respMetadata: v,
+		RespMetadata: v,
 	}
 }
 
 // Code returns the exception type name.
-func (s DuplicateResourceException) Code() string {
+func (s *DuplicateResourceException) Code() string {
 	return "DuplicateResourceException"
 }
 
 // Message returns the exception's message.
-func (s DuplicateResourceException) Message() string {
+func (s *DuplicateResourceException) Message() string {
 	if s.Message_ != nil {
 		return *s.Message_
 	}
@@ -13065,22 +13370,22 @@ func (s DuplicateResourceException) Message() string {
 }
 
 // OrigErr always returns nil, satisfies awserr.Error interface.
-func (s DuplicateResourceException) OrigErr() error {
+func (s *DuplicateResourceException) OrigErr() error {
 	return nil
 }
 
-func (s DuplicateResourceException) Error() string {
+func (s *DuplicateResourceException) Error() string {
 	return fmt.Sprintf("%s: %s", s.Code(), s.Message())
 }
 
 // Status code returns the HTTP status code for the request's response error.
-func (s DuplicateResourceException) StatusCode() int {
-	return s.respMetadata.StatusCode
+func (s *DuplicateResourceException) StatusCode() int {
+	return s.RespMetadata.StatusCode
 }
 
 // RequestID returns the service's response RequestID for request.
-func (s DuplicateResourceException) RequestID() string {
-	return s.respMetadata.RequestID
+func (s *DuplicateResourceException) RequestID() string {
+	return s.RespMetadata.RequestID
 }
 
 type EnableAWSOrganizationsAccessInput struct {
@@ -13470,10 +13775,137 @@ func (s *GetAWSOrganizationsAccessStatusOutput) SetAccessStatus(v string) *GetAW
 	return s
 }
 
+type GetProvisionedProductOutputsInput struct {
+	_ struct{} `type:"structure"`
+
+	// The language code.
+	//
+	//    * en - English (default)
+	//
+	//    * jp - Japanese
+	//
+	//    * zh - Chinese
+	AcceptLanguage *string `type:"string"`
+
+	// The list of keys that the API should return with their values. If none are
+	// provided, the API will return all outputs of the provisioned product.
+	OutputKeys []*string `type:"list"`
+
+	// The maximum number of items to return with this call.
+	PageSize *int64 `type:"integer"`
+
+	// The page token for the next set of results. To retrieve the first set of
+	// results, use null.
+	PageToken *string `type:"string"`
+
+	// The identifier of the provisioned product that you want the outputs from.
+	ProvisionedProductId *string `min:"1" type:"string"`
+
+	// The name of the provisioned product that you want the outputs from.
+	ProvisionedProductName *string `min:"1" type:"string"`
+}
+
+// String returns the string representation
+func (s GetProvisionedProductOutputsInput) String() string {
+	return awsutil.Prettify(s)
+}
+
+// GoString returns the string representation
+func (s GetProvisionedProductOutputsInput) GoString() string {
+	return s.String()
+}
+
+// Validate inspects the fields of the type to determine if they are valid.
+func (s *GetProvisionedProductOutputsInput) Validate() error {
+	invalidParams := request.ErrInvalidParams{Context: "GetProvisionedProductOutputsInput"}
+	if s.ProvisionedProductId != nil && len(*s.ProvisionedProductId) < 1 {
+		invalidParams.Add(request.NewErrParamMinLen("ProvisionedProductId", 1))
+	}
+	if s.ProvisionedProductName != nil && len(*s.ProvisionedProductName) < 1 {
+		invalidParams.Add(request.NewErrParamMinLen("ProvisionedProductName", 1))
+	}
+
+	if invalidParams.Len() > 0 {
+		return invalidParams
+	}
+	return nil
+}
+
+// SetAcceptLanguage sets the AcceptLanguage field's value.
+func (s *GetProvisionedProductOutputsInput) SetAcceptLanguage(v string) *GetProvisionedProductOutputsInput {
+	s.AcceptLanguage = &v
+	return s
+}
+
+// SetOutputKeys sets the OutputKeys field's value.
+func (s *GetProvisionedProductOutputsInput) SetOutputKeys(v []*string) *GetProvisionedProductOutputsInput {
+	s.OutputKeys = v
+	return s
+}
+
+// SetPageSize sets the PageSize field's value.
+func (s *GetProvisionedProductOutputsInput) SetPageSize(v int64) *GetProvisionedProductOutputsInput {
+	s.PageSize = &v
+	return s
+}
+
+// SetPageToken sets the PageToken field's value.
+func (s *GetProvisionedProductOutputsInput) SetPageToken(v string) *GetProvisionedProductOutputsInput {
+	s.PageToken = &v
+	return s
+}
+
+// SetProvisionedProductId sets the ProvisionedProductId field's value.
+func (s *GetProvisionedProductOutputsInput) SetProvisionedProductId(v string) *GetProvisionedProductOutputsInput {
+	s.ProvisionedProductId = &v
+	return s
+}
+
+// SetProvisionedProductName sets the ProvisionedProductName field's value.
+func (s *GetProvisionedProductOutputsInput) SetProvisionedProductName(v string) *GetProvisionedProductOutputsInput {
+	s.ProvisionedProductName = &v
+	return s
+}
+
+type GetProvisionedProductOutputsOutput struct {
+	_ struct{} `type:"structure"`
+
+	// The page token to use to retrieve the next set of results. If there are no
+	// additional results, this value is null.
+	NextPageToken *string `type:"string"`
+
+	// Information about the product created as the result of a request. For example,
+	// the output for a CloudFormation-backed product that creates an S3 bucket
+	// would include the S3 bucket URL.
+	Outputs []*RecordOutput `type:"list"`
+}
+
+// String returns the string representation
+func (s GetProvisionedProductOutputsOutput) String() string {
+	return awsutil.Prettify(s)
+}
+
+// GoString returns the string representation
+func (s GetProvisionedProductOutputsOutput) GoString() string {
+	return s.String()
+}
+
+// SetNextPageToken sets the NextPageToken field's value.
+func (s *GetProvisionedProductOutputsOutput) SetNextPageToken(v string) *GetProvisionedProductOutputsOutput {
+	s.NextPageToken = &v
+	return s
+}
+
+// SetOutputs sets the Outputs field's value.
+func (s *GetProvisionedProductOutputsOutput) SetOutputs(v []*RecordOutput) *GetProvisionedProductOutputsOutput {
+	s.Outputs = v
+	return s
+}
+
 // One or more parameters provided to the operation are not valid.
 type InvalidParametersException struct {
-	_            struct{} `type:"structure"`
-	respMetadata protocol.ResponseMetadata
+	_            struct{}                  `type:"structure"`
+	RespMetadata protocol.ResponseMetadata `json:"-" xml:"-"`
 
 	Message_ *string `locationName:"message" type:"string"`
 }
@@ -13490,17 +13922,17 @@ func (s InvalidParametersException) GoString() string {
 
 func newErrorInvalidParametersException(v protocol.ResponseMetadata) error {
 	return &InvalidParametersException{
-		respMetadata: v,
+		RespMetadata: v,
 	}
 }
 
 // Code returns the exception type name.
-func (s InvalidParametersException) Code() string {
+func (s *InvalidParametersException) Code() string {
 	return "InvalidParametersException"
 }
 
 // Message returns the exception's message.
-func (s InvalidParametersException) Message() string {
+func (s *InvalidParametersException) Message() string {
 	if s.Message_ != nil {
 		return *s.Message_
 	}
@@ -13508,30 +13940,30 @@ func (s InvalidParametersException) Message() string {
 }
 
 // OrigErr always returns nil, satisfies awserr.Error interface.
-func (s InvalidParametersException) OrigErr() error {
+func (s *InvalidParametersException) OrigErr() error {
 	return nil
 }
 
-func (s InvalidParametersException) Error() string {
+func (s *InvalidParametersException) Error() string {
 	return fmt.Sprintf("%s: %s", s.Code(), s.Message())
 }
 
 // Status code returns the HTTP status code for the request's response error.
-func (s InvalidParametersException) StatusCode() int {
-	return s.respMetadata.StatusCode
+func (s *InvalidParametersException) StatusCode() int {
+	return s.RespMetadata.StatusCode
 }
 
 // RequestID returns the service's response RequestID for request.
-func (s InvalidParametersException) RequestID() string {
-	return s.respMetadata.RequestID
+func (s *InvalidParametersException) RequestID() string {
+	return s.RespMetadata.RequestID
 }
 
 // An attempt was made to modify a resource that is in a state that is not valid.
 // Check your resources to ensure that they are in valid states before retrying
 // the operation.
 type InvalidStateException struct {
-	_            struct{} `type:"structure"`
-	respMetadata protocol.ResponseMetadata
+	_            struct{}                  `type:"structure"`
+	RespMetadata protocol.ResponseMetadata `json:"-" xml:"-"`
 
 	Message_ *string `locationName:"message" type:"string"`
 }
@@ -13548,17 +13980,17 @@ func (s InvalidStateException) GoString() string {
 
 func newErrorInvalidStateException(v protocol.ResponseMetadata) error {
 	return &InvalidStateException{
-		respMetadata: v,
+		RespMetadata: v,
 	}
 }
 
 // Code returns the exception type name.
-func (s InvalidStateException) Code() string {
+func (s *InvalidStateException) Code() string {
 	return "InvalidStateException"
 }
 
 // Message returns the exception's message.
-func (s InvalidStateException) Message() string {
+func (s *InvalidStateException) Message() string {
 	if s.Message_ != nil {
 		return *s.Message_
 	}
@@ -13566,22 +13998,55 @@ func (s InvalidStateException) Message() string {
 }
 
 // OrigErr always returns nil, satisfies awserr.Error interface.
-func (s InvalidStateException) OrigErr() error {
+func (s *InvalidStateException) OrigErr() error {
 	return nil
 }
 
-func (s InvalidStateException) Error() string {
+func (s *InvalidStateException) Error() string {
 	return fmt.Sprintf("%s: %s", s.Code(), s.Message())
 }
 
 // Status code returns the HTTP status code for the request's response error.
-func (s InvalidStateException) StatusCode() int {
-	return s.respMetadata.StatusCode
+func (s *InvalidStateException) StatusCode() int {
+	return s.RespMetadata.StatusCode
 }
 
 // RequestID returns the service's response RequestID for request.
-func (s InvalidStateException) RequestID() string {
-	return s.respMetadata.RequestID
+func (s *InvalidStateException) RequestID() string {
+	return s.RespMetadata.RequestID
+}
+
+// A launch path object.
+type LaunchPath struct {
+	_ struct{} `type:"structure"`
+
+	// The identifier of the launch path.
+	Id *string `min:"1" type:"string"`
+
+	// The name of the launch path.
+	Name *string `type:"string"`
+}
+
+// String returns the string representation
+func (s LaunchPath) String() string {
+	return awsutil.Prettify(s)
+}
+
+// GoString returns the string representation
+func (s LaunchPath) GoString() string {
+	return s.String()
+}
+
+// SetId sets the Id field's value.
+func (s *LaunchPath) SetId(v string) *LaunchPath {
+	s.Id = &v
+	return s
+}
+
+// SetName sets the Name field's value.
+func (s *LaunchPath) SetName(v string) *LaunchPath {
+	s.Name = &v
+	return s
 }
 
 // Summary information about a product path for a user.
@@ -13639,8 +14104,8 @@ func (s *LaunchPathSummary) SetTags(v []*Tag) *LaunchPathSummary {
 // Decrease your resource use or increase your service limits and retry the
 // operation.
 type LimitExceededException struct {
-	_            struct{} `type:"structure"`
-	respMetadata protocol.ResponseMetadata
+	_            struct{}                  `type:"structure"`
+	RespMetadata protocol.ResponseMetadata `json:"-" xml:"-"`
 
 	Message_ *string `locationName:"message" type:"string"`
 }
@@ -13657,17 +14122,17 @@ func (s LimitExceededException) GoString() string {
 
 func newErrorLimitExceededException(v protocol.ResponseMetadata) error {
 	return &LimitExceededException{
-		respMetadata: v,
+		RespMetadata: v,
 	}
 }
 
 // Code returns the exception type name.
-func (s LimitExceededException) Code() string {
+func (s *LimitExceededException) Code() string {
 	return "LimitExceededException"
 }
 
 // Message returns the exception's message.
-func (s LimitExceededException) Message() string {
+func (s *LimitExceededException) Message() string {
 	if s.Message_ != nil {
 		return *s.Message_
 	}
@@ -13675,22 +14140,22 @@ func (s LimitExceededException) Message() string {
 }
 
 // OrigErr always returns nil, satisfies awserr.Error interface.
-func (s LimitExceededException) OrigErr() error {
+func (s *LimitExceededException) OrigErr() error {
 	return nil
 }
 
-func (s LimitExceededException) Error() string {
+func (s *LimitExceededException) Error() string {
 	return fmt.Sprintf("%s: %s", s.Code(), s.Message())
 }
 
 // Status code returns the HTTP status code for the request's response error.
-func (s LimitExceededException) StatusCode() int {
-	return s.respMetadata.StatusCode
+func (s *LimitExceededException) StatusCode() int {
+	return s.RespMetadata.StatusCode
 }
 
 // RequestID returns the service's response RequestID for request.
-func (s LimitExceededException) RequestID() string {
-	return s.respMetadata.RequestID
+func (s *LimitExceededException) RequestID() string {
+	return s.RespMetadata.RequestID
 }
 
 type ListAcceptedPortfolioSharesInput struct {
@@ -13714,8 +14179,8 @@ type ListAcceptedPortfolioSharesInput struct {
 
 	// The type of shared portfolios to list. The default is to list imported portfolios.
 	//
-	//    * AWS_ORGANIZATIONS - List portfolios shared by the master account of
-	//    your organization
+	//    * AWS_ORGANIZATIONS - List portfolios shared by the management account
+	//    of your organization
 	//
 	//    * AWS_SERVICECATALOG - List default portfolios
 	//
@@ -15693,8 +16158,8 @@ func (s *ListTagOptionsOutput) SetTagOptionDetails(v []*TagOptionDetail) *ListTa
 
 // The operation is not supported.
 type OperationNotSupportedException struct {
-	_            struct{} `type:"structure"`
-	respMetadata protocol.ResponseMetadata
+	_            struct{}                  `type:"structure"`
+	RespMetadata protocol.ResponseMetadata `json:"-" xml:"-"`
 
 	Message_ *string `locationName:"message" type:"string"`
 }
@@ -15711,17 +16176,17 @@ func (s OperationNotSupportedException) GoString() string {
 
 func newErrorOperationNotSupportedException(v protocol.ResponseMetadata) error {
 	return &OperationNotSupportedException{
-		respMetadata: v,
+		RespMetadata: v,
 	}
 }
 
 // Code returns the exception type name.
-func (s OperationNotSupportedException) Code() string {
+func (s *OperationNotSupportedException) Code() string {
 	return "OperationNotSupportedException"
 }
 
 // Message returns the exception's message.
-func (s OperationNotSupportedException) Message() string {
+func (s *OperationNotSupportedException) Message() string {
 	if s.Message_ != nil {
 		return *s.Message_
 	}
@@ -15729,22 +16194,22 @@ func (s OperationNotSupportedException) Message() string {
 }
 
 // OrigErr always returns nil, satisfies awserr.Error interface.
-func (s OperationNotSupportedException) OrigErr() error {
+func (s *OperationNotSupportedException) OrigErr() error {
 	return nil
 }
 
-func (s OperationNotSupportedException) Error() string {
+func (s *OperationNotSupportedException) Error() string {
 	return fmt.Sprintf("%s: %s", s.Code(), s.Message())
 }
 
 // Status code returns the HTTP status code for the request's response error.
-func (s OperationNotSupportedException) StatusCode() int {
-	return s.respMetadata.StatusCode
+func (s *OperationNotSupportedException) StatusCode() int {
+	return s.RespMetadata.StatusCode
 }
 
 // RequestID returns the service's response RequestID for request.
-func (s OperationNotSupportedException) RequestID() string {
-	return s.respMetadata.RequestID
+func (s *OperationNotSupportedException) RequestID() string {
+	return s.RespMetadata.RequestID
 }
 
 // Information about the organization node.
@@ -16137,13 +16602,18 @@ type ProvisionProductInput struct {
 
 	// The path identifier of the product. This value is optional if the product
 	// has a default path, and required if the product has more than one path. To
-	// list the paths for a product, use ListLaunchPaths.
+	// list the paths for a product, use ListLaunchPaths. You must provide the name
+	// or ID, but not both.
 	PathId *string `min:"1" type:"string"`
 
-	// The product identifier.
-	//
-	// ProductId is a required field
-	ProductId *string `min:"1" type:"string" required:"true"`
+	// The name of the path. You must provide the name or ID, but not both.
+	PathName *string `min:"1" type:"string"`
+
+	// The product identifier. You must provide the name or ID, but not both.
+	ProductId *string `min:"1" type:"string"`
+
+	// The name of the product. You must provide the name or ID, but not both.
+	ProductName *string `type:"string"`
 
 	// An idempotency token that uniquely identifies the provisioning request.
 	ProvisionToken *string `min:"1" type:"string" idempotencyToken:"true"`
@@ -16154,10 +16624,13 @@ type ProvisionProductInput struct {
 	// ProvisionedProductName is a required field
 	ProvisionedProductName *string `min:"1" type:"string" required:"true"`
 
-	// The identifier of the provisioning artifact.
-	//
-	// ProvisioningArtifactId is a required field
-	ProvisioningArtifactId *string `min:"1" type:"string" required:"true"`
+	// The identifier of the provisioning artifact. You must provide the name or
+	// ID, but not both.
+	ProvisioningArtifactId *string `min:"1" type:"string"`
+
+	// The name of the provisioning artifact. You must provide the name or ID, but
+	// not both.
+	ProvisioningArtifactName *string `type:"string"`
 
 	// Parameters specified by the administrator that are required for provisioning
 	// the product.
@@ -16187,8 +16660,8 @@ func (s *ProvisionProductInput) Validate() error {
 	if s.PathId != nil && len(*s.PathId) < 1 {
 		invalidParams.Add(request.NewErrParamMinLen("PathId", 1))
 	}
-	if s.ProductId == nil {
-		invalidParams.Add(request.NewErrParamRequired("ProductId"))
+	if s.PathName != nil && len(*s.PathName) < 1 {
+		invalidParams.Add(request.NewErrParamMinLen("PathName", 1))
 	}
 	if s.ProductId != nil && len(*s.ProductId) < 1 {
 		invalidParams.Add(request.NewErrParamMinLen("ProductId", 1))
@@ -16201,9 +16674,6 @@ func (s *ProvisionProductInput) Validate() error {
 	}
 	if s.ProvisionedProductName != nil && len(*s.ProvisionedProductName) < 1 {
 		invalidParams.Add(request.NewErrParamMinLen("ProvisionedProductName", 1))
-	}
-	if s.ProvisioningArtifactId == nil {
-		invalidParams.Add(request.NewErrParamRequired("ProvisioningArtifactId"))
 	}
 	if s.ProvisioningArtifactId != nil && len(*s.ProvisioningArtifactId) < 1 {
 		invalidParams.Add(request.NewErrParamMinLen("ProvisioningArtifactId", 1))
@@ -16258,9 +16728,21 @@ func (s *ProvisionProductInput) SetPathId(v string) *ProvisionProductInput {
 	return s
 }
 
+// SetPathName sets the PathName field's value.
+func (s *ProvisionProductInput) SetPathName(v string) *ProvisionProductInput {
+	s.PathName = &v
+	return s
+}
+
 // SetProductId sets the ProductId field's value.
 func (s *ProvisionProductInput) SetProductId(v string) *ProvisionProductInput {
 	s.ProductId = &v
+	return s
+}
+
+// SetProductName sets the ProductName field's value.
+func (s *ProvisionProductInput) SetProductName(v string) *ProvisionProductInput {
+	s.ProductName = &v
 	return s
 }
 
@@ -16279,6 +16761,12 @@ func (s *ProvisionProductInput) SetProvisionedProductName(v string) *ProvisionPr
 // SetProvisioningArtifactId sets the ProvisioningArtifactId field's value.
 func (s *ProvisionProductInput) SetProvisioningArtifactId(v string) *ProvisionProductInput {
 	s.ProvisioningArtifactId = &v
+	return s
+}
+
+// SetProvisioningArtifactName sets the ProvisioningArtifactName field's value.
+func (s *ProvisionProductInput) SetProvisioningArtifactName(v string) *ProvisionProductInput {
+	s.ProvisioningArtifactName = &v
 	return s
 }
 
@@ -16341,8 +16829,32 @@ type ProvisionedProductAttribute struct {
 	// repeated request.
 	IdempotencyToken *string `min:"1" type:"string"`
 
+	// The record identifier of the last request performed on this provisioned product
+	// of the following types:
+	//
+	//    * ProvisionedProduct
+	//
+	//    * UpdateProvisionedProduct
+	//
+	//    * ExecuteProvisionedProductPlan
+	//
+	//    * TerminateProvisionedProduct
+	LastProvisioningRecordId *string `min:"1" type:"string"`
+
 	// The record identifier of the last request performed on this provisioned product.
 	LastRecordId *string `min:"1" type:"string"`
+
+	// The record identifier of the last successful request performed on this provisioned
+	// product of the following types:
+	//
+	//    * ProvisionedProduct
+	//
+	//    * UpdateProvisionedProduct
+	//
+	//    * ExecuteProvisionedProductPlan
+	//
+	//    * TerminateProvisionedProduct
+	LastSuccessfulProvisioningRecordId *string `min:"1" type:"string"`
 
 	// The user-friendly name of the provisioned product.
 	Name *string `min:"1" type:"string"`
@@ -16354,8 +16866,14 @@ type ProvisionedProductAttribute struct {
 	// The product identifier.
 	ProductId *string `min:"1" type:"string"`
 
+	// The name of the product.
+	ProductName *string `type:"string"`
+
 	// The identifier of the provisioning artifact.
 	ProvisioningArtifactId *string `min:"1" type:"string"`
+
+	// The name of the provisioning artifact.
+	ProvisioningArtifactName *string `type:"string"`
 
 	// The current status of the provisioned product.
 	//
@@ -16431,9 +16949,21 @@ func (s *ProvisionedProductAttribute) SetIdempotencyToken(v string) *Provisioned
 	return s
 }
 
+// SetLastProvisioningRecordId sets the LastProvisioningRecordId field's value.
+func (s *ProvisionedProductAttribute) SetLastProvisioningRecordId(v string) *ProvisionedProductAttribute {
+	s.LastProvisioningRecordId = &v
+	return s
+}
+
 // SetLastRecordId sets the LastRecordId field's value.
 func (s *ProvisionedProductAttribute) SetLastRecordId(v string) *ProvisionedProductAttribute {
 	s.LastRecordId = &v
+	return s
+}
+
+// SetLastSuccessfulProvisioningRecordId sets the LastSuccessfulProvisioningRecordId field's value.
+func (s *ProvisionedProductAttribute) SetLastSuccessfulProvisioningRecordId(v string) *ProvisionedProductAttribute {
+	s.LastSuccessfulProvisioningRecordId = &v
 	return s
 }
 
@@ -16455,9 +16985,21 @@ func (s *ProvisionedProductAttribute) SetProductId(v string) *ProvisionedProduct
 	return s
 }
 
+// SetProductName sets the ProductName field's value.
+func (s *ProvisionedProductAttribute) SetProductName(v string) *ProvisionedProductAttribute {
+	s.ProductName = &v
+	return s
+}
+
 // SetProvisioningArtifactId sets the ProvisioningArtifactId field's value.
 func (s *ProvisionedProductAttribute) SetProvisioningArtifactId(v string) *ProvisionedProductAttribute {
 	s.ProvisioningArtifactId = &v
+	return s
+}
+
+// SetProvisioningArtifactName sets the ProvisioningArtifactName field's value.
+func (s *ProvisionedProductAttribute) SetProvisioningArtifactName(v string) *ProvisionedProductAttribute {
+	s.ProvisioningArtifactName = &v
 	return s
 }
 
@@ -16515,8 +17057,32 @@ type ProvisionedProductDetail struct {
 	// repeated request.
 	IdempotencyToken *string `min:"1" type:"string"`
 
+	// The record identifier of the last request performed on this provisioned product
+	// of the following types:
+	//
+	//    * ProvisionedProduct
+	//
+	//    * UpdateProvisionedProduct
+	//
+	//    * ExecuteProvisionedProductPlan
+	//
+	//    * TerminateProvisionedProduct
+	LastProvisioningRecordId *string `min:"1" type:"string"`
+
 	// The record identifier of the last request performed on this provisioned product.
 	LastRecordId *string `type:"string"`
+
+	// The record identifier of the last successful request performed on this provisioned
+	// product of the following types:
+	//
+	//    * ProvisionedProduct
+	//
+	//    * UpdateProvisionedProduct
+	//
+	//    * ExecuteProvisionedProductPlan
+	//
+	//    * TerminateProvisionedProduct
+	LastSuccessfulProvisioningRecordId *string `min:"1" type:"string"`
 
 	// The user-friendly name of the provisioned product.
 	Name *string `min:"1" type:"string"`
@@ -16591,9 +17157,21 @@ func (s *ProvisionedProductDetail) SetIdempotencyToken(v string) *ProvisionedPro
 	return s
 }
 
+// SetLastProvisioningRecordId sets the LastProvisioningRecordId field's value.
+func (s *ProvisionedProductDetail) SetLastProvisioningRecordId(v string) *ProvisionedProductDetail {
+	s.LastProvisioningRecordId = &v
+	return s
+}
+
 // SetLastRecordId sets the LastRecordId field's value.
 func (s *ProvisionedProductDetail) SetLastRecordId(v string) *ProvisionedProductDetail {
 	s.LastRecordId = &v
+	return s
+}
+
+// SetLastSuccessfulProvisioningRecordId sets the LastSuccessfulProvisioningRecordId field's value.
+func (s *ProvisionedProductDetail) SetLastSuccessfulProvisioningRecordId(v string) *ProvisionedProductDetail {
+	s.LastSuccessfulProvisioningRecordId = &v
 	return s
 }
 
@@ -17001,6 +17579,39 @@ func (s *ProvisioningArtifactDetail) SetName(v string) *ProvisioningArtifactDeta
 // SetType sets the Type field's value.
 func (s *ProvisioningArtifactDetail) SetType(v string) *ProvisioningArtifactDetail {
 	s.Type = &v
+	return s
+}
+
+// Provisioning artifact output.
+type ProvisioningArtifactOutput struct {
+	_ struct{} `type:"structure"`
+
+	// Description of the provisioning artifact output key.
+	Description *string `type:"string"`
+
+	// The provisioning artifact output key.
+	Key *string `min:"1" type:"string"`
+}
+
+// String returns the string representation
+func (s ProvisioningArtifactOutput) String() string {
+	return awsutil.Prettify(s)
+}
+
+// GoString returns the string representation
+func (s ProvisioningArtifactOutput) GoString() string {
+	return s.String()
+}
+
+// SetDescription sets the Description field's value.
+func (s *ProvisioningArtifactOutput) SetDescription(v string) *ProvisioningArtifactOutput {
+	s.Description = &v
+	return s
+}
+
+// SetKey sets the Key field's value.
+func (s *ProvisioningArtifactOutput) SetKey(v string) *ProvisioningArtifactOutput {
+	s.Key = &v
 	return s
 }
 
@@ -17787,8 +18398,8 @@ type RejectPortfolioShareInput struct {
 	// The type of shared portfolios to reject. The default is to reject imported
 	// portfolios.
 	//
-	//    * AWS_ORGANIZATIONS - Reject portfolios shared by the master account of
-	//    your organization.
+	//    * AWS_ORGANIZATIONS - Reject portfolios shared by the management account
+	//    of your organization.
 	//
 	//    * IMPORTED - Reject imported portfolios.
 	//
@@ -18043,8 +18654,8 @@ func (s *ResourceDetail) SetName(v string) *ResourceDetail {
 // A resource that is currently in use. Ensure that the resource is not in use
 // and retry the operation.
 type ResourceInUseException struct {
-	_            struct{} `type:"structure"`
-	respMetadata protocol.ResponseMetadata
+	_            struct{}                  `type:"structure"`
+	RespMetadata protocol.ResponseMetadata `json:"-" xml:"-"`
 
 	Message_ *string `locationName:"message" type:"string"`
 }
@@ -18061,17 +18672,17 @@ func (s ResourceInUseException) GoString() string {
 
 func newErrorResourceInUseException(v protocol.ResponseMetadata) error {
 	return &ResourceInUseException{
-		respMetadata: v,
+		RespMetadata: v,
 	}
 }
 
 // Code returns the exception type name.
-func (s ResourceInUseException) Code() string {
+func (s *ResourceInUseException) Code() string {
 	return "ResourceInUseException"
 }
 
 // Message returns the exception's message.
-func (s ResourceInUseException) Message() string {
+func (s *ResourceInUseException) Message() string {
 	if s.Message_ != nil {
 		return *s.Message_
 	}
@@ -18079,28 +18690,28 @@ func (s ResourceInUseException) Message() string {
 }
 
 // OrigErr always returns nil, satisfies awserr.Error interface.
-func (s ResourceInUseException) OrigErr() error {
+func (s *ResourceInUseException) OrigErr() error {
 	return nil
 }
 
-func (s ResourceInUseException) Error() string {
+func (s *ResourceInUseException) Error() string {
 	return fmt.Sprintf("%s: %s", s.Code(), s.Message())
 }
 
 // Status code returns the HTTP status code for the request's response error.
-func (s ResourceInUseException) StatusCode() int {
-	return s.respMetadata.StatusCode
+func (s *ResourceInUseException) StatusCode() int {
+	return s.RespMetadata.StatusCode
 }
 
 // RequestID returns the service's response RequestID for request.
-func (s ResourceInUseException) RequestID() string {
-	return s.respMetadata.RequestID
+func (s *ResourceInUseException) RequestID() string {
+	return s.RespMetadata.RequestID
 }
 
 // The specified resource was not found.
 type ResourceNotFoundException struct {
-	_            struct{} `type:"structure"`
-	respMetadata protocol.ResponseMetadata
+	_            struct{}                  `type:"structure"`
+	RespMetadata protocol.ResponseMetadata `json:"-" xml:"-"`
 
 	Message_ *string `locationName:"message" type:"string"`
 }
@@ -18117,17 +18728,17 @@ func (s ResourceNotFoundException) GoString() string {
 
 func newErrorResourceNotFoundException(v protocol.ResponseMetadata) error {
 	return &ResourceNotFoundException{
-		respMetadata: v,
+		RespMetadata: v,
 	}
 }
 
 // Code returns the exception type name.
-func (s ResourceNotFoundException) Code() string {
+func (s *ResourceNotFoundException) Code() string {
 	return "ResourceNotFoundException"
 }
 
 // Message returns the exception's message.
-func (s ResourceNotFoundException) Message() string {
+func (s *ResourceNotFoundException) Message() string {
 	if s.Message_ != nil {
 		return *s.Message_
 	}
@@ -18135,22 +18746,22 @@ func (s ResourceNotFoundException) Message() string {
 }
 
 // OrigErr always returns nil, satisfies awserr.Error interface.
-func (s ResourceNotFoundException) OrigErr() error {
+func (s *ResourceNotFoundException) OrigErr() error {
 	return nil
 }
 
-func (s ResourceNotFoundException) Error() string {
+func (s *ResourceNotFoundException) Error() string {
 	return fmt.Sprintf("%s: %s", s.Code(), s.Message())
 }
 
 // Status code returns the HTTP status code for the request's response error.
-func (s ResourceNotFoundException) StatusCode() int {
-	return s.respMetadata.StatusCode
+func (s *ResourceNotFoundException) StatusCode() int {
+	return s.RespMetadata.StatusCode
 }
 
 // RequestID returns the service's response RequestID for request.
-func (s ResourceNotFoundException) RequestID() string {
-	return s.respMetadata.RequestID
+func (s *ResourceNotFoundException) RequestID() string {
+	return s.RespMetadata.RequestID
 }
 
 // Information about a change to a resource attribute.
@@ -18564,7 +19175,8 @@ type SearchProvisionedProductsInput struct {
 	//
 	// When the key is SearchQuery, the searchable fields are arn, createdTime,
 	// id, lastRecordId, idempotencyToken, name, physicalId, productId, provisioningArtifact,
-	// type, status, tags, userArn, and userArnSession.
+	// type, status, tags, userArn, userArnSession, lastProvisioningRecordId, lastSuccessfulProvisioningRecordId,
+	// productName, and provisioningArtifactName.
 	//
 	// Example: "SearchQuery":["status:AVAILABLE"]
 	Filters map[string][]*string `type:"map"`
@@ -19091,8 +19703,8 @@ func (s *TagOptionDetail) SetValue(v string) *TagOptionDetail {
 // process has not been performed for this account. Please use the AWS console
 // to perform the migration process before retrying the operation.
 type TagOptionNotMigratedException struct {
-	_            struct{} `type:"structure"`
-	respMetadata protocol.ResponseMetadata
+	_            struct{}                  `type:"structure"`
+	RespMetadata protocol.ResponseMetadata `json:"-" xml:"-"`
 
 	Message_ *string `locationName:"message" type:"string"`
 }
@@ -19109,17 +19721,17 @@ func (s TagOptionNotMigratedException) GoString() string {
 
 func newErrorTagOptionNotMigratedException(v protocol.ResponseMetadata) error {
 	return &TagOptionNotMigratedException{
-		respMetadata: v,
+		RespMetadata: v,
 	}
 }
 
 // Code returns the exception type name.
-func (s TagOptionNotMigratedException) Code() string {
+func (s *TagOptionNotMigratedException) Code() string {
 	return "TagOptionNotMigratedException"
 }
 
 // Message returns the exception's message.
-func (s TagOptionNotMigratedException) Message() string {
+func (s *TagOptionNotMigratedException) Message() string {
 	if s.Message_ != nil {
 		return *s.Message_
 	}
@@ -19127,22 +19739,22 @@ func (s TagOptionNotMigratedException) Message() string {
 }
 
 // OrigErr always returns nil, satisfies awserr.Error interface.
-func (s TagOptionNotMigratedException) OrigErr() error {
+func (s *TagOptionNotMigratedException) OrigErr() error {
 	return nil
 }
 
-func (s TagOptionNotMigratedException) Error() string {
+func (s *TagOptionNotMigratedException) Error() string {
 	return fmt.Sprintf("%s: %s", s.Code(), s.Message())
 }
 
 // Status code returns the HTTP status code for the request's response error.
-func (s TagOptionNotMigratedException) StatusCode() int {
-	return s.respMetadata.StatusCode
+func (s *TagOptionNotMigratedException) StatusCode() int {
+	return s.RespMetadata.StatusCode
 }
 
 // RequestID returns the service's response RequestID for request.
-func (s TagOptionNotMigratedException) RequestID() string {
-	return s.respMetadata.RequestID
+func (s *TagOptionNotMigratedException) RequestID() string {
+	return s.RespMetadata.RequestID
 }
 
 // Summary information about a TagOption.
@@ -19316,9 +19928,24 @@ type UpdateConstraintInput struct {
 	//
 	// LAUNCH
 	//
+	// You are required to specify either the RoleArn or the LocalRoleName but can't
+	// use both.
+	//
 	// Specify the RoleArn property as follows:
 	//
 	// {"RoleArn" : "arn:aws:iam::123456789012:role/LaunchRole"}
+	//
+	// Specify the LocalRoleName property as follows:
+	//
+	// {"LocalRoleName": "SCBasicLaunchRole"}
+	//
+	// If you specify the LocalRoleName property, when an account uses the launch
+	// constraint, the IAM role with that name in the account will be used. This
+	// allows launch-role constraints to be account-agnostic so the administrator
+	// can create fewer resources per shared account.
+	//
+	// The given role name must exist in the account used to create the launch constraint
+	// and the account of the user who launches a product with this launch constraint.
 	//
 	// You cannot have both a LAUNCH and a STACKSET constraint.
 	//
@@ -19791,15 +20418,22 @@ type UpdateProvisionedProductInput struct {
 	//    * zh - Chinese
 	AcceptLanguage *string `type:"string"`
 
-	// The new path identifier. This value is optional if the product has a default
-	// path, and required if the product has more than one path.
+	// The path identifier. This value is optional if the product has a default
+	// path, and required if the product has more than one path. You must provide
+	// the name or ID, but not both.
 	PathId *string `min:"1" type:"string"`
 
-	// The identifier of the product.
+	// The name of the path. You must provide the name or ID, but not both.
+	PathName *string `min:"1" type:"string"`
+
+	// The identifier of the product. You must provide the name or ID, but not both.
 	ProductId *string `min:"1" type:"string"`
 
-	// The identifier of the provisioned product. You cannot specify both ProvisionedProductName
-	// and ProvisionedProductId.
+	// The name of the product. You must provide the name or ID, but not both.
+	ProductName *string `type:"string"`
+
+	// The identifier of the provisioned product. You must provide the name or ID,
+	// but not both.
 	ProvisionedProductId *string `min:"1" type:"string"`
 
 	// The name of the provisioned product. You cannot specify both ProvisionedProductName
@@ -19808,6 +20442,10 @@ type UpdateProvisionedProductInput struct {
 
 	// The identifier of the provisioning artifact.
 	ProvisioningArtifactId *string `min:"1" type:"string"`
+
+	// The name of the provisioning artifact. You must provide the name or ID, but
+	// not both.
+	ProvisioningArtifactName *string `type:"string"`
 
 	// The new parameters.
 	ProvisioningParameters []*UpdateProvisioningParameter `type:"list"`
@@ -19839,6 +20477,9 @@ func (s *UpdateProvisionedProductInput) Validate() error {
 	invalidParams := request.ErrInvalidParams{Context: "UpdateProvisionedProductInput"}
 	if s.PathId != nil && len(*s.PathId) < 1 {
 		invalidParams.Add(request.NewErrParamMinLen("PathId", 1))
+	}
+	if s.PathName != nil && len(*s.PathName) < 1 {
+		invalidParams.Add(request.NewErrParamMinLen("PathName", 1))
 	}
 	if s.ProductId != nil && len(*s.ProductId) < 1 {
 		invalidParams.Add(request.NewErrParamMinLen("ProductId", 1))
@@ -19899,9 +20540,21 @@ func (s *UpdateProvisionedProductInput) SetPathId(v string) *UpdateProvisionedPr
 	return s
 }
 
+// SetPathName sets the PathName field's value.
+func (s *UpdateProvisionedProductInput) SetPathName(v string) *UpdateProvisionedProductInput {
+	s.PathName = &v
+	return s
+}
+
 // SetProductId sets the ProductId field's value.
 func (s *UpdateProvisionedProductInput) SetProductId(v string) *UpdateProvisionedProductInput {
 	s.ProductId = &v
+	return s
+}
+
+// SetProductName sets the ProductName field's value.
+func (s *UpdateProvisionedProductInput) SetProductName(v string) *UpdateProvisionedProductInput {
+	s.ProductName = &v
 	return s
 }
 
@@ -19920,6 +20573,12 @@ func (s *UpdateProvisionedProductInput) SetProvisionedProductName(v string) *Upd
 // SetProvisioningArtifactId sets the ProvisioningArtifactId field's value.
 func (s *UpdateProvisionedProductInput) SetProvisioningArtifactId(v string) *UpdateProvisionedProductInput {
 	s.ProvisioningArtifactId = &v
+	return s
+}
+
+// SetProvisioningArtifactName sets the ProvisioningArtifactName field's value.
+func (s *UpdateProvisionedProductInput) SetProvisioningArtifactName(v string) *UpdateProvisionedProductInput {
+	s.ProvisioningArtifactName = &v
 	return s
 }
 
@@ -19993,9 +20652,9 @@ type UpdateProvisionedProductPropertiesInput struct {
 
 	// A map that contains the provisioned product properties to be updated.
 	//
-	// The OWNER key only accepts user ARNs. The owner is the user that is allowed
-	// to see, update, terminate, and execute service actions in the provisioned
-	// product.
+	// The OWNER key accepts user ARNs and role ARNs. The owner is the user that
+	// is allowed to see, update, terminate, and execute service actions in the
+	// provisioned product.
 	//
 	// The administrator can change the owner of a provisioned product to another
 	// IAM user within the same account. Both end user owners and administrators
@@ -20762,6 +21421,15 @@ const (
 	AccessLevelFilterKeyUser = "User"
 )
 
+// AccessLevelFilterKey_Values returns all elements of the AccessLevelFilterKey enum
+func AccessLevelFilterKey_Values() []string {
+	return []string{
+		AccessLevelFilterKeyAccount,
+		AccessLevelFilterKeyRole,
+		AccessLevelFilterKeyUser,
+	}
+}
+
 const (
 	// AccessStatusEnabled is a AccessStatus enum value
 	AccessStatusEnabled = "ENABLED"
@@ -20772,6 +21440,15 @@ const (
 	// AccessStatusDisabled is a AccessStatus enum value
 	AccessStatusDisabled = "DISABLED"
 )
+
+// AccessStatus_Values returns all elements of the AccessStatus enum
+func AccessStatus_Values() []string {
+	return []string{
+		AccessStatusEnabled,
+		AccessStatusUnderChange,
+		AccessStatusDisabled,
+	}
+}
 
 const (
 	// ChangeActionAdd is a ChangeAction enum value
@@ -20784,10 +21461,26 @@ const (
 	ChangeActionRemove = "REMOVE"
 )
 
+// ChangeAction_Values returns all elements of the ChangeAction enum
+func ChangeAction_Values() []string {
+	return []string{
+		ChangeActionAdd,
+		ChangeActionModify,
+		ChangeActionRemove,
+	}
+}
+
 const (
 	// CopyOptionCopyTags is a CopyOption enum value
 	CopyOptionCopyTags = "CopyTags"
 )
+
+// CopyOption_Values returns all elements of the CopyOption enum
+func CopyOption_Values() []string {
+	return []string{
+		CopyOptionCopyTags,
+	}
+}
 
 const (
 	// CopyProductStatusSucceeded is a CopyProductStatus enum value
@@ -20800,6 +21493,15 @@ const (
 	CopyProductStatusFailed = "FAILED"
 )
 
+// CopyProductStatus_Values returns all elements of the CopyProductStatus enum
+func CopyProductStatus_Values() []string {
+	return []string{
+		CopyProductStatusSucceeded,
+		CopyProductStatusInProgress,
+		CopyProductStatusFailed,
+	}
+}
+
 const (
 	// EvaluationTypeStatic is a EvaluationType enum value
 	EvaluationTypeStatic = "STATIC"
@@ -20807,6 +21509,14 @@ const (
 	// EvaluationTypeDynamic is a EvaluationType enum value
 	EvaluationTypeDynamic = "DYNAMIC"
 )
+
+// EvaluationType_Values returns all elements of the EvaluationType enum
+func EvaluationType_Values() []string {
+	return []string{
+		EvaluationTypeStatic,
+		EvaluationTypeDynamic,
+	}
+}
 
 const (
 	// OrganizationNodeTypeOrganization is a OrganizationNodeType enum value
@@ -20819,6 +21529,15 @@ const (
 	OrganizationNodeTypeAccount = "ACCOUNT"
 )
 
+// OrganizationNodeType_Values returns all elements of the OrganizationNodeType enum
+func OrganizationNodeType_Values() []string {
+	return []string{
+		OrganizationNodeTypeOrganization,
+		OrganizationNodeTypeOrganizationalUnit,
+		OrganizationNodeTypeAccount,
+	}
+}
+
 const (
 	// PortfolioShareTypeImported is a PortfolioShareType enum value
 	PortfolioShareTypeImported = "IMPORTED"
@@ -20830,15 +21549,38 @@ const (
 	PortfolioShareTypeAwsOrganizations = "AWS_ORGANIZATIONS"
 )
 
+// PortfolioShareType_Values returns all elements of the PortfolioShareType enum
+func PortfolioShareType_Values() []string {
+	return []string{
+		PortfolioShareTypeImported,
+		PortfolioShareTypeAwsServicecatalog,
+		PortfolioShareTypeAwsOrganizations,
+	}
+}
+
 const (
 	// PrincipalTypeIam is a PrincipalType enum value
 	PrincipalTypeIam = "IAM"
 )
 
+// PrincipalType_Values returns all elements of the PrincipalType enum
+func PrincipalType_Values() []string {
+	return []string{
+		PrincipalTypeIam,
+	}
+}
+
 const (
 	// ProductSourceAccount is a ProductSource enum value
 	ProductSourceAccount = "ACCOUNT"
 )
+
+// ProductSource_Values returns all elements of the ProductSource enum
+func ProductSource_Values() []string {
+	return []string{
+		ProductSourceAccount,
+	}
+}
 
 const (
 	// ProductTypeCloudFormationTemplate is a ProductType enum value
@@ -20847,6 +21589,14 @@ const (
 	// ProductTypeMarketplace is a ProductType enum value
 	ProductTypeMarketplace = "MARKETPLACE"
 )
+
+// ProductType_Values returns all elements of the ProductType enum
+func ProductType_Values() []string {
+	return []string{
+		ProductTypeCloudFormationTemplate,
+		ProductTypeMarketplace,
+	}
+}
 
 const (
 	// ProductViewFilterByFullTextSearch is a ProductViewFilterBy enum value
@@ -20862,6 +21612,16 @@ const (
 	ProductViewFilterBySourceProductId = "SourceProductId"
 )
 
+// ProductViewFilterBy_Values returns all elements of the ProductViewFilterBy enum
+func ProductViewFilterBy_Values() []string {
+	return []string{
+		ProductViewFilterByFullTextSearch,
+		ProductViewFilterByOwner,
+		ProductViewFilterByProductType,
+		ProductViewFilterBySourceProductId,
+	}
+}
+
 const (
 	// ProductViewSortByTitle is a ProductViewSortBy enum value
 	ProductViewSortByTitle = "Title"
@@ -20873,10 +21633,26 @@ const (
 	ProductViewSortByCreationDate = "CreationDate"
 )
 
+// ProductViewSortBy_Values returns all elements of the ProductViewSortBy enum
+func ProductViewSortBy_Values() []string {
+	return []string{
+		ProductViewSortByTitle,
+		ProductViewSortByVersionCount,
+		ProductViewSortByCreationDate,
+	}
+}
+
 const (
 	// PropertyKeyOwner is a PropertyKey enum value
 	PropertyKeyOwner = "OWNER"
 )
+
+// PropertyKey_Values returns all elements of the PropertyKey enum
+func PropertyKey_Values() []string {
+	return []string{
+		PropertyKeyOwner,
+	}
+}
 
 const (
 	// ProvisionedProductPlanStatusCreateInProgress is a ProvisionedProductPlanStatus enum value
@@ -20898,10 +21674,29 @@ const (
 	ProvisionedProductPlanStatusExecuteFailed = "EXECUTE_FAILED"
 )
 
+// ProvisionedProductPlanStatus_Values returns all elements of the ProvisionedProductPlanStatus enum
+func ProvisionedProductPlanStatus_Values() []string {
+	return []string{
+		ProvisionedProductPlanStatusCreateInProgress,
+		ProvisionedProductPlanStatusCreateSuccess,
+		ProvisionedProductPlanStatusCreateFailed,
+		ProvisionedProductPlanStatusExecuteInProgress,
+		ProvisionedProductPlanStatusExecuteSuccess,
+		ProvisionedProductPlanStatusExecuteFailed,
+	}
+}
+
 const (
 	// ProvisionedProductPlanTypeCloudformation is a ProvisionedProductPlanType enum value
 	ProvisionedProductPlanTypeCloudformation = "CLOUDFORMATION"
 )
+
+// ProvisionedProductPlanType_Values returns all elements of the ProvisionedProductPlanType enum
+func ProvisionedProductPlanType_Values() []string {
+	return []string{
+		ProvisionedProductPlanTypeCloudformation,
+	}
+}
 
 const (
 	// ProvisionedProductStatusAvailable is a ProvisionedProductStatus enum value
@@ -20920,10 +21715,28 @@ const (
 	ProvisionedProductStatusPlanInProgress = "PLAN_IN_PROGRESS"
 )
 
+// ProvisionedProductStatus_Values returns all elements of the ProvisionedProductStatus enum
+func ProvisionedProductStatus_Values() []string {
+	return []string{
+		ProvisionedProductStatusAvailable,
+		ProvisionedProductStatusUnderChange,
+		ProvisionedProductStatusTainted,
+		ProvisionedProductStatusError,
+		ProvisionedProductStatusPlanInProgress,
+	}
+}
+
 const (
 	// ProvisionedProductViewFilterBySearchQuery is a ProvisionedProductViewFilterBy enum value
 	ProvisionedProductViewFilterBySearchQuery = "SearchQuery"
 )
+
+// ProvisionedProductViewFilterBy_Values returns all elements of the ProvisionedProductViewFilterBy enum
+func ProvisionedProductViewFilterBy_Values() []string {
+	return []string{
+		ProvisionedProductViewFilterBySearchQuery,
+	}
+}
 
 const (
 	// ProvisioningArtifactGuidanceDefault is a ProvisioningArtifactGuidance enum value
@@ -20933,10 +21746,25 @@ const (
 	ProvisioningArtifactGuidanceDeprecated = "DEPRECATED"
 )
 
+// ProvisioningArtifactGuidance_Values returns all elements of the ProvisioningArtifactGuidance enum
+func ProvisioningArtifactGuidance_Values() []string {
+	return []string{
+		ProvisioningArtifactGuidanceDefault,
+		ProvisioningArtifactGuidanceDeprecated,
+	}
+}
+
 const (
 	// ProvisioningArtifactPropertyNameId is a ProvisioningArtifactPropertyName enum value
 	ProvisioningArtifactPropertyNameId = "Id"
 )
+
+// ProvisioningArtifactPropertyName_Values returns all elements of the ProvisioningArtifactPropertyName enum
+func ProvisioningArtifactPropertyName_Values() []string {
+	return []string{
+		ProvisioningArtifactPropertyNameId,
+	}
+}
 
 const (
 	// ProvisioningArtifactTypeCloudFormationTemplate is a ProvisioningArtifactType enum value
@@ -20948,6 +21776,15 @@ const (
 	// ProvisioningArtifactTypeMarketplaceCar is a ProvisioningArtifactType enum value
 	ProvisioningArtifactTypeMarketplaceCar = "MARKETPLACE_CAR"
 )
+
+// ProvisioningArtifactType_Values returns all elements of the ProvisioningArtifactType enum
+func ProvisioningArtifactType_Values() []string {
+	return []string{
+		ProvisioningArtifactTypeCloudFormationTemplate,
+		ProvisioningArtifactTypeMarketplaceAmi,
+		ProvisioningArtifactTypeMarketplaceCar,
+	}
+}
 
 const (
 	// RecordStatusCreated is a RecordStatus enum value
@@ -20966,6 +21803,17 @@ const (
 	RecordStatusFailed = "FAILED"
 )
 
+// RecordStatus_Values returns all elements of the RecordStatus enum
+func RecordStatus_Values() []string {
+	return []string{
+		RecordStatusCreated,
+		RecordStatusInProgress,
+		RecordStatusInProgressInError,
+		RecordStatusSucceeded,
+		RecordStatusFailed,
+	}
+}
+
 const (
 	// ReplacementTrue is a Replacement enum value
 	ReplacementTrue = "TRUE"
@@ -20977,6 +21825,15 @@ const (
 	ReplacementConditional = "CONDITIONAL"
 )
 
+// Replacement_Values returns all elements of the Replacement enum
+func Replacement_Values() []string {
+	return []string{
+		ReplacementTrue,
+		ReplacementFalse,
+		ReplacementConditional,
+	}
+}
+
 const (
 	// RequiresRecreationNever is a RequiresRecreation enum value
 	RequiresRecreationNever = "NEVER"
@@ -20987,6 +21844,15 @@ const (
 	// RequiresRecreationAlways is a RequiresRecreation enum value
 	RequiresRecreationAlways = "ALWAYS"
 )
+
+// RequiresRecreation_Values returns all elements of the RequiresRecreation enum
+func RequiresRecreation_Values() []string {
+	return []string{
+		RequiresRecreationNever,
+		RequiresRecreationConditionally,
+		RequiresRecreationAlways,
+	}
+}
 
 const (
 	// ResourceAttributeProperties is a ResourceAttribute enum value
@@ -21008,6 +21874,18 @@ const (
 	ResourceAttributeTags = "TAGS"
 )
 
+// ResourceAttribute_Values returns all elements of the ResourceAttribute enum
+func ResourceAttribute_Values() []string {
+	return []string{
+		ResourceAttributeProperties,
+		ResourceAttributeMetadata,
+		ResourceAttributeCreationpolicy,
+		ResourceAttributeUpdatepolicy,
+		ResourceAttributeDeletionpolicy,
+		ResourceAttributeTags,
+	}
+}
+
 const (
 	// ServiceActionAssociationErrorCodeDuplicateResource is a ServiceActionAssociationErrorCode enum value
 	ServiceActionAssociationErrorCodeDuplicateResource = "DUPLICATE_RESOURCE"
@@ -21025,6 +21903,17 @@ const (
 	ServiceActionAssociationErrorCodeThrottling = "THROTTLING"
 )
 
+// ServiceActionAssociationErrorCode_Values returns all elements of the ServiceActionAssociationErrorCode enum
+func ServiceActionAssociationErrorCode_Values() []string {
+	return []string{
+		ServiceActionAssociationErrorCodeDuplicateResource,
+		ServiceActionAssociationErrorCodeInternalFailure,
+		ServiceActionAssociationErrorCodeLimitExceeded,
+		ServiceActionAssociationErrorCodeResourceNotFound,
+		ServiceActionAssociationErrorCodeThrottling,
+	}
+}
+
 const (
 	// ServiceActionDefinitionKeyName is a ServiceActionDefinitionKey enum value
 	ServiceActionDefinitionKeyName = "Name"
@@ -21039,10 +21928,27 @@ const (
 	ServiceActionDefinitionKeyParameters = "Parameters"
 )
 
+// ServiceActionDefinitionKey_Values returns all elements of the ServiceActionDefinitionKey enum
+func ServiceActionDefinitionKey_Values() []string {
+	return []string{
+		ServiceActionDefinitionKeyName,
+		ServiceActionDefinitionKeyVersion,
+		ServiceActionDefinitionKeyAssumeRole,
+		ServiceActionDefinitionKeyParameters,
+	}
+}
+
 const (
 	// ServiceActionDefinitionTypeSsmAutomation is a ServiceActionDefinitionType enum value
 	ServiceActionDefinitionTypeSsmAutomation = "SSM_AUTOMATION"
 )
+
+// ServiceActionDefinitionType_Values returns all elements of the ServiceActionDefinitionType enum
+func ServiceActionDefinitionType_Values() []string {
+	return []string{
+		ServiceActionDefinitionTypeSsmAutomation,
+	}
+}
 
 const (
 	// ShareStatusNotStarted is a ShareStatus enum value
@@ -21061,6 +21967,17 @@ const (
 	ShareStatusError = "ERROR"
 )
 
+// ShareStatus_Values returns all elements of the ShareStatus enum
+func ShareStatus_Values() []string {
+	return []string{
+		ShareStatusNotStarted,
+		ShareStatusInProgress,
+		ShareStatusCompleted,
+		ShareStatusCompletedWithErrors,
+		ShareStatusError,
+	}
+}
+
 const (
 	// SortOrderAscending is a SortOrder enum value
 	SortOrderAscending = "ASCENDING"
@@ -21068,6 +21985,14 @@ const (
 	// SortOrderDescending is a SortOrder enum value
 	SortOrderDescending = "DESCENDING"
 )
+
+// SortOrder_Values returns all elements of the SortOrder enum
+func SortOrder_Values() []string {
+	return []string{
+		SortOrderAscending,
+		SortOrderDescending,
+	}
+}
 
 const (
 	// StackInstanceStatusCurrent is a StackInstanceStatus enum value
@@ -21080,6 +22005,15 @@ const (
 	StackInstanceStatusInoperable = "INOPERABLE"
 )
 
+// StackInstanceStatus_Values returns all elements of the StackInstanceStatus enum
+func StackInstanceStatus_Values() []string {
+	return []string{
+		StackInstanceStatusCurrent,
+		StackInstanceStatusOutdated,
+		StackInstanceStatusInoperable,
+	}
+}
+
 const (
 	// StackSetOperationTypeCreate is a StackSetOperationType enum value
 	StackSetOperationTypeCreate = "CREATE"
@@ -21091,6 +22025,15 @@ const (
 	StackSetOperationTypeDelete = "DELETE"
 )
 
+// StackSetOperationType_Values returns all elements of the StackSetOperationType enum
+func StackSetOperationType_Values() []string {
+	return []string{
+		StackSetOperationTypeCreate,
+		StackSetOperationTypeUpdate,
+		StackSetOperationTypeDelete,
+	}
+}
+
 const (
 	// StatusAvailable is a Status enum value
 	StatusAvailable = "AVAILABLE"
@@ -21101,3 +22044,12 @@ const (
 	// StatusFailed is a Status enum value
 	StatusFailed = "FAILED"
 )
+
+// Status_Values returns all elements of the Status enum
+func Status_Values() []string {
+	return []string{
+		StatusAvailable,
+		StatusCreating,
+		StatusFailed,
+	}
+}

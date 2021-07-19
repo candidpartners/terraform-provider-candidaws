@@ -1843,7 +1843,8 @@ func (c *Redshift) CreateSnapshotScheduleRequest(input *CreateSnapshotScheduleIn
 
 // CreateSnapshotSchedule API operation for Amazon Redshift.
 //
-// Creates a snapshot schedule with the rate of every 12 hours.
+// Create a snapshot schedule that can be associated to a cluster and which
+// overrides the default system backup schedule.
 //
 // Returns awserr.Error for service API and SDK errors. Use runtime type assertions
 // with awserr.Error's Code and Message methods to get detailed information about
@@ -1977,6 +1978,104 @@ func (c *Redshift) CreateTags(input *CreateTagsInput) (*CreateTagsOutput, error)
 // for more information on using Contexts.
 func (c *Redshift) CreateTagsWithContext(ctx aws.Context, input *CreateTagsInput, opts ...request.Option) (*CreateTagsOutput, error) {
 	req, out := c.CreateTagsRequest(input)
+	req.SetContext(ctx)
+	req.ApplyOptions(opts...)
+	return out, req.Send()
+}
+
+const opCreateUsageLimit = "CreateUsageLimit"
+
+// CreateUsageLimitRequest generates a "aws/request.Request" representing the
+// client's request for the CreateUsageLimit operation. The "output" return
+// value will be populated with the request's response once the request completes
+// successfully.
+//
+// Use "Send" method on the returned Request to send the API call to the service.
+// the "output" return value is not valid until after Send returns without error.
+//
+// See CreateUsageLimit for more information on using the CreateUsageLimit
+// API call, and error handling.
+//
+// This method is useful when you want to inject custom logic or configuration
+// into the SDK's request lifecycle. Such as custom headers, or retry logic.
+//
+//
+//    // Example sending a request using the CreateUsageLimitRequest method.
+//    req, resp := client.CreateUsageLimitRequest(params)
+//
+//    err := req.Send()
+//    if err == nil { // resp is now filled
+//        fmt.Println(resp)
+//    }
+//
+// See also, https://docs.aws.amazon.com/goto/WebAPI/redshift-2012-12-01/CreateUsageLimit
+func (c *Redshift) CreateUsageLimitRequest(input *CreateUsageLimitInput) (req *request.Request, output *CreateUsageLimitOutput) {
+	op := &request.Operation{
+		Name:       opCreateUsageLimit,
+		HTTPMethod: "POST",
+		HTTPPath:   "/",
+	}
+
+	if input == nil {
+		input = &CreateUsageLimitInput{}
+	}
+
+	output = &CreateUsageLimitOutput{}
+	req = c.newRequest(op, input, output)
+	return
+}
+
+// CreateUsageLimit API operation for Amazon Redshift.
+//
+// Creates a usage limit for a specified Amazon Redshift feature on a cluster.
+// The usage limit is identified by the returned usage limit identifier.
+//
+// Returns awserr.Error for service API and SDK errors. Use runtime type assertions
+// with awserr.Error's Code and Message methods to get detailed information about
+// the error.
+//
+// See the AWS API reference guide for Amazon Redshift's
+// API operation CreateUsageLimit for usage and error information.
+//
+// Returned Error Codes:
+//   * ErrCodeClusterNotFoundFault "ClusterNotFound"
+//   The ClusterIdentifier parameter does not refer to an existing cluster.
+//
+//   * ErrCodeInvalidClusterStateFault "InvalidClusterState"
+//   The specified cluster is not in the available state.
+//
+//   * ErrCodeLimitExceededFault "LimitExceededFault"
+//   The encryption key has exceeded its grant limit in AWS KMS.
+//
+//   * ErrCodeUsageLimitAlreadyExistsFault "UsageLimitAlreadyExists"
+//   The usage limit already exists.
+//
+//   * ErrCodeInvalidUsageLimitFault "InvalidUsageLimit"
+//   The usage limit is not valid.
+//
+//   * ErrCodeTagLimitExceededFault "TagLimitExceededFault"
+//   You have exceeded the number of tags allowed.
+//
+//   * ErrCodeUnsupportedOperationFault "UnsupportedOperation"
+//   The requested operation isn't supported.
+//
+// See also, https://docs.aws.amazon.com/goto/WebAPI/redshift-2012-12-01/CreateUsageLimit
+func (c *Redshift) CreateUsageLimit(input *CreateUsageLimitInput) (*CreateUsageLimitOutput, error) {
+	req, out := c.CreateUsageLimitRequest(input)
+	return out, req.Send()
+}
+
+// CreateUsageLimitWithContext is the same as CreateUsageLimit with the addition of
+// the ability to pass a context and additional request options.
+//
+// See CreateUsageLimit for details on how to use this API operation.
+//
+// The context must be non-nil and will be used for request cancellation. If
+// the context is nil a panic will occur. In the future the SDK may create
+// sub-contexts for http.Requests. See https://golang.org/pkg/context/
+// for more information on using Contexts.
+func (c *Redshift) CreateUsageLimitWithContext(ctx aws.Context, input *CreateUsageLimitInput, opts ...request.Option) (*CreateUsageLimitOutput, error) {
+	req, out := c.CreateUsageLimitRequest(input)
 	req.SetContext(ctx)
 	req.ApplyOptions(opts...)
 	return out, req.Send()
@@ -3032,6 +3131,89 @@ func (c *Redshift) DeleteTags(input *DeleteTagsInput) (*DeleteTagsOutput, error)
 // for more information on using Contexts.
 func (c *Redshift) DeleteTagsWithContext(ctx aws.Context, input *DeleteTagsInput, opts ...request.Option) (*DeleteTagsOutput, error) {
 	req, out := c.DeleteTagsRequest(input)
+	req.SetContext(ctx)
+	req.ApplyOptions(opts...)
+	return out, req.Send()
+}
+
+const opDeleteUsageLimit = "DeleteUsageLimit"
+
+// DeleteUsageLimitRequest generates a "aws/request.Request" representing the
+// client's request for the DeleteUsageLimit operation. The "output" return
+// value will be populated with the request's response once the request completes
+// successfully.
+//
+// Use "Send" method on the returned Request to send the API call to the service.
+// the "output" return value is not valid until after Send returns without error.
+//
+// See DeleteUsageLimit for more information on using the DeleteUsageLimit
+// API call, and error handling.
+//
+// This method is useful when you want to inject custom logic or configuration
+// into the SDK's request lifecycle. Such as custom headers, or retry logic.
+//
+//
+//    // Example sending a request using the DeleteUsageLimitRequest method.
+//    req, resp := client.DeleteUsageLimitRequest(params)
+//
+//    err := req.Send()
+//    if err == nil { // resp is now filled
+//        fmt.Println(resp)
+//    }
+//
+// See also, https://docs.aws.amazon.com/goto/WebAPI/redshift-2012-12-01/DeleteUsageLimit
+func (c *Redshift) DeleteUsageLimitRequest(input *DeleteUsageLimitInput) (req *request.Request, output *DeleteUsageLimitOutput) {
+	op := &request.Operation{
+		Name:       opDeleteUsageLimit,
+		HTTPMethod: "POST",
+		HTTPPath:   "/",
+	}
+
+	if input == nil {
+		input = &DeleteUsageLimitInput{}
+	}
+
+	output = &DeleteUsageLimitOutput{}
+	req = c.newRequest(op, input, output)
+	req.Handlers.Unmarshal.Swap(query.UnmarshalHandler.Name, protocol.UnmarshalDiscardBodyHandler)
+	return
+}
+
+// DeleteUsageLimit API operation for Amazon Redshift.
+//
+// Deletes a usage limit from a cluster.
+//
+// Returns awserr.Error for service API and SDK errors. Use runtime type assertions
+// with awserr.Error's Code and Message methods to get detailed information about
+// the error.
+//
+// See the AWS API reference guide for Amazon Redshift's
+// API operation DeleteUsageLimit for usage and error information.
+//
+// Returned Error Codes:
+//   * ErrCodeUsageLimitNotFoundFault "UsageLimitNotFound"
+//   The usage limit identifier can't be found.
+//
+//   * ErrCodeUnsupportedOperationFault "UnsupportedOperation"
+//   The requested operation isn't supported.
+//
+// See also, https://docs.aws.amazon.com/goto/WebAPI/redshift-2012-12-01/DeleteUsageLimit
+func (c *Redshift) DeleteUsageLimit(input *DeleteUsageLimitInput) (*DeleteUsageLimitOutput, error) {
+	req, out := c.DeleteUsageLimitRequest(input)
+	return out, req.Send()
+}
+
+// DeleteUsageLimitWithContext is the same as DeleteUsageLimit with the addition of
+// the ability to pass a context and additional request options.
+//
+// See DeleteUsageLimit for details on how to use this API operation.
+//
+// The context must be non-nil and will be used for request cancellation. If
+// the context is nil a panic will occur. In the future the SDK may create
+// sub-contexts for http.Requests. See https://golang.org/pkg/context/
+// for more information on using Contexts.
+func (c *Redshift) DeleteUsageLimitWithContext(ctx aws.Context, input *DeleteUsageLimitInput, opts ...request.Option) (*DeleteUsageLimitOutput, error) {
+	req, out := c.DeleteUsageLimitRequest(input)
 	req.SetContext(ctx)
 	req.ApplyOptions(opts...)
 	return out, req.Send()
@@ -6458,6 +6640,160 @@ func (c *Redshift) DescribeTagsWithContext(ctx aws.Context, input *DescribeTagsI
 	return out, req.Send()
 }
 
+const opDescribeUsageLimits = "DescribeUsageLimits"
+
+// DescribeUsageLimitsRequest generates a "aws/request.Request" representing the
+// client's request for the DescribeUsageLimits operation. The "output" return
+// value will be populated with the request's response once the request completes
+// successfully.
+//
+// Use "Send" method on the returned Request to send the API call to the service.
+// the "output" return value is not valid until after Send returns without error.
+//
+// See DescribeUsageLimits for more information on using the DescribeUsageLimits
+// API call, and error handling.
+//
+// This method is useful when you want to inject custom logic or configuration
+// into the SDK's request lifecycle. Such as custom headers, or retry logic.
+//
+//
+//    // Example sending a request using the DescribeUsageLimitsRequest method.
+//    req, resp := client.DescribeUsageLimitsRequest(params)
+//
+//    err := req.Send()
+//    if err == nil { // resp is now filled
+//        fmt.Println(resp)
+//    }
+//
+// See also, https://docs.aws.amazon.com/goto/WebAPI/redshift-2012-12-01/DescribeUsageLimits
+func (c *Redshift) DescribeUsageLimitsRequest(input *DescribeUsageLimitsInput) (req *request.Request, output *DescribeUsageLimitsOutput) {
+	op := &request.Operation{
+		Name:       opDescribeUsageLimits,
+		HTTPMethod: "POST",
+		HTTPPath:   "/",
+		Paginator: &request.Paginator{
+			InputTokens:     []string{"Marker"},
+			OutputTokens:    []string{"Marker"},
+			LimitToken:      "MaxRecords",
+			TruncationToken: "",
+		},
+	}
+
+	if input == nil {
+		input = &DescribeUsageLimitsInput{}
+	}
+
+	output = &DescribeUsageLimitsOutput{}
+	req = c.newRequest(op, input, output)
+	return
+}
+
+// DescribeUsageLimits API operation for Amazon Redshift.
+//
+// Shows usage limits on a cluster. Results are filtered based on the combination
+// of input usage limit identifier, cluster identifier, and feature type parameters:
+//
+//    * If usage limit identifier, cluster identifier, and feature type are
+//    not provided, then all usage limit objects for the current account in
+//    the current region are returned.
+//
+//    * If usage limit identifier is provided, then the corresponding usage
+//    limit object is returned.
+//
+//    * If cluster identifier is provided, then all usage limit objects for
+//    the specified cluster are returned.
+//
+//    * If cluster identifier and feature type are provided, then all usage
+//    limit objects for the combination of cluster and feature are returned.
+//
+// Returns awserr.Error for service API and SDK errors. Use runtime type assertions
+// with awserr.Error's Code and Message methods to get detailed information about
+// the error.
+//
+// See the AWS API reference guide for Amazon Redshift's
+// API operation DescribeUsageLimits for usage and error information.
+//
+// Returned Error Codes:
+//   * ErrCodeClusterNotFoundFault "ClusterNotFound"
+//   The ClusterIdentifier parameter does not refer to an existing cluster.
+//
+//   * ErrCodeUnsupportedOperationFault "UnsupportedOperation"
+//   The requested operation isn't supported.
+//
+// See also, https://docs.aws.amazon.com/goto/WebAPI/redshift-2012-12-01/DescribeUsageLimits
+func (c *Redshift) DescribeUsageLimits(input *DescribeUsageLimitsInput) (*DescribeUsageLimitsOutput, error) {
+	req, out := c.DescribeUsageLimitsRequest(input)
+	return out, req.Send()
+}
+
+// DescribeUsageLimitsWithContext is the same as DescribeUsageLimits with the addition of
+// the ability to pass a context and additional request options.
+//
+// See DescribeUsageLimits for details on how to use this API operation.
+//
+// The context must be non-nil and will be used for request cancellation. If
+// the context is nil a panic will occur. In the future the SDK may create
+// sub-contexts for http.Requests. See https://golang.org/pkg/context/
+// for more information on using Contexts.
+func (c *Redshift) DescribeUsageLimitsWithContext(ctx aws.Context, input *DescribeUsageLimitsInput, opts ...request.Option) (*DescribeUsageLimitsOutput, error) {
+	req, out := c.DescribeUsageLimitsRequest(input)
+	req.SetContext(ctx)
+	req.ApplyOptions(opts...)
+	return out, req.Send()
+}
+
+// DescribeUsageLimitsPages iterates over the pages of a DescribeUsageLimits operation,
+// calling the "fn" function with the response data for each page. To stop
+// iterating, return false from the fn function.
+//
+// See DescribeUsageLimits method for more information on how to use this operation.
+//
+// Note: This operation can generate multiple requests to a service.
+//
+//    // Example iterating over at most 3 pages of a DescribeUsageLimits operation.
+//    pageNum := 0
+//    err := client.DescribeUsageLimitsPages(params,
+//        func(page *redshift.DescribeUsageLimitsOutput, lastPage bool) bool {
+//            pageNum++
+//            fmt.Println(page)
+//            return pageNum <= 3
+//        })
+//
+func (c *Redshift) DescribeUsageLimitsPages(input *DescribeUsageLimitsInput, fn func(*DescribeUsageLimitsOutput, bool) bool) error {
+	return c.DescribeUsageLimitsPagesWithContext(aws.BackgroundContext(), input, fn)
+}
+
+// DescribeUsageLimitsPagesWithContext same as DescribeUsageLimitsPages except
+// it takes a Context and allows setting request options on the pages.
+//
+// The context must be non-nil and will be used for request cancellation. If
+// the context is nil a panic will occur. In the future the SDK may create
+// sub-contexts for http.Requests. See https://golang.org/pkg/context/
+// for more information on using Contexts.
+func (c *Redshift) DescribeUsageLimitsPagesWithContext(ctx aws.Context, input *DescribeUsageLimitsInput, fn func(*DescribeUsageLimitsOutput, bool) bool, opts ...request.Option) error {
+	p := request.Pagination{
+		NewRequest: func() (*request.Request, error) {
+			var inCpy *DescribeUsageLimitsInput
+			if input != nil {
+				tmp := *input
+				inCpy = &tmp
+			}
+			req, _ := c.DescribeUsageLimitsRequest(inCpy)
+			req.SetContext(ctx)
+			req.ApplyOptions(opts...)
+			return req, nil
+		},
+	}
+
+	for p.Next() {
+		if !fn(p.Page().(*DescribeUsageLimitsOutput), !p.HasNextPage()) {
+			break
+		}
+	}
+
+	return p.Err()
+}
+
 const opDisableLogging = "DisableLogging"
 
 // DisableLoggingRequest generates a "aws/request.Request" representing the
@@ -8204,6 +8540,92 @@ func (c *Redshift) ModifySnapshotScheduleWithContext(ctx aws.Context, input *Mod
 	return out, req.Send()
 }
 
+const opModifyUsageLimit = "ModifyUsageLimit"
+
+// ModifyUsageLimitRequest generates a "aws/request.Request" representing the
+// client's request for the ModifyUsageLimit operation. The "output" return
+// value will be populated with the request's response once the request completes
+// successfully.
+//
+// Use "Send" method on the returned Request to send the API call to the service.
+// the "output" return value is not valid until after Send returns without error.
+//
+// See ModifyUsageLimit for more information on using the ModifyUsageLimit
+// API call, and error handling.
+//
+// This method is useful when you want to inject custom logic or configuration
+// into the SDK's request lifecycle. Such as custom headers, or retry logic.
+//
+//
+//    // Example sending a request using the ModifyUsageLimitRequest method.
+//    req, resp := client.ModifyUsageLimitRequest(params)
+//
+//    err := req.Send()
+//    if err == nil { // resp is now filled
+//        fmt.Println(resp)
+//    }
+//
+// See also, https://docs.aws.amazon.com/goto/WebAPI/redshift-2012-12-01/ModifyUsageLimit
+func (c *Redshift) ModifyUsageLimitRequest(input *ModifyUsageLimitInput) (req *request.Request, output *ModifyUsageLimitOutput) {
+	op := &request.Operation{
+		Name:       opModifyUsageLimit,
+		HTTPMethod: "POST",
+		HTTPPath:   "/",
+	}
+
+	if input == nil {
+		input = &ModifyUsageLimitInput{}
+	}
+
+	output = &ModifyUsageLimitOutput{}
+	req = c.newRequest(op, input, output)
+	return
+}
+
+// ModifyUsageLimit API operation for Amazon Redshift.
+//
+// Modifies a usage limit in a cluster. You can't modify the feature type or
+// period of a usage limit.
+//
+// Returns awserr.Error for service API and SDK errors. Use runtime type assertions
+// with awserr.Error's Code and Message methods to get detailed information about
+// the error.
+//
+// See the AWS API reference guide for Amazon Redshift's
+// API operation ModifyUsageLimit for usage and error information.
+//
+// Returned Error Codes:
+//   * ErrCodeInvalidUsageLimitFault "InvalidUsageLimit"
+//   The usage limit is not valid.
+//
+//   * ErrCodeUsageLimitNotFoundFault "UsageLimitNotFound"
+//   The usage limit identifier can't be found.
+//
+//   * ErrCodeUnsupportedOperationFault "UnsupportedOperation"
+//   The requested operation isn't supported.
+//
+// See also, https://docs.aws.amazon.com/goto/WebAPI/redshift-2012-12-01/ModifyUsageLimit
+func (c *Redshift) ModifyUsageLimit(input *ModifyUsageLimitInput) (*ModifyUsageLimitOutput, error) {
+	req, out := c.ModifyUsageLimitRequest(input)
+	return out, req.Send()
+}
+
+// ModifyUsageLimitWithContext is the same as ModifyUsageLimit with the addition of
+// the ability to pass a context and additional request options.
+//
+// See ModifyUsageLimit for details on how to use this API operation.
+//
+// The context must be non-nil and will be used for request cancellation. If
+// the context is nil a panic will occur. In the future the SDK may create
+// sub-contexts for http.Requests. See https://golang.org/pkg/context/
+// for more information on using Contexts.
+func (c *Redshift) ModifyUsageLimitWithContext(ctx aws.Context, input *ModifyUsageLimitInput, opts ...request.Option) (*ModifyUsageLimitOutput, error) {
+	req, out := c.ModifyUsageLimitRequest(input)
+	req.SetContext(ctx)
+	req.ApplyOptions(opts...)
+	return out, req.Send()
+}
+
 const opPauseCluster = "PauseCluster"
 
 // PauseClusterRequest generates a "aws/request.Request" representing the
@@ -8610,8 +9032,9 @@ func (c *Redshift) ResizeClusterRequest(input *ResizeClusterInput) (req *request
 //
 // Elastic resize operations have the following restrictions:
 //
-//    * You can only resize clusters of the following types: dc2.large dc2.8xlarge
-//    ds2.xlarge ds2.8xlarge ra3.16xlarge
+//    * You can only resize clusters of the following types: dc1.large (if your
+//    cluster is in a VPC) dc1.8xlarge (if your cluster is in a VPC) dc2.large
+//    dc2.8xlarge ds2.xlarge ds2.8xlarge ra3.4xlarge ra3.16xlarge
 //
 //    * The type of nodes that you add must match the node type for the cluster.
 //
@@ -9978,8 +10401,7 @@ type CancelResizeOutput struct {
 
 	// The type of encryption for the cluster after the resize is complete.
 	//
-	// Possible values are KMS and None. In the China region possible values are:
-	// Legacy and None.
+	// Possible values are KMS and None.
 	TargetEncryptionType *string `type:"string"`
 
 	// The node type that the cluster will have after the resize operation is complete.
@@ -11608,7 +12030,7 @@ type CreateClusterInput struct {
 	// in the Amazon Redshift Cluster Management Guide.
 	//
 	// Valid Values: ds2.xlarge | ds2.8xlarge | dc1.large | dc1.8xlarge | dc2.large
-	// | dc2.8xlarge | ra3.16xlarge
+	// | dc2.8xlarge | ra3.4xlarge | ra3.16xlarge
 	//
 	// NodeType is a required field
 	NodeType *string `type:"string" required:"true"`
@@ -13284,6 +13706,216 @@ func (s CreateTagsOutput) GoString() string {
 	return s.String()
 }
 
+type CreateUsageLimitInput struct {
+	_ struct{} `type:"structure"`
+
+	// The limit amount. If time-based, this amount is in minutes. If data-based,
+	// this amount is in terabytes (TB). The value must be a positive number.
+	//
+	// Amount is a required field
+	Amount *int64 `type:"long" required:"true"`
+
+	// The action that Amazon Redshift takes when the limit is reached. The default
+	// is log. For more information about this parameter, see UsageLimit.
+	BreachAction *string `type:"string" enum:"UsageLimitBreachAction"`
+
+	// The identifier of the cluster that you want to limit usage.
+	//
+	// ClusterIdentifier is a required field
+	ClusterIdentifier *string `type:"string" required:"true"`
+
+	// The Amazon Redshift feature that you want to limit.
+	//
+	// FeatureType is a required field
+	FeatureType *string `type:"string" required:"true" enum:"UsageLimitFeatureType"`
+
+	// The type of limit. Depending on the feature type, this can be based on a
+	// time duration or data size. If FeatureType is spectrum, then LimitType must
+	// be data-scanned. If FeatureType is concurrency-scaling, then LimitType must
+	// be time.
+	//
+	// LimitType is a required field
+	LimitType *string `type:"string" required:"true" enum:"UsageLimitLimitType"`
+
+	// The time period that the amount applies to. A weekly period begins on Sunday.
+	// The default is monthly.
+	Period *string `type:"string" enum:"UsageLimitPeriod"`
+
+	// A list of tag instances.
+	Tags []*Tag `locationNameList:"Tag" type:"list"`
+}
+
+// String returns the string representation
+func (s CreateUsageLimitInput) String() string {
+	return awsutil.Prettify(s)
+}
+
+// GoString returns the string representation
+func (s CreateUsageLimitInput) GoString() string {
+	return s.String()
+}
+
+// Validate inspects the fields of the type to determine if they are valid.
+func (s *CreateUsageLimitInput) Validate() error {
+	invalidParams := request.ErrInvalidParams{Context: "CreateUsageLimitInput"}
+	if s.Amount == nil {
+		invalidParams.Add(request.NewErrParamRequired("Amount"))
+	}
+	if s.ClusterIdentifier == nil {
+		invalidParams.Add(request.NewErrParamRequired("ClusterIdentifier"))
+	}
+	if s.FeatureType == nil {
+		invalidParams.Add(request.NewErrParamRequired("FeatureType"))
+	}
+	if s.LimitType == nil {
+		invalidParams.Add(request.NewErrParamRequired("LimitType"))
+	}
+
+	if invalidParams.Len() > 0 {
+		return invalidParams
+	}
+	return nil
+}
+
+// SetAmount sets the Amount field's value.
+func (s *CreateUsageLimitInput) SetAmount(v int64) *CreateUsageLimitInput {
+	s.Amount = &v
+	return s
+}
+
+// SetBreachAction sets the BreachAction field's value.
+func (s *CreateUsageLimitInput) SetBreachAction(v string) *CreateUsageLimitInput {
+	s.BreachAction = &v
+	return s
+}
+
+// SetClusterIdentifier sets the ClusterIdentifier field's value.
+func (s *CreateUsageLimitInput) SetClusterIdentifier(v string) *CreateUsageLimitInput {
+	s.ClusterIdentifier = &v
+	return s
+}
+
+// SetFeatureType sets the FeatureType field's value.
+func (s *CreateUsageLimitInput) SetFeatureType(v string) *CreateUsageLimitInput {
+	s.FeatureType = &v
+	return s
+}
+
+// SetLimitType sets the LimitType field's value.
+func (s *CreateUsageLimitInput) SetLimitType(v string) *CreateUsageLimitInput {
+	s.LimitType = &v
+	return s
+}
+
+// SetPeriod sets the Period field's value.
+func (s *CreateUsageLimitInput) SetPeriod(v string) *CreateUsageLimitInput {
+	s.Period = &v
+	return s
+}
+
+// SetTags sets the Tags field's value.
+func (s *CreateUsageLimitInput) SetTags(v []*Tag) *CreateUsageLimitInput {
+	s.Tags = v
+	return s
+}
+
+// Describes a usage limit object for a cluster.
+type CreateUsageLimitOutput struct {
+	_ struct{} `type:"structure"`
+
+	// The limit amount. If time-based, this amount is in minutes. If data-based,
+	// this amount is in terabytes (TB).
+	Amount *int64 `type:"long"`
+
+	// The action that Amazon Redshift takes when the limit is reached. Possible
+	// values are:
+	//
+	//    * log - To log an event in a system table. The default is log.
+	//
+	//    * emit-metric - To emit CloudWatch metrics.
+	//
+	//    * disable - To disable the feature until the next usage period begins.
+	BreachAction *string `type:"string" enum:"UsageLimitBreachAction"`
+
+	// The identifier of the cluster with a usage limit.
+	ClusterIdentifier *string `type:"string"`
+
+	// The Amazon Redshift feature to which the limit applies.
+	FeatureType *string `type:"string" enum:"UsageLimitFeatureType"`
+
+	// The type of limit. Depending on the feature type, this can be based on a
+	// time duration or data size.
+	LimitType *string `type:"string" enum:"UsageLimitLimitType"`
+
+	// The time period that the amount applies to. A weekly period begins on Sunday.
+	// The default is monthly.
+	Period *string `type:"string" enum:"UsageLimitPeriod"`
+
+	// A list of tag instances.
+	Tags []*Tag `locationNameList:"Tag" type:"list"`
+
+	// The identifier of the usage limit.
+	UsageLimitId *string `type:"string"`
+}
+
+// String returns the string representation
+func (s CreateUsageLimitOutput) String() string {
+	return awsutil.Prettify(s)
+}
+
+// GoString returns the string representation
+func (s CreateUsageLimitOutput) GoString() string {
+	return s.String()
+}
+
+// SetAmount sets the Amount field's value.
+func (s *CreateUsageLimitOutput) SetAmount(v int64) *CreateUsageLimitOutput {
+	s.Amount = &v
+	return s
+}
+
+// SetBreachAction sets the BreachAction field's value.
+func (s *CreateUsageLimitOutput) SetBreachAction(v string) *CreateUsageLimitOutput {
+	s.BreachAction = &v
+	return s
+}
+
+// SetClusterIdentifier sets the ClusterIdentifier field's value.
+func (s *CreateUsageLimitOutput) SetClusterIdentifier(v string) *CreateUsageLimitOutput {
+	s.ClusterIdentifier = &v
+	return s
+}
+
+// SetFeatureType sets the FeatureType field's value.
+func (s *CreateUsageLimitOutput) SetFeatureType(v string) *CreateUsageLimitOutput {
+	s.FeatureType = &v
+	return s
+}
+
+// SetLimitType sets the LimitType field's value.
+func (s *CreateUsageLimitOutput) SetLimitType(v string) *CreateUsageLimitOutput {
+	s.LimitType = &v
+	return s
+}
+
+// SetPeriod sets the Period field's value.
+func (s *CreateUsageLimitOutput) SetPeriod(v string) *CreateUsageLimitOutput {
+	s.Period = &v
+	return s
+}
+
+// SetTags sets the Tags field's value.
+func (s *CreateUsageLimitOutput) SetTags(v []*Tag) *CreateUsageLimitOutput {
+	s.Tags = v
+	return s
+}
+
+// SetUsageLimitId sets the UsageLimitId field's value.
+func (s *CreateUsageLimitOutput) SetUsageLimitId(v string) *CreateUsageLimitOutput {
+	s.UsageLimitId = &v
+	return s
+}
+
 // Describes the status of a cluster while it is in the process of resizing
 // with an incremental resize.
 type DataTransferProgress struct {
@@ -14235,6 +14867,58 @@ func (s DeleteTagsOutput) String() string {
 
 // GoString returns the string representation
 func (s DeleteTagsOutput) GoString() string {
+	return s.String()
+}
+
+type DeleteUsageLimitInput struct {
+	_ struct{} `type:"structure"`
+
+	// The identifier of the usage limit to delete.
+	//
+	// UsageLimitId is a required field
+	UsageLimitId *string `type:"string" required:"true"`
+}
+
+// String returns the string representation
+func (s DeleteUsageLimitInput) String() string {
+	return awsutil.Prettify(s)
+}
+
+// GoString returns the string representation
+func (s DeleteUsageLimitInput) GoString() string {
+	return s.String()
+}
+
+// Validate inspects the fields of the type to determine if they are valid.
+func (s *DeleteUsageLimitInput) Validate() error {
+	invalidParams := request.ErrInvalidParams{Context: "DeleteUsageLimitInput"}
+	if s.UsageLimitId == nil {
+		invalidParams.Add(request.NewErrParamRequired("UsageLimitId"))
+	}
+
+	if invalidParams.Len() > 0 {
+		return invalidParams
+	}
+	return nil
+}
+
+// SetUsageLimitId sets the UsageLimitId field's value.
+func (s *DeleteUsageLimitInput) SetUsageLimitId(v string) *DeleteUsageLimitInput {
+	s.UsageLimitId = &v
+	return s
+}
+
+type DeleteUsageLimitOutput struct {
+	_ struct{} `type:"structure"`
+}
+
+// String returns the string representation
+func (s DeleteUsageLimitOutput) String() string {
+	return awsutil.Prettify(s)
+}
+
+// GoString returns the string representation
+func (s DeleteUsageLimitOutput) GoString() string {
 	return s.String()
 }
 
@@ -16638,8 +17322,7 @@ type DescribeResizeOutput struct {
 
 	// The type of encryption for the cluster after the resize is complete.
 	//
-	// Possible values are KMS and None. In the China region possible values are:
-	// Legacy and None.
+	// Possible values are KMS and None.
 	TargetEncryptionType *string `type:"string"`
 
 	// The node type that the cluster will have after the resize operation is complete.
@@ -17435,6 +18118,140 @@ func (s *DescribeTagsOutput) SetMarker(v string) *DescribeTagsOutput {
 // SetTaggedResources sets the TaggedResources field's value.
 func (s *DescribeTagsOutput) SetTaggedResources(v []*TaggedResource) *DescribeTagsOutput {
 	s.TaggedResources = v
+	return s
+}
+
+type DescribeUsageLimitsInput struct {
+	_ struct{} `type:"structure"`
+
+	// The identifier of the cluster for which you want to describe usage limits.
+	ClusterIdentifier *string `type:"string"`
+
+	// The feature type for which you want to describe usage limits.
+	FeatureType *string `type:"string" enum:"UsageLimitFeatureType"`
+
+	// An optional parameter that specifies the starting point to return a set of
+	// response records. When the results of a DescribeUsageLimits request exceed
+	// the value specified in MaxRecords, AWS returns a value in the Marker field
+	// of the response. You can retrieve the next set of response records by providing
+	// the returned marker value in the Marker parameter and retrying the request.
+	Marker *string `type:"string"`
+
+	// The maximum number of response records to return in each call. If the number
+	// of remaining response records exceeds the specified MaxRecords value, a value
+	// is returned in a marker field of the response. You can retrieve the next
+	// set of records by retrying the command with the returned marker value.
+	//
+	// Default: 100
+	//
+	// Constraints: minimum 20, maximum 100.
+	MaxRecords *int64 `type:"integer"`
+
+	// A tag key or keys for which you want to return all matching usage limit objects
+	// that are associated with the specified key or keys. For example, suppose
+	// that you have parameter groups that are tagged with keys called owner and
+	// environment. If you specify both of these tag keys in the request, Amazon
+	// Redshift returns a response with the usage limit objects have either or both
+	// of these tag keys associated with them.
+	TagKeys []*string `locationNameList:"TagKey" type:"list"`
+
+	// A tag value or values for which you want to return all matching usage limit
+	// objects that are associated with the specified tag value or values. For example,
+	// suppose that you have parameter groups that are tagged with values called
+	// admin and test. If you specify both of these tag values in the request, Amazon
+	// Redshift returns a response with the usage limit objects that have either
+	// or both of these tag values associated with them.
+	TagValues []*string `locationNameList:"TagValue" type:"list"`
+
+	// The identifier of the usage limit to describe.
+	UsageLimitId *string `type:"string"`
+}
+
+// String returns the string representation
+func (s DescribeUsageLimitsInput) String() string {
+	return awsutil.Prettify(s)
+}
+
+// GoString returns the string representation
+func (s DescribeUsageLimitsInput) GoString() string {
+	return s.String()
+}
+
+// SetClusterIdentifier sets the ClusterIdentifier field's value.
+func (s *DescribeUsageLimitsInput) SetClusterIdentifier(v string) *DescribeUsageLimitsInput {
+	s.ClusterIdentifier = &v
+	return s
+}
+
+// SetFeatureType sets the FeatureType field's value.
+func (s *DescribeUsageLimitsInput) SetFeatureType(v string) *DescribeUsageLimitsInput {
+	s.FeatureType = &v
+	return s
+}
+
+// SetMarker sets the Marker field's value.
+func (s *DescribeUsageLimitsInput) SetMarker(v string) *DescribeUsageLimitsInput {
+	s.Marker = &v
+	return s
+}
+
+// SetMaxRecords sets the MaxRecords field's value.
+func (s *DescribeUsageLimitsInput) SetMaxRecords(v int64) *DescribeUsageLimitsInput {
+	s.MaxRecords = &v
+	return s
+}
+
+// SetTagKeys sets the TagKeys field's value.
+func (s *DescribeUsageLimitsInput) SetTagKeys(v []*string) *DescribeUsageLimitsInput {
+	s.TagKeys = v
+	return s
+}
+
+// SetTagValues sets the TagValues field's value.
+func (s *DescribeUsageLimitsInput) SetTagValues(v []*string) *DescribeUsageLimitsInput {
+	s.TagValues = v
+	return s
+}
+
+// SetUsageLimitId sets the UsageLimitId field's value.
+func (s *DescribeUsageLimitsInput) SetUsageLimitId(v string) *DescribeUsageLimitsInput {
+	s.UsageLimitId = &v
+	return s
+}
+
+type DescribeUsageLimitsOutput struct {
+	_ struct{} `type:"structure"`
+
+	// A value that indicates the starting point for the next set of response records
+	// in a subsequent request. If a value is returned in a response, you can retrieve
+	// the next set of records by providing this returned marker value in the Marker
+	// parameter and retrying the command. If the Marker field is empty, all response
+	// records have been retrieved for the request.
+	Marker *string `type:"string"`
+
+	// Contains the output from the DescribeUsageLimits action.
+	UsageLimits []*UsageLimit `type:"list"`
+}
+
+// String returns the string representation
+func (s DescribeUsageLimitsOutput) String() string {
+	return awsutil.Prettify(s)
+}
+
+// GoString returns the string representation
+func (s DescribeUsageLimitsOutput) GoString() string {
+	return s.String()
+}
+
+// SetMarker sets the Marker field's value.
+func (s *DescribeUsageLimitsOutput) SetMarker(v string) *DescribeUsageLimitsOutput {
+	s.Marker = &v
+	return s
+}
+
+// SetUsageLimits sets the UsageLimits field's value.
+func (s *DescribeUsageLimitsOutput) SetUsageLimits(v []*UsageLimit) *DescribeUsageLimitsOutput {
+	s.UsageLimits = v
 	return s
 }
 
@@ -19017,8 +19834,7 @@ type ModifyClusterInput struct {
 	// Indicates whether the cluster is encrypted. If the value is encrypted (true)
 	// and you provide a value for the KmsKeyId parameter, we encrypt the cluster
 	// with the provided KmsKeyId. If you don't provide a KmsKeyId, we encrypt with
-	// the default key. In the China region we use legacy encryption if you specify
-	// that the cluster is encrypted.
+	// the default key.
 	//
 	// If the value is not encrypted (false), then the cluster is decrypted.
 	Encrypted *bool `type:"boolean"`
@@ -19112,7 +19928,7 @@ type ModifyClusterInput struct {
 	// in the Amazon Redshift Cluster Management Guide.
 	//
 	// Valid Values: ds2.xlarge | ds2.8xlarge | dc1.large | dc1.8xlarge | dc2.large
-	// | dc2.8xlarge | ra3.16xlarge
+	// | dc2.8xlarge | ra3.4xlarge | ra3.16xlarge
 	NodeType *string `type:"string"`
 
 	// The new number of nodes of the cluster. If you specify a new number of nodes,
@@ -19439,6 +20255,7 @@ func (s *ModifyClusterOutput) SetCluster(v *Cluster) *ModifyClusterOutput {
 	return s
 }
 
+// Describes a modify cluster parameter group operation.
 type ModifyClusterParameterGroupInput struct {
 	_ struct{} `type:"structure"`
 
@@ -20348,6 +21165,160 @@ func (s *ModifySnapshotScheduleOutput) SetTags(v []*Tag) *ModifySnapshotSchedule
 	return s
 }
 
+type ModifyUsageLimitInput struct {
+	_ struct{} `type:"structure"`
+
+	// The new limit amount. For more information about this parameter, see UsageLimit.
+	Amount *int64 `type:"long"`
+
+	// The new action that Amazon Redshift takes when the limit is reached. For
+	// more information about this parameter, see UsageLimit.
+	BreachAction *string `type:"string" enum:"UsageLimitBreachAction"`
+
+	// The identifier of the usage limit to modify.
+	//
+	// UsageLimitId is a required field
+	UsageLimitId *string `type:"string" required:"true"`
+}
+
+// String returns the string representation
+func (s ModifyUsageLimitInput) String() string {
+	return awsutil.Prettify(s)
+}
+
+// GoString returns the string representation
+func (s ModifyUsageLimitInput) GoString() string {
+	return s.String()
+}
+
+// Validate inspects the fields of the type to determine if they are valid.
+func (s *ModifyUsageLimitInput) Validate() error {
+	invalidParams := request.ErrInvalidParams{Context: "ModifyUsageLimitInput"}
+	if s.UsageLimitId == nil {
+		invalidParams.Add(request.NewErrParamRequired("UsageLimitId"))
+	}
+
+	if invalidParams.Len() > 0 {
+		return invalidParams
+	}
+	return nil
+}
+
+// SetAmount sets the Amount field's value.
+func (s *ModifyUsageLimitInput) SetAmount(v int64) *ModifyUsageLimitInput {
+	s.Amount = &v
+	return s
+}
+
+// SetBreachAction sets the BreachAction field's value.
+func (s *ModifyUsageLimitInput) SetBreachAction(v string) *ModifyUsageLimitInput {
+	s.BreachAction = &v
+	return s
+}
+
+// SetUsageLimitId sets the UsageLimitId field's value.
+func (s *ModifyUsageLimitInput) SetUsageLimitId(v string) *ModifyUsageLimitInput {
+	s.UsageLimitId = &v
+	return s
+}
+
+// Describes a usage limit object for a cluster.
+type ModifyUsageLimitOutput struct {
+	_ struct{} `type:"structure"`
+
+	// The limit amount. If time-based, this amount is in minutes. If data-based,
+	// this amount is in terabytes (TB).
+	Amount *int64 `type:"long"`
+
+	// The action that Amazon Redshift takes when the limit is reached. Possible
+	// values are:
+	//
+	//    * log - To log an event in a system table. The default is log.
+	//
+	//    * emit-metric - To emit CloudWatch metrics.
+	//
+	//    * disable - To disable the feature until the next usage period begins.
+	BreachAction *string `type:"string" enum:"UsageLimitBreachAction"`
+
+	// The identifier of the cluster with a usage limit.
+	ClusterIdentifier *string `type:"string"`
+
+	// The Amazon Redshift feature to which the limit applies.
+	FeatureType *string `type:"string" enum:"UsageLimitFeatureType"`
+
+	// The type of limit. Depending on the feature type, this can be based on a
+	// time duration or data size.
+	LimitType *string `type:"string" enum:"UsageLimitLimitType"`
+
+	// The time period that the amount applies to. A weekly period begins on Sunday.
+	// The default is monthly.
+	Period *string `type:"string" enum:"UsageLimitPeriod"`
+
+	// A list of tag instances.
+	Tags []*Tag `locationNameList:"Tag" type:"list"`
+
+	// The identifier of the usage limit.
+	UsageLimitId *string `type:"string"`
+}
+
+// String returns the string representation
+func (s ModifyUsageLimitOutput) String() string {
+	return awsutil.Prettify(s)
+}
+
+// GoString returns the string representation
+func (s ModifyUsageLimitOutput) GoString() string {
+	return s.String()
+}
+
+// SetAmount sets the Amount field's value.
+func (s *ModifyUsageLimitOutput) SetAmount(v int64) *ModifyUsageLimitOutput {
+	s.Amount = &v
+	return s
+}
+
+// SetBreachAction sets the BreachAction field's value.
+func (s *ModifyUsageLimitOutput) SetBreachAction(v string) *ModifyUsageLimitOutput {
+	s.BreachAction = &v
+	return s
+}
+
+// SetClusterIdentifier sets the ClusterIdentifier field's value.
+func (s *ModifyUsageLimitOutput) SetClusterIdentifier(v string) *ModifyUsageLimitOutput {
+	s.ClusterIdentifier = &v
+	return s
+}
+
+// SetFeatureType sets the FeatureType field's value.
+func (s *ModifyUsageLimitOutput) SetFeatureType(v string) *ModifyUsageLimitOutput {
+	s.FeatureType = &v
+	return s
+}
+
+// SetLimitType sets the LimitType field's value.
+func (s *ModifyUsageLimitOutput) SetLimitType(v string) *ModifyUsageLimitOutput {
+	s.LimitType = &v
+	return s
+}
+
+// SetPeriod sets the Period field's value.
+func (s *ModifyUsageLimitOutput) SetPeriod(v string) *ModifyUsageLimitOutput {
+	s.Period = &v
+	return s
+}
+
+// SetTags sets the Tags field's value.
+func (s *ModifyUsageLimitOutput) SetTags(v []*Tag) *ModifyUsageLimitOutput {
+	s.Tags = v
+	return s
+}
+
+// SetUsageLimitId sets the UsageLimitId field's value.
+func (s *ModifyUsageLimitOutput) SetUsageLimitId(v string) *ModifyUsageLimitOutput {
+	s.UsageLimitId = &v
+	return s
+}
+
 // A list of node configurations.
 type NodeConfigurationOption struct {
 	_ struct{} `type:"structure"`
@@ -20600,6 +21571,8 @@ func (s *Parameter) SetSource(v string) *Parameter {
 	return s
 }
 
+// Describes a pause cluster operation. For example, a scheduled action to run
+// the PauseCluster API operation.
 type PauseClusterInput struct {
 	_ struct{} `type:"structure"`
 
@@ -20638,6 +21611,8 @@ func (s *PauseClusterInput) SetClusterIdentifier(v string) *PauseClusterInput {
 	return s
 }
 
+// Describes a pause cluster operation. For example, a scheduled action to run
+// the PauseCluster API operation.
 type PauseClusterMessage struct {
 	_ struct{} `type:"structure"`
 
@@ -20716,8 +21691,7 @@ type PendingModifiedValues struct {
 	// The pending or in-progress change of the service version.
 	ClusterVersion *string `type:"string"`
 
-	// The encryption type for a cluster. Possible values are: KMS and None. For
-	// the China region the possible values are None, and Legacy.
+	// The encryption type for a cluster. Possible values are: KMS and None.
 	EncryptionType *string `type:"string"`
 
 	// An option that specifies whether to create the cluster with enhanced VPC
@@ -21304,6 +22278,8 @@ func (s *ResetClusterParameterGroupInput) SetResetAllParameters(v bool) *ResetCl
 	return s
 }
 
+// Describes a resize cluster operation. For example, a scheduled action to
+// run the ResizeCluster API operation.
 type ResizeClusterInput struct {
 	_ struct{} `type:"structure"`
 
@@ -21324,7 +22300,8 @@ type ResizeClusterInput struct {
 	// current node type is used.
 	NodeType *string `type:"string"`
 
-	// The new number of nodes for the cluster.
+	// The new number of nodes for the cluster. If not specified, the cluster's
+	// current number of nodes is used.
 	NumberOfNodes *int64 `type:"integer"`
 }
 
@@ -21381,6 +22358,8 @@ func (s *ResizeClusterInput) SetNumberOfNodes(v int64) *ResizeClusterInput {
 	return s
 }
 
+// Describes a resize cluster operation. For example, a scheduled action to
+// run the ResizeCluster API operation.
 type ResizeClusterMessage struct {
 	_ struct{} `type:"structure"`
 
@@ -21401,7 +22380,8 @@ type ResizeClusterMessage struct {
 	// current node type is used.
 	NodeType *string `type:"string"`
 
-	// The new number of nodes for the cluster.
+	// The new number of nodes for the cluster. If not specified, the cluster's
+	// current number of nodes is used.
 	NumberOfNodes *int64 `type:"integer"`
 }
 
@@ -21647,7 +22627,7 @@ type RestoreFromClusterSnapshotInput struct {
 	// If you have a DC instance type, you must restore into that same instance
 	// type and size. In other words, you can only restore a dc1.large instance
 	// type into another dc1.large instance type or dc2.large instance type. You
-	// can't restore dc1.8xlarge to dc2.8xlarge. First restore to a dc1.8xlareg
+	// can't restore dc1.8xlarge to dc2.8xlarge. First restore to a dc1.8xlarge
 	// cluster, then resize to a dc2.8large cluster. For more information about
 	// node types, see About Clusters and Nodes (https://docs.aws.amazon.com/redshift/latest/mgmt/working-with-clusters.html#rs-about-clusters-and-nodes)
 	// in the Amazon Redshift Cluster Management Guide.
@@ -22141,6 +23121,8 @@ func (s *RestoreTableFromClusterSnapshotOutput) SetTableRestoreStatus(v *TableRe
 	return s
 }
 
+// Describes a resume cluster operation. For example, a scheduled action to
+// run the ResumeCluster API operation.
 type ResumeClusterInput struct {
 	_ struct{} `type:"structure"`
 
@@ -22179,6 +23161,8 @@ func (s *ResumeClusterInput) SetClusterIdentifier(v string) *ResumeClusterInput 
 	return s
 }
 
+// Describes a resume cluster operation. For example, a scheduled action to
+// run the ResumeCluster API operation.
 type ResumeClusterMessage struct {
 	_ struct{} `type:"structure"`
 
@@ -23717,6 +24701,103 @@ func (s *UpdateTarget) SetSupportedOperations(v []*SupportedOperation) *UpdateTa
 	return s
 }
 
+// Describes a usage limit object for a cluster.
+type UsageLimit struct {
+	_ struct{} `type:"structure"`
+
+	// The limit amount. If time-based, this amount is in minutes. If data-based,
+	// this amount is in terabytes (TB).
+	Amount *int64 `type:"long"`
+
+	// The action that Amazon Redshift takes when the limit is reached. Possible
+	// values are:
+	//
+	//    * log - To log an event in a system table. The default is log.
+	//
+	//    * emit-metric - To emit CloudWatch metrics.
+	//
+	//    * disable - To disable the feature until the next usage period begins.
+	BreachAction *string `type:"string" enum:"UsageLimitBreachAction"`
+
+	// The identifier of the cluster with a usage limit.
+	ClusterIdentifier *string `type:"string"`
+
+	// The Amazon Redshift feature to which the limit applies.
+	FeatureType *string `type:"string" enum:"UsageLimitFeatureType"`
+
+	// The type of limit. Depending on the feature type, this can be based on a
+	// time duration or data size.
+	LimitType *string `type:"string" enum:"UsageLimitLimitType"`
+
+	// The time period that the amount applies to. A weekly period begins on Sunday.
+	// The default is monthly.
+	Period *string `type:"string" enum:"UsageLimitPeriod"`
+
+	// A list of tag instances.
+	Tags []*Tag `locationNameList:"Tag" type:"list"`
+
+	// The identifier of the usage limit.
+	UsageLimitId *string `type:"string"`
+}
+
+// String returns the string representation
+func (s UsageLimit) String() string {
+	return awsutil.Prettify(s)
+}
+
+// GoString returns the string representation
+func (s UsageLimit) GoString() string {
+	return s.String()
+}
+
+// SetAmount sets the Amount field's value.
+func (s *UsageLimit) SetAmount(v int64) *UsageLimit {
+	s.Amount = &v
+	return s
+}
+
+// SetBreachAction sets the BreachAction field's value.
+func (s *UsageLimit) SetBreachAction(v string) *UsageLimit {
+	s.BreachAction = &v
+	return s
+}
+
+// SetClusterIdentifier sets the ClusterIdentifier field's value.
+func (s *UsageLimit) SetClusterIdentifier(v string) *UsageLimit {
+	s.ClusterIdentifier = &v
+	return s
+}
+
+// SetFeatureType sets the FeatureType field's value.
+func (s *UsageLimit) SetFeatureType(v string) *UsageLimit {
+	s.FeatureType = &v
+	return s
+}
+
+// SetLimitType sets the LimitType field's value.
+func (s *UsageLimit) SetLimitType(v string) *UsageLimit {
+	s.LimitType = &v
+	return s
+}
+
+// SetPeriod sets the Period field's value.
+func (s *UsageLimit) SetPeriod(v string) *UsageLimit {
+	s.Period = &v
+	return s
+}
+
+// SetTags sets the Tags field's value.
+func (s *UsageLimit) SetTags(v []*Tag) *UsageLimit {
+	s.Tags = v
+	return s
+}
+
+// SetUsageLimitId sets the UsageLimitId field's value.
+func (s *UsageLimit) SetUsageLimitId(v string) *UsageLimit {
+	s.UsageLimitId = &v
+	return s
+}
+
 // Describes the members of a VPC security group.
 type VpcSecurityGroupMembership struct {
 	_ struct{} `type:"structure"`
@@ -23761,6 +24842,15 @@ const (
 	ActionTypeResizeCluster = "resize-cluster"
 )
 
+// ActionType_Values returns all elements of the ActionType enum
+func ActionType_Values() []string {
+	return []string{
+		ActionTypeRestoreCluster,
+		ActionTypeRecommendNodeConfig,
+		ActionTypeResizeCluster,
+	}
+}
+
 const (
 	// ModeStandard is a Mode enum value
 	ModeStandard = "standard"
@@ -23768,6 +24858,14 @@ const (
 	// ModeHighPerformance is a Mode enum value
 	ModeHighPerformance = "high-performance"
 )
+
+// Mode_Values returns all elements of the Mode enum
+func Mode_Values() []string {
+	return []string{
+		ModeStandard,
+		ModeHighPerformance,
+	}
+}
 
 const (
 	// NodeConfigurationOptionsFilterNameNodeType is a NodeConfigurationOptionsFilterName enum value
@@ -23782,6 +24880,16 @@ const (
 	// NodeConfigurationOptionsFilterNameMode is a NodeConfigurationOptionsFilterName enum value
 	NodeConfigurationOptionsFilterNameMode = "Mode"
 )
+
+// NodeConfigurationOptionsFilterName_Values returns all elements of the NodeConfigurationOptionsFilterName enum
+func NodeConfigurationOptionsFilterName_Values() []string {
+	return []string{
+		NodeConfigurationOptionsFilterNameNodeType,
+		NodeConfigurationOptionsFilterNameNumberOfNodes,
+		NodeConfigurationOptionsFilterNameEstimatedDiskUtilizationPercent,
+		NodeConfigurationOptionsFilterNameMode,
+	}
+}
 
 const (
 	// OperatorTypeEq is a OperatorType enum value
@@ -23806,6 +24914,19 @@ const (
 	OperatorTypeBetween = "between"
 )
 
+// OperatorType_Values returns all elements of the OperatorType enum
+func OperatorType_Values() []string {
+	return []string{
+		OperatorTypeEq,
+		OperatorTypeLt,
+		OperatorTypeGt,
+		OperatorTypeLe,
+		OperatorTypeGe,
+		OperatorTypeIn,
+		OperatorTypeBetween,
+	}
+}
+
 const (
 	// ParameterApplyTypeStatic is a ParameterApplyType enum value
 	ParameterApplyTypeStatic = "static"
@@ -23814,6 +24935,14 @@ const (
 	ParameterApplyTypeDynamic = "dynamic"
 )
 
+// ParameterApplyType_Values returns all elements of the ParameterApplyType enum
+func ParameterApplyType_Values() []string {
+	return []string{
+		ParameterApplyTypeStatic,
+		ParameterApplyTypeDynamic,
+	}
+}
+
 const (
 	// ReservedNodeOfferingTypeRegular is a ReservedNodeOfferingType enum value
 	ReservedNodeOfferingTypeRegular = "Regular"
@@ -23821,6 +24950,14 @@ const (
 	// ReservedNodeOfferingTypeUpgradable is a ReservedNodeOfferingType enum value
 	ReservedNodeOfferingTypeUpgradable = "Upgradable"
 )
+
+// ReservedNodeOfferingType_Values returns all elements of the ReservedNodeOfferingType enum
+func ReservedNodeOfferingType_Values() []string {
+	return []string{
+		ReservedNodeOfferingTypeRegular,
+		ReservedNodeOfferingTypeUpgradable,
+	}
+}
 
 const (
 	// ScheduleStateModifying is a ScheduleState enum value
@@ -23833,6 +24970,15 @@ const (
 	ScheduleStateFailed = "FAILED"
 )
 
+// ScheduleState_Values returns all elements of the ScheduleState enum
+func ScheduleState_Values() []string {
+	return []string{
+		ScheduleStateModifying,
+		ScheduleStateActive,
+		ScheduleStateFailed,
+	}
+}
+
 const (
 	// ScheduledActionFilterNameClusterIdentifier is a ScheduledActionFilterName enum value
 	ScheduledActionFilterNameClusterIdentifier = "cluster-identifier"
@@ -23841,6 +24987,14 @@ const (
 	ScheduledActionFilterNameIamRole = "iam-role"
 )
 
+// ScheduledActionFilterName_Values returns all elements of the ScheduledActionFilterName enum
+func ScheduledActionFilterName_Values() []string {
+	return []string{
+		ScheduledActionFilterNameClusterIdentifier,
+		ScheduledActionFilterNameIamRole,
+	}
+}
+
 const (
 	// ScheduledActionStateActive is a ScheduledActionState enum value
 	ScheduledActionStateActive = "ACTIVE"
@@ -23848,6 +25002,14 @@ const (
 	// ScheduledActionStateDisabled is a ScheduledActionState enum value
 	ScheduledActionStateDisabled = "DISABLED"
 )
+
+// ScheduledActionState_Values returns all elements of the ScheduledActionState enum
+func ScheduledActionState_Values() []string {
+	return []string{
+		ScheduledActionStateActive,
+		ScheduledActionStateDisabled,
+	}
+}
 
 const (
 	// ScheduledActionTypeValuesResizeCluster is a ScheduledActionTypeValues enum value
@@ -23860,6 +25022,15 @@ const (
 	ScheduledActionTypeValuesResumeCluster = "ResumeCluster"
 )
 
+// ScheduledActionTypeValues_Values returns all elements of the ScheduledActionTypeValues enum
+func ScheduledActionTypeValues_Values() []string {
+	return []string{
+		ScheduledActionTypeValuesResizeCluster,
+		ScheduledActionTypeValuesPauseCluster,
+		ScheduledActionTypeValuesResumeCluster,
+	}
+}
+
 const (
 	// SnapshotAttributeToSortBySourceType is a SnapshotAttributeToSortBy enum value
 	SnapshotAttributeToSortBySourceType = "SOURCE_TYPE"
@@ -23871,6 +25042,15 @@ const (
 	SnapshotAttributeToSortByCreateTime = "CREATE_TIME"
 )
 
+// SnapshotAttributeToSortBy_Values returns all elements of the SnapshotAttributeToSortBy enum
+func SnapshotAttributeToSortBy_Values() []string {
+	return []string{
+		SnapshotAttributeToSortBySourceType,
+		SnapshotAttributeToSortByTotalSize,
+		SnapshotAttributeToSortByCreateTime,
+	}
+}
+
 const (
 	// SortByOrderAsc is a SortByOrder enum value
 	SortByOrderAsc = "ASC"
@@ -23878,6 +25058,14 @@ const (
 	// SortByOrderDesc is a SortByOrder enum value
 	SortByOrderDesc = "DESC"
 )
+
+// SortByOrder_Values returns all elements of the SortByOrder enum
+func SortByOrder_Values() []string {
+	return []string{
+		SortByOrderAsc,
+		SortByOrderDesc,
+	}
+}
 
 const (
 	// SourceTypeCluster is a SourceType enum value
@@ -23896,6 +25084,17 @@ const (
 	SourceTypeScheduledAction = "scheduled-action"
 )
 
+// SourceType_Values returns all elements of the SourceType enum
+func SourceType_Values() []string {
+	return []string{
+		SourceTypeCluster,
+		SourceTypeClusterParameterGroup,
+		SourceTypeClusterSecurityGroup,
+		SourceTypeClusterSnapshot,
+		SourceTypeScheduledAction,
+	}
+}
+
 const (
 	// TableRestoreStatusTypePending is a TableRestoreStatusType enum value
 	TableRestoreStatusTypePending = "PENDING"
@@ -23912,3 +25111,86 @@ const (
 	// TableRestoreStatusTypeCanceled is a TableRestoreStatusType enum value
 	TableRestoreStatusTypeCanceled = "CANCELED"
 )
+
+// TableRestoreStatusType_Values returns all elements of the TableRestoreStatusType enum
+func TableRestoreStatusType_Values() []string {
+	return []string{
+		TableRestoreStatusTypePending,
+		TableRestoreStatusTypeInProgress,
+		TableRestoreStatusTypeSucceeded,
+		TableRestoreStatusTypeFailed,
+		TableRestoreStatusTypeCanceled,
+	}
+}
+
+const (
+	// UsageLimitBreachActionLog is a UsageLimitBreachAction enum value
+	UsageLimitBreachActionLog = "log"
+
+	// UsageLimitBreachActionEmitMetric is a UsageLimitBreachAction enum value
+	UsageLimitBreachActionEmitMetric = "emit-metric"
+
+	// UsageLimitBreachActionDisable is a UsageLimitBreachAction enum value
+	UsageLimitBreachActionDisable = "disable"
+)
+
+// UsageLimitBreachAction_Values returns all elements of the UsageLimitBreachAction enum
+func UsageLimitBreachAction_Values() []string {
+	return []string{
+		UsageLimitBreachActionLog,
+		UsageLimitBreachActionEmitMetric,
+		UsageLimitBreachActionDisable,
+	}
+}
+
+const (
+	// UsageLimitFeatureTypeSpectrum is a UsageLimitFeatureType enum value
+	UsageLimitFeatureTypeSpectrum = "spectrum"
+
+	// UsageLimitFeatureTypeConcurrencyScaling is a UsageLimitFeatureType enum value
+	UsageLimitFeatureTypeConcurrencyScaling = "concurrency-scaling"
+)
+
+// UsageLimitFeatureType_Values returns all elements of the UsageLimitFeatureType enum
+func UsageLimitFeatureType_Values() []string {
+	return []string{
+		UsageLimitFeatureTypeSpectrum,
+		UsageLimitFeatureTypeConcurrencyScaling,
+	}
+}
+
+const (
+	// UsageLimitLimitTypeTime is a UsageLimitLimitType enum value
+	UsageLimitLimitTypeTime = "time"
+
+	// UsageLimitLimitTypeDataScanned is a UsageLimitLimitType enum value
+	UsageLimitLimitTypeDataScanned = "data-scanned"
+)
+
+// UsageLimitLimitType_Values returns all elements of the UsageLimitLimitType enum
+func UsageLimitLimitType_Values() []string {
+	return []string{
+		UsageLimitLimitTypeTime,
+		UsageLimitLimitTypeDataScanned,
+	}
+}
+
+const (
+	// UsageLimitPeriodDaily is a UsageLimitPeriod enum value
+	UsageLimitPeriodDaily = "daily"
+
+	// UsageLimitPeriodWeekly is a UsageLimitPeriod enum value
+	UsageLimitPeriodWeekly = "weekly"
+
+	// UsageLimitPeriodMonthly is a UsageLimitPeriod enum value
+	UsageLimitPeriodMonthly = "monthly"
+)
+
+// UsageLimitPeriod_Values returns all elements of the UsageLimitPeriod enum
+func UsageLimitPeriod_Values() []string {
+	return []string{
+		UsageLimitPeriodDaily,
+		UsageLimitPeriodWeekly,
+		UsageLimitPeriodMonthly,
+	}
+}

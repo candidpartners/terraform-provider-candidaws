@@ -7,8 +7,9 @@ import (
 	"os/exec"
 	"path/filepath"
 
-	svchost "github.com/hashicorp/terraform-svchost"
 	ctyjson "github.com/zclconf/go-cty/cty/json"
+
+	"github.com/hashicorp/terraform-svchost"
 )
 
 type helperProgramCredentialsSource struct {

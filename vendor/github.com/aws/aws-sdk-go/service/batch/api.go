@@ -1249,6 +1249,92 @@ func (c *Batch) ListJobsPagesWithContext(ctx aws.Context, input *ListJobsInput, 
 	return p.Err()
 }
 
+const opListTagsForResource = "ListTagsForResource"
+
+// ListTagsForResourceRequest generates a "aws/request.Request" representing the
+// client's request for the ListTagsForResource operation. The "output" return
+// value will be populated with the request's response once the request completes
+// successfully.
+//
+// Use "Send" method on the returned Request to send the API call to the service.
+// the "output" return value is not valid until after Send returns without error.
+//
+// See ListTagsForResource for more information on using the ListTagsForResource
+// API call, and error handling.
+//
+// This method is useful when you want to inject custom logic or configuration
+// into the SDK's request lifecycle. Such as custom headers, or retry logic.
+//
+//
+//    // Example sending a request using the ListTagsForResourceRequest method.
+//    req, resp := client.ListTagsForResourceRequest(params)
+//
+//    err := req.Send()
+//    if err == nil { // resp is now filled
+//        fmt.Println(resp)
+//    }
+//
+// See also, https://docs.aws.amazon.com/goto/WebAPI/batch-2016-08-10/ListTagsForResource
+func (c *Batch) ListTagsForResourceRequest(input *ListTagsForResourceInput) (req *request.Request, output *ListTagsForResourceOutput) {
+	op := &request.Operation{
+		Name:       opListTagsForResource,
+		HTTPMethod: "GET",
+		HTTPPath:   "/v1/tags/{resourceArn}",
+	}
+
+	if input == nil {
+		input = &ListTagsForResourceInput{}
+	}
+
+	output = &ListTagsForResourceOutput{}
+	req = c.newRequest(op, input, output)
+	return
+}
+
+// ListTagsForResource API operation for AWS Batch.
+//
+// List the tags for an AWS Batch resource. AWS Batch resources that support
+// tags are compute environments, jobs, job definitions, and job queues. ARNs
+// for child jobs of array and multi-node parallel (MNP) jobs are not supported.
+//
+// Returns awserr.Error for service API and SDK errors. Use runtime type assertions
+// with awserr.Error's Code and Message methods to get detailed information about
+// the error.
+//
+// See the AWS API reference guide for AWS Batch's
+// API operation ListTagsForResource for usage and error information.
+//
+// Returned Error Types:
+//   * ClientException
+//   These errors are usually caused by a client action, such as using an action
+//   or resource on behalf of a user that doesn't have permissions to use the
+//   action or resource, or specifying an identifier that is not valid.
+//
+//   * ServerException
+//   These errors are usually caused by a server issue.
+//
+// See also, https://docs.aws.amazon.com/goto/WebAPI/batch-2016-08-10/ListTagsForResource
+func (c *Batch) ListTagsForResource(input *ListTagsForResourceInput) (*ListTagsForResourceOutput, error) {
+	req, out := c.ListTagsForResourceRequest(input)
+	return out, req.Send()
+}
+
+// ListTagsForResourceWithContext is the same as ListTagsForResource with the addition of
+// the ability to pass a context and additional request options.
+//
+// See ListTagsForResource for details on how to use this API operation.
+//
+// The context must be non-nil and will be used for request cancellation. If
+// the context is nil a panic will occur. In the future the SDK may create
+// sub-contexts for http.Requests. See https://golang.org/pkg/context/
+// for more information on using Contexts.
+func (c *Batch) ListTagsForResourceWithContext(ctx aws.Context, input *ListTagsForResourceInput, opts ...request.Option) (*ListTagsForResourceOutput, error) {
+	req, out := c.ListTagsForResourceRequest(input)
+	req.SetContext(ctx)
+	req.ApplyOptions(opts...)
+	return out, req.Send()
+}
+
 const opRegisterJobDefinition = "RegisterJobDefinition"
 
 // RegisterJobDefinitionRequest generates a "aws/request.Request" representing the
@@ -1418,6 +1504,96 @@ func (c *Batch) SubmitJobWithContext(ctx aws.Context, input *SubmitJobInput, opt
 	return out, req.Send()
 }
 
+const opTagResource = "TagResource"
+
+// TagResourceRequest generates a "aws/request.Request" representing the
+// client's request for the TagResource operation. The "output" return
+// value will be populated with the request's response once the request completes
+// successfully.
+//
+// Use "Send" method on the returned Request to send the API call to the service.
+// the "output" return value is not valid until after Send returns without error.
+//
+// See TagResource for more information on using the TagResource
+// API call, and error handling.
+//
+// This method is useful when you want to inject custom logic or configuration
+// into the SDK's request lifecycle. Such as custom headers, or retry logic.
+//
+//
+//    // Example sending a request using the TagResourceRequest method.
+//    req, resp := client.TagResourceRequest(params)
+//
+//    err := req.Send()
+//    if err == nil { // resp is now filled
+//        fmt.Println(resp)
+//    }
+//
+// See also, https://docs.aws.amazon.com/goto/WebAPI/batch-2016-08-10/TagResource
+func (c *Batch) TagResourceRequest(input *TagResourceInput) (req *request.Request, output *TagResourceOutput) {
+	op := &request.Operation{
+		Name:       opTagResource,
+		HTTPMethod: "POST",
+		HTTPPath:   "/v1/tags/{resourceArn}",
+	}
+
+	if input == nil {
+		input = &TagResourceInput{}
+	}
+
+	output = &TagResourceOutput{}
+	req = c.newRequest(op, input, output)
+	req.Handlers.Unmarshal.Swap(restjson.UnmarshalHandler.Name, protocol.UnmarshalDiscardBodyHandler)
+	return
+}
+
+// TagResource API operation for AWS Batch.
+//
+// Associates the specified tags to a resource with the specified resourceArn.
+// If existing tags on a resource are not specified in the request parameters,
+// they are not changed. When a resource is deleted, the tags associated with
+// that resource are deleted as well. AWS Batch resources that support tags
+// are compute environments, jobs, job definitions, and job queues. ARNs for
+// child jobs of array and multi-node parallel (MNP) jobs are not supported.
+//
+// Returns awserr.Error for service API and SDK errors. Use runtime type assertions
+// with awserr.Error's Code and Message methods to get detailed information about
+// the error.
+//
+// See the AWS API reference guide for AWS Batch's
+// API operation TagResource for usage and error information.
+//
+// Returned Error Types:
+//   * ClientException
+//   These errors are usually caused by a client action, such as using an action
+//   or resource on behalf of a user that doesn't have permissions to use the
+//   action or resource, or specifying an identifier that is not valid.
+//
+//   * ServerException
+//   These errors are usually caused by a server issue.
+//
+// See also, https://docs.aws.amazon.com/goto/WebAPI/batch-2016-08-10/TagResource
+func (c *Batch) TagResource(input *TagResourceInput) (*TagResourceOutput, error) {
+	req, out := c.TagResourceRequest(input)
+	return out, req.Send()
+}
+
+// TagResourceWithContext is the same as TagResource with the addition of
+// the ability to pass a context and additional request options.
+//
+// See TagResource for details on how to use this API operation.
+//
+// The context must be non-nil and will be used for request cancellation. If
+// the context is nil a panic will occur. In the future the SDK may create
+// sub-contexts for http.Requests. See https://golang.org/pkg/context/
+// for more information on using Contexts.
+func (c *Batch) TagResourceWithContext(ctx aws.Context, input *TagResourceInput, opts ...request.Option) (*TagResourceOutput, error) {
+	req, out := c.TagResourceRequest(input)
+	req.SetContext(ctx)
+	req.ApplyOptions(opts...)
+	return out, req.Send()
+}
+
 const opTerminateJob = "TerminateJob"
 
 // TerminateJobRequest generates a "aws/request.Request" representing the
@@ -1500,6 +1676,91 @@ func (c *Batch) TerminateJob(input *TerminateJobInput) (*TerminateJobOutput, err
 // for more information on using Contexts.
 func (c *Batch) TerminateJobWithContext(ctx aws.Context, input *TerminateJobInput, opts ...request.Option) (*TerminateJobOutput, error) {
 	req, out := c.TerminateJobRequest(input)
+	req.SetContext(ctx)
+	req.ApplyOptions(opts...)
+	return out, req.Send()
+}
+
+const opUntagResource = "UntagResource"
+
+// UntagResourceRequest generates a "aws/request.Request" representing the
+// client's request for the UntagResource operation. The "output" return
+// value will be populated with the request's response once the request completes
+// successfully.
+//
+// Use "Send" method on the returned Request to send the API call to the service.
+// the "output" return value is not valid until after Send returns without error.
+//
+// See UntagResource for more information on using the UntagResource
+// API call, and error handling.
+//
+// This method is useful when you want to inject custom logic or configuration
+// into the SDK's request lifecycle. Such as custom headers, or retry logic.
+//
+//
+//    // Example sending a request using the UntagResourceRequest method.
+//    req, resp := client.UntagResourceRequest(params)
+//
+//    err := req.Send()
+//    if err == nil { // resp is now filled
+//        fmt.Println(resp)
+//    }
+//
+// See also, https://docs.aws.amazon.com/goto/WebAPI/batch-2016-08-10/UntagResource
+func (c *Batch) UntagResourceRequest(input *UntagResourceInput) (req *request.Request, output *UntagResourceOutput) {
+	op := &request.Operation{
+		Name:       opUntagResource,
+		HTTPMethod: "DELETE",
+		HTTPPath:   "/v1/tags/{resourceArn}",
+	}
+
+	if input == nil {
+		input = &UntagResourceInput{}
+	}
+
+	output = &UntagResourceOutput{}
+	req = c.newRequest(op, input, output)
+	req.Handlers.Unmarshal.Swap(restjson.UnmarshalHandler.Name, protocol.UnmarshalDiscardBodyHandler)
+	return
+}
+
+// UntagResource API operation for AWS Batch.
+//
+// Deletes specified tags from an AWS Batch resource.
+//
+// Returns awserr.Error for service API and SDK errors. Use runtime type assertions
+// with awserr.Error's Code and Message methods to get detailed information about
+// the error.
+//
+// See the AWS API reference guide for AWS Batch's
+// API operation UntagResource for usage and error information.
+//
+// Returned Error Types:
+//   * ClientException
+//   These errors are usually caused by a client action, such as using an action
+//   or resource on behalf of a user that doesn't have permissions to use the
+//   action or resource, or specifying an identifier that is not valid.
+//
+//   * ServerException
+//   These errors are usually caused by a server issue.
+//
+// See also, https://docs.aws.amazon.com/goto/WebAPI/batch-2016-08-10/UntagResource
+func (c *Batch) UntagResource(input *UntagResourceInput) (*UntagResourceOutput, error) {
+	req, out := c.UntagResourceRequest(input)
+	return out, req.Send()
+}
+
+// UntagResourceWithContext is the same as UntagResource with the addition of
+// the ability to pass a context and additional request options.
+//
+// See UntagResource for details on how to use this API operation.
+//
+// The context must be non-nil and will be used for request cancellation. If
+// the context is nil a panic will occur. In the future the SDK may create
+// sub-contexts for http.Requests. See https://golang.org/pkg/context/
+// for more information on using Contexts.
+func (c *Batch) UntagResourceWithContext(ctx aws.Context, input *UntagResourceInput, opts ...request.Option) (*UntagResourceOutput, error) {
+	req, out := c.UntagResourceRequest(input)
 	req.SetContext(ctx)
 	req.ApplyOptions(opts...)
 	return out, req.Send()
@@ -1857,18 +2118,17 @@ type AttemptDetail struct {
 	// Details about the container in this job attempt.
 	Container *AttemptContainerDetail `locationName:"container" type:"structure"`
 
-	// The Unix timestamp (in seconds and milliseconds) for when the attempt was
-	// started (when the attempt transitioned from the STARTING state to the RUNNING
-	// state).
+	// The Unix timestamp (in milliseconds) for when the attempt was started (when
+	// the attempt transitioned from the STARTING state to the RUNNING state).
 	StartedAt *int64 `locationName:"startedAt" type:"long"`
 
 	// A short, human-readable string to provide additional details about the current
 	// status of the job attempt.
 	StatusReason *string `locationName:"statusReason" type:"string"`
 
-	// The Unix timestamp (in seconds and milliseconds) for when the attempt was
-	// stopped (when the attempt transitioned from the RUNNING state to a terminal
-	// state, such as SUCCEEDED or FAILED).
+	// The Unix timestamp (in milliseconds) for when the attempt was stopped (when
+	// the attempt transitioned from the RUNNING state to a terminal state, such
+	// as SUCCEEDED or FAILED).
 	StoppedAt *int64 `locationName:"stoppedAt" type:"long"`
 }
 
@@ -1978,8 +2238,8 @@ func (s CancelJobOutput) GoString() string {
 // or resource on behalf of a user that doesn't have permissions to use the
 // action or resource, or specifying an identifier that is not valid.
 type ClientException struct {
-	_            struct{} `type:"structure"`
-	respMetadata protocol.ResponseMetadata
+	_            struct{}                  `type:"structure"`
+	RespMetadata protocol.ResponseMetadata `json:"-" xml:"-"`
 
 	Message_ *string `locationName:"message" type:"string"`
 }
@@ -1996,17 +2256,17 @@ func (s ClientException) GoString() string {
 
 func newErrorClientException(v protocol.ResponseMetadata) error {
 	return &ClientException{
-		respMetadata: v,
+		RespMetadata: v,
 	}
 }
 
 // Code returns the exception type name.
-func (s ClientException) Code() string {
+func (s *ClientException) Code() string {
 	return "ClientException"
 }
 
 // Message returns the exception's message.
-func (s ClientException) Message() string {
+func (s *ClientException) Message() string {
 	if s.Message_ != nil {
 		return *s.Message_
 	}
@@ -2014,22 +2274,22 @@ func (s ClientException) Message() string {
 }
 
 // OrigErr always returns nil, satisfies awserr.Error interface.
-func (s ClientException) OrigErr() error {
+func (s *ClientException) OrigErr() error {
 	return nil
 }
 
-func (s ClientException) Error() string {
+func (s *ClientException) Error() string {
 	return fmt.Sprintf("%s: %s", s.Code(), s.Message())
 }
 
 // Status code returns the HTTP status code for the request's response error.
-func (s ClientException) StatusCode() int {
-	return s.respMetadata.StatusCode
+func (s *ClientException) StatusCode() int {
+	return s.RespMetadata.StatusCode
 }
 
 // RequestID returns the service's response RequestID for request.
-func (s ClientException) RequestID() string {
-	return s.respMetadata.RequestID
+func (s *ClientException) RequestID() string {
+	return s.RespMetadata.RequestID
 }
 
 // An object representing an AWS Batch compute environment.
@@ -2079,6 +2339,9 @@ type ComputeEnvironmentDetail struct {
 	// A short, human-readable string to provide additional details about the current
 	// status of the compute environment.
 	StatusReason *string `locationName:"statusReason" type:"string"`
+
+	// The tags applied to the compute environment.
+	Tags map[string]*string `locationName:"tags" min:"1" type:"map"`
 
 	// The type of the compute environment.
 	Type *string `locationName:"type" type:"string" enum:"CEType"`
@@ -2139,6 +2402,12 @@ func (s *ComputeEnvironmentDetail) SetStatus(v string) *ComputeEnvironmentDetail
 // SetStatusReason sets the StatusReason field's value.
 func (s *ComputeEnvironmentDetail) SetStatusReason(v string) *ComputeEnvironmentDetail {
 	s.StatusReason = &v
+	return s
+}
+
+// SetTags sets the Tags field's value.
+func (s *ComputeEnvironmentDetail) SetTags(v map[string]*string) *ComputeEnvironmentDetail {
+	s.Tags = v
 	return s
 }
 
@@ -2316,7 +2585,11 @@ type ComputeResource struct {
 	// Key-value pair tags to be applied to resources that are launched in the compute
 	// environment. For AWS Batch, these take the form of "String1": "String2",
 	// where String1 is the tag key and String2 is the tag value—for example,
-	// { "Name": "AWS Batch Instance - C4OnDemand" }.
+	// { "Name": "AWS Batch Instance - C4OnDemand" }. These tags can not be updated
+	// or removed after the compute environment has been created; any changes require
+	// creating a new compute environment and removing the old compute environment.
+	// These tags are not seen when using the AWS Batch ListTagsForResource API
+	// operation.
 	Tags map[string]*string `locationName:"tags" type:"map"`
 
 	// The type of compute environment: EC2 or SPOT.
@@ -2519,6 +2792,10 @@ type ContainerDetail struct {
 	// is reserved for variables that are set by the AWS Batch service.
 	Environment []*KeyValuePair `locationName:"environment" type:"list"`
 
+	// The Amazon Resource Name (ARN) of the execution role that AWS Batch can assume.
+	// For more information, see AWS Batch execution IAM role (https://docs.aws.amazon.com/batch/latest/userguide/execution-IAM-role.html).
+	ExecutionRoleArn *string `locationName:"executionRoleArn" type:"string"`
+
 	// The exit code to return upon completion.
 	ExitCode *int64 `locationName:"exitCode" type:"integer"`
 
@@ -2536,12 +2813,43 @@ type ContainerDetail struct {
 	// for device mappings.
 	LinuxParameters *LinuxParameters `locationName:"linuxParameters" type:"structure"`
 
+	// The log configuration specification for the container.
+	//
+	// This parameter maps to LogConfig in the Create a container (https://docs.docker.com/engine/api/v1.23/#create-a-container)
+	// section of the Docker Remote API (https://docs.docker.com/engine/api/v1.23/)
+	// and the --log-driver option to docker run (https://docs.docker.com/engine/reference/run/).
+	// By default, containers use the same logging driver that the Docker daemon
+	// uses. However the container may use a different logging driver than the Docker
+	// daemon by specifying a log driver with this parameter in the container definition.
+	// To use a different logging driver for a container, the log system must be
+	// configured properly on the container instance (or on a different log server
+	// for remote logging options). For more information on the options for different
+	// supported log drivers, see Configure logging drivers (https://docs.docker.com/engine/admin/logging/overview/)
+	// in the Docker documentation.
+	//
+	// AWS Batch currently supports a subset of the logging drivers available to
+	// the Docker daemon (shown in the LogConfiguration data type). Additional log
+	// drivers may be available in future releases of the Amazon ECS container agent.
+	//
+	// This parameter requires version 1.18 of the Docker Remote API or greater
+	// on your container instance. To check the Docker Remote API version on your
+	// container instance, log into your container instance and run the following
+	// command: sudo docker version | grep "Server API version"
+	//
+	// The Amazon ECS container agent running on a container instance must register
+	// the logging drivers available on that instance with the ECS_AVAILABLE_LOGGING_DRIVERS
+	// environment variable before containers placed on that instance can use these
+	// log configuration options. For more information, see Amazon ECS Container
+	// Agent Configuration (https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ecs-agent-config.html)
+	// in the Amazon Elastic Container Service Developer Guide.
+	LogConfiguration *LogConfiguration `locationName:"logConfiguration" type:"structure"`
+
 	// The name of the CloudWatch Logs log stream associated with the container.
 	// The log group for AWS Batch jobs is /aws/batch/job. Each container attempt
 	// receives a log stream name when they reach the RUNNING status.
 	LogStreamName *string `locationName:"logStreamName" type:"string"`
 
-	// The number of MiB of memory reserved for the job.
+	// The number of MiB of memory reserved for the job. This is a required parameter.
 	Memory *int64 `locationName:"memory" type:"integer"`
 
 	// The mount points for data volumes in your container.
@@ -2566,6 +2874,11 @@ type ContainerDetail struct {
 	// only supported resource is GPU.
 	ResourceRequirements []*ResourceRequirement `locationName:"resourceRequirements" type:"list"`
 
+	// The secrets to pass to the container. For more information, see Specifying
+	// Sensitive Data (https://docs.aws.amazon.com/AmazonECS/latest/developerguide/specifying-sensitive-data.html)
+	// in the Amazon Elastic Container Service Developer Guide.
+	Secrets []*Secret `locationName:"secrets" type:"list"`
+
 	// The Amazon Resource Name (ARN) of the Amazon ECS task that is associated
 	// with the container job. Each container attempt receives a task ARN when they
 	// reach the STARTING status.
@@ -2577,7 +2890,7 @@ type ContainerDetail struct {
 	// The user name to use inside the container.
 	User *string `locationName:"user" type:"string"`
 
-	// The number of VCPUs allocated for the job.
+	// The number of VCPUs allocated for the job. This is a required parameter.
 	Vcpus *int64 `locationName:"vcpus" type:"integer"`
 
 	// A list of volumes associated with the job.
@@ -2612,6 +2925,12 @@ func (s *ContainerDetail) SetEnvironment(v []*KeyValuePair) *ContainerDetail {
 	return s
 }
 
+// SetExecutionRoleArn sets the ExecutionRoleArn field's value.
+func (s *ContainerDetail) SetExecutionRoleArn(v string) *ContainerDetail {
+	s.ExecutionRoleArn = &v
+	return s
+}
+
 // SetExitCode sets the ExitCode field's value.
 func (s *ContainerDetail) SetExitCode(v int64) *ContainerDetail {
 	s.ExitCode = &v
@@ -2639,6 +2958,12 @@ func (s *ContainerDetail) SetJobRoleArn(v string) *ContainerDetail {
 // SetLinuxParameters sets the LinuxParameters field's value.
 func (s *ContainerDetail) SetLinuxParameters(v *LinuxParameters) *ContainerDetail {
 	s.LinuxParameters = v
+	return s
+}
+
+// SetLogConfiguration sets the LogConfiguration field's value.
+func (s *ContainerDetail) SetLogConfiguration(v *LogConfiguration) *ContainerDetail {
+	s.LogConfiguration = v
 	return s
 }
 
@@ -2687,6 +3012,12 @@ func (s *ContainerDetail) SetReason(v string) *ContainerDetail {
 // SetResourceRequirements sets the ResourceRequirements field's value.
 func (s *ContainerDetail) SetResourceRequirements(v []*ResourceRequirement) *ContainerDetail {
 	s.ResourceRequirements = v
+	return s
+}
+
+// SetSecrets sets the Secrets field's value.
+func (s *ContainerDetail) SetSecrets(v []*Secret) *ContainerDetail {
+	s.Secrets = v
 	return s
 }
 
@@ -2845,6 +3176,10 @@ type ContainerProperties struct {
 	// is reserved for variables that are set by the AWS Batch service.
 	Environment []*KeyValuePair `locationName:"environment" type:"list"`
 
+	// The Amazon Resource Name (ARN) of the execution role that AWS Batch can assume.
+	// For more information, see AWS Batch execution IAM role (https://docs.aws.amazon.com/batch/latest/userguide/execution-IAM-role.html).
+	ExecutionRoleArn *string `locationName:"executionRoleArn" type:"string"`
+
 	// The image used to start a container. This string is passed directly to the
 	// Docker daemon. Images in the Docker Hub registry are available by default.
 	// Other repositories are specified with repository-url/image:tag . Up to 255
@@ -2880,12 +3215,44 @@ type ContainerProperties struct {
 	// for device mappings.
 	LinuxParameters *LinuxParameters `locationName:"linuxParameters" type:"structure"`
 
+	// The log configuration specification for the container.
+	//
+	// This parameter maps to LogConfig in the Create a container (https://docs.docker.com/engine/api/v1.23/#create-a-container)
+	// section of the Docker Remote API (https://docs.docker.com/engine/api/v1.23/)
+	// and the --log-driver option to docker run (https://docs.docker.com/engine/reference/run/).
+	// By default, containers use the same logging driver that the Docker daemon
+	// uses. However the container may use a different logging driver than the Docker
+	// daemon by specifying a log driver with this parameter in the container definition.
+	// To use a different logging driver for a container, the log system must be
+	// configured properly on the container instance (or on a different log server
+	// for remote logging options). For more information on the options for different
+	// supported log drivers, see Configure logging drivers (https://docs.docker.com/engine/admin/logging/overview/)
+	// in the Docker documentation.
+	//
+	// AWS Batch currently supports a subset of the logging drivers available to
+	// the Docker daemon (shown in the LogConfiguration data type).
+	//
+	// This parameter requires version 1.18 of the Docker Remote API or greater
+	// on your container instance. To check the Docker Remote API version on your
+	// container instance, log into your container instance and run the following
+	// command: sudo docker version | grep "Server API version"
+	//
+	// The Amazon ECS container agent running on a container instance must register
+	// the logging drivers available on that instance with the ECS_AVAILABLE_LOGGING_DRIVERS
+	// environment variable before containers placed on that instance can use these
+	// log configuration options. For more information, see Amazon ECS Container
+	// Agent Configuration (https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ecs-agent-config.html)
+	// in the Amazon Elastic Container Service Developer Guide.
+	LogConfiguration *LogConfiguration `locationName:"logConfiguration" type:"structure"`
+
 	// The hard limit (in MiB) of memory to present to the container. If your container
 	// attempts to exceed the memory specified here, the container is killed. This
 	// parameter maps to Memory in the Create a container (https://docs.docker.com/engine/api/v1.23/#create-a-container)
 	// section of the Docker Remote API (https://docs.docker.com/engine/api/v1.23/)
 	// and the --memory option to docker run (https://docs.docker.com/engine/reference/run/).
-	// You must specify at least 4 MiB of memory for a job.
+	// You must specify at least 4 MiB of memory for a job. This is required but
+	// can be specified in several places for multi-node parallel (MNP) jobs; it
+	// must be specified for each node at least once.
 	//
 	// If you are trying to maximize your resource utilization by providing your
 	// jobs as much memory as possible for a particular instance type, see Memory
@@ -2917,6 +3284,11 @@ type ContainerProperties struct {
 	// only supported resource is GPU.
 	ResourceRequirements []*ResourceRequirement `locationName:"resourceRequirements" type:"list"`
 
+	// The secrets for the container. For more information, see Specifying Sensitive
+	// Data (https://docs.aws.amazon.com/AmazonECS/latest/developerguide/specifying-sensitive-data.html)
+	// in the Amazon Elastic Container Service Developer Guide.
+	Secrets []*Secret `locationName:"secrets" type:"list"`
+
 	// A list of ulimits to set in the container. This parameter maps to Ulimits
 	// in the Create a container (https://docs.docker.com/engine/api/v1.23/#create-a-container)
 	// section of the Docker Remote API (https://docs.docker.com/engine/api/v1.23/)
@@ -2934,7 +3306,8 @@ type ContainerProperties struct {
 	// section of the Docker Remote API (https://docs.docker.com/engine/api/v1.23/)
 	// and the --cpu-shares option to docker run (https://docs.docker.com/engine/reference/run/).
 	// Each vCPU is equivalent to 1,024 CPU shares. You must specify at least one
-	// vCPU.
+	// vCPU. This is required but can be specified in several places for multi-node
+	// parallel (MNP) jobs; it must be specified for each node at least once.
 	Vcpus *int64 `locationName:"vcpus" type:"integer"`
 
 	// A list of data volumes used in a job.
@@ -2959,6 +3332,11 @@ func (s *ContainerProperties) Validate() error {
 			invalidParams.AddNested("LinuxParameters", err.(request.ErrInvalidParams))
 		}
 	}
+	if s.LogConfiguration != nil {
+		if err := s.LogConfiguration.Validate(); err != nil {
+			invalidParams.AddNested("LogConfiguration", err.(request.ErrInvalidParams))
+		}
+	}
 	if s.ResourceRequirements != nil {
 		for i, v := range s.ResourceRequirements {
 			if v == nil {
@@ -2966,6 +3344,16 @@ func (s *ContainerProperties) Validate() error {
 			}
 			if err := v.Validate(); err != nil {
 				invalidParams.AddNested(fmt.Sprintf("%s[%v]", "ResourceRequirements", i), err.(request.ErrInvalidParams))
+			}
+		}
+	}
+	if s.Secrets != nil {
+		for i, v := range s.Secrets {
+			if v == nil {
+				continue
+			}
+			if err := v.Validate(); err != nil {
+				invalidParams.AddNested(fmt.Sprintf("%s[%v]", "Secrets", i), err.(request.ErrInvalidParams))
 			}
 		}
 	}
@@ -2998,6 +3386,12 @@ func (s *ContainerProperties) SetEnvironment(v []*KeyValuePair) *ContainerProper
 	return s
 }
 
+// SetExecutionRoleArn sets the ExecutionRoleArn field's value.
+func (s *ContainerProperties) SetExecutionRoleArn(v string) *ContainerProperties {
+	s.ExecutionRoleArn = &v
+	return s
+}
+
 // SetImage sets the Image field's value.
 func (s *ContainerProperties) SetImage(v string) *ContainerProperties {
 	s.Image = &v
@@ -3019,6 +3413,12 @@ func (s *ContainerProperties) SetJobRoleArn(v string) *ContainerProperties {
 // SetLinuxParameters sets the LinuxParameters field's value.
 func (s *ContainerProperties) SetLinuxParameters(v *LinuxParameters) *ContainerProperties {
 	s.LinuxParameters = v
+	return s
+}
+
+// SetLogConfiguration sets the LogConfiguration field's value.
+func (s *ContainerProperties) SetLogConfiguration(v *LogConfiguration) *ContainerProperties {
+	s.LogConfiguration = v
 	return s
 }
 
@@ -3049,6 +3449,12 @@ func (s *ContainerProperties) SetReadonlyRootFilesystem(v bool) *ContainerProper
 // SetResourceRequirements sets the ResourceRequirements field's value.
 func (s *ContainerProperties) SetResourceRequirements(v []*ResourceRequirement) *ContainerProperties {
 	s.ResourceRequirements = v
+	return s
+}
+
+// SetSecrets sets the Secrets field's value.
+func (s *ContainerProperties) SetSecrets(v []*Secret) *ContainerProperties {
+	s.Secrets = v
 	return s
 }
 
@@ -3146,6 +3552,16 @@ type CreateComputeEnvironmentInput struct {
 	// on queues.
 	State *string `locationName:"state" type:"string" enum:"CEState"`
 
+	// The tags that you apply to the compute environment to help you categorize
+	// and organize your resources. Each tag consists of a key and an optional value.
+	// For more information, see Tagging AWS Resources (https://docs.aws.amazon.com/general/latest/gr/aws_tagging.html)
+	// in AWS General Reference.
+	//
+	// These tags can be updated or removed using the TagResource (https://docs.aws.amazon.com/batch/latest/APIReference/API_TagResource.html)
+	// and UntagResource (https://docs.aws.amazon.com/batch/latest/APIReference/API_UntagResource.html)
+	// API operations. These tags do not propagate to the underlying compute resources.
+	Tags map[string]*string `locationName:"tags" min:"1" type:"map"`
+
 	// The type of the compute environment. For more information, see Compute Environments
 	// (https://docs.aws.amazon.com/batch/latest/userguide/compute_environments.html)
 	// in the AWS Batch User Guide.
@@ -3172,6 +3588,9 @@ func (s *CreateComputeEnvironmentInput) Validate() error {
 	}
 	if s.ServiceRole == nil {
 		invalidParams.Add(request.NewErrParamRequired("ServiceRole"))
+	}
+	if s.Tags != nil && len(s.Tags) < 1 {
+		invalidParams.Add(request.NewErrParamMinLen("Tags", 1))
 	}
 	if s.Type == nil {
 		invalidParams.Add(request.NewErrParamRequired("Type"))
@@ -3209,6 +3628,12 @@ func (s *CreateComputeEnvironmentInput) SetServiceRole(v string) *CreateComputeE
 // SetState sets the State field's value.
 func (s *CreateComputeEnvironmentInput) SetState(v string) *CreateComputeEnvironmentInput {
 	s.State = &v
+	return s
+}
+
+// SetTags sets the Tags field's value.
+func (s *CreateComputeEnvironmentInput) SetTags(v map[string]*string) *CreateComputeEnvironmentInput {
+	s.Tags = v
 	return s
 }
 
@@ -3277,8 +3702,15 @@ type CreateJobQueueInput struct {
 	Priority *int64 `locationName:"priority" type:"integer" required:"true"`
 
 	// The state of the job queue. If the job queue state is ENABLED, it is able
-	// to accept jobs.
+	// to accept jobs. If the job queue state is DISABLED, new jobs cannot be added
+	// to the queue, but jobs already in the queue can finish.
 	State *string `locationName:"state" type:"string" enum:"JQState"`
+
+	// The tags that you apply to the job queue to help you categorize and organize
+	// your resources. Each tag consists of a key and an optional value. For more
+	// information, see Tagging AWS Resources (https://docs.aws.amazon.com/general/latest/gr/aws_tagging.html)
+	// in AWS General Reference.
+	Tags map[string]*string `locationName:"tags" min:"1" type:"map"`
 }
 
 // String returns the string representation
@@ -3302,6 +3734,9 @@ func (s *CreateJobQueueInput) Validate() error {
 	}
 	if s.Priority == nil {
 		invalidParams.Add(request.NewErrParamRequired("Priority"))
+	}
+	if s.Tags != nil && len(s.Tags) < 1 {
+		invalidParams.Add(request.NewErrParamMinLen("Tags", 1))
 	}
 	if s.ComputeEnvironmentOrder != nil {
 		for i, v := range s.ComputeEnvironmentOrder {
@@ -3341,6 +3776,12 @@ func (s *CreateJobQueueInput) SetPriority(v int64) *CreateJobQueueInput {
 // SetState sets the State field's value.
 func (s *CreateJobQueueInput) SetState(v string) *CreateJobQueueInput {
 	s.State = &v
+	return s
+}
+
+// SetTags sets the Tags field's value.
+func (s *CreateJobQueueInput) SetTags(v map[string]*string) *CreateJobQueueInput {
+	s.Tags = v
 	return s
 }
 
@@ -4019,6 +4460,9 @@ type JobDefinition struct {
 	// The status of the job definition.
 	Status *string `locationName:"status" type:"string"`
 
+	// The tags applied to the job definition.
+	Tags map[string]*string `locationName:"tags" min:"1" type:"map"`
+
 	// The timeout configuration for jobs that are submitted with this job definition.
 	// You can specify a timeout duration after which AWS Batch terminates your
 	// jobs if they have not finished.
@@ -4088,6 +4532,12 @@ func (s *JobDefinition) SetStatus(v string) *JobDefinition {
 	return s
 }
 
+// SetTags sets the Tags field's value.
+func (s *JobDefinition) SetTags(v map[string]*string) *JobDefinition {
+	s.Tags = v
+	return s
+}
+
 // SetTimeout sets the Timeout field's value.
 func (s *JobDefinition) SetTimeout(v *JobTimeout) *JobDefinition {
 	s.Timeout = v
@@ -4147,15 +4597,17 @@ type JobDetail struct {
 	// the job.
 	Container *ContainerDetail `locationName:"container" type:"structure"`
 
-	// The Unix timestamp (in seconds and milliseconds) for when the job was created.
-	// For non-array jobs and parent array jobs, this is when the job entered the
-	// SUBMITTED state (at the time SubmitJob was called). For array child jobs,
-	// this is when the child job was spawned by its parent and entered the PENDING
-	// state.
+	// The Unix timestamp (in milliseconds) for when the job was created. For non-array
+	// jobs and parent array jobs, this is when the job entered the SUBMITTED state
+	// (at the time SubmitJob was called). For array child jobs, this is when the
+	// child job was spawned by its parent and entered the PENDING state.
 	CreatedAt *int64 `locationName:"createdAt" type:"long"`
 
 	// A list of job IDs on which this job depends.
 	DependsOn []*JobDependency `locationName:"dependsOn" type:"list"`
+
+	// The Amazon Resource Name (ARN) of the job.
+	JobArn *string `locationName:"jobArn" type:"string"`
 
 	// The job definition that is used by this job.
 	//
@@ -4192,8 +4644,9 @@ type JobDetail struct {
 	// The retry strategy to use for this job if an attempt fails.
 	RetryStrategy *RetryStrategy `locationName:"retryStrategy" type:"structure"`
 
-	// The Unix timestamp (in seconds and milliseconds) for when the job was started
-	// (when the job transitioned from the STARTING state to the RUNNING state).
+	// The Unix timestamp (in milliseconds) for when the job was started (when the
+	// job transitioned from the STARTING state to the RUNNING state). This parameter
+	// is not provided for child jobs of array jobs or multi-node parallel jobs.
 	//
 	// StartedAt is a required field
 	StartedAt *int64 `locationName:"startedAt" type:"long" required:"true"`
@@ -4211,10 +4664,13 @@ type JobDetail struct {
 	// status of the job.
 	StatusReason *string `locationName:"statusReason" type:"string"`
 
-	// The Unix timestamp (in seconds and milliseconds) for when the job was stopped
-	// (when the job transitioned from the RUNNING state to a terminal state, such
-	// as SUCCEEDED or FAILED).
+	// The Unix timestamp (in milliseconds) for when the job was stopped (when the
+	// job transitioned from the RUNNING state to a terminal state, such as SUCCEEDED
+	// or FAILED).
 	StoppedAt *int64 `locationName:"stoppedAt" type:"long"`
+
+	// The tags applied to the job.
+	Tags map[string]*string `locationName:"tags" min:"1" type:"map"`
 
 	// The timeout configuration for the job.
 	Timeout *JobTimeout `locationName:"timeout" type:"structure"`
@@ -4257,6 +4713,12 @@ func (s *JobDetail) SetCreatedAt(v int64) *JobDetail {
 // SetDependsOn sets the DependsOn field's value.
 func (s *JobDetail) SetDependsOn(v []*JobDependency) *JobDetail {
 	s.DependsOn = v
+	return s
+}
+
+// SetJobArn sets the JobArn field's value.
+func (s *JobDetail) SetJobArn(v string) *JobDetail {
+	s.JobArn = &v
 	return s
 }
 
@@ -4332,6 +4794,12 @@ func (s *JobDetail) SetStoppedAt(v int64) *JobDetail {
 	return s
 }
 
+// SetTags sets the Tags field's value.
+func (s *JobDetail) SetTags(v map[string]*string) *JobDetail {
+	s.Tags = v
+	return s
+}
+
 // SetTimeout sets the Timeout field's value.
 func (s *JobDetail) SetTimeout(v *JobTimeout) *JobDetail {
 	s.Timeout = v
@@ -4364,7 +4832,10 @@ type JobQueueDetail struct {
 	// Priority is a required field
 	Priority *int64 `locationName:"priority" type:"integer" required:"true"`
 
-	// Describes the ability of the queue to accept new jobs.
+	// Describes the ability of the queue to accept new jobs. If the job queue state
+	// is ENABLED, it is able to accept jobs. If the job queue state is DISABLED,
+	// new jobs cannot be added to the queue, but jobs already in the queue can
+	// finish.
 	//
 	// State is a required field
 	State *string `locationName:"state" type:"string" required:"true" enum:"JQState"`
@@ -4375,6 +4846,9 @@ type JobQueueDetail struct {
 	// A short, human-readable string to provide additional details about the current
 	// status of the job queue.
 	StatusReason *string `locationName:"statusReason" type:"string"`
+
+	// The tags applied to the job queue.
+	Tags map[string]*string `locationName:"tags" min:"1" type:"map"`
 }
 
 // String returns the string representation
@@ -4429,6 +4903,12 @@ func (s *JobQueueDetail) SetStatusReason(v string) *JobQueueDetail {
 	return s
 }
 
+// SetTags sets the Tags field's value.
+func (s *JobQueueDetail) SetTags(v map[string]*string) *JobQueueDetail {
+	s.Tags = v
+	return s
+}
+
 // An object representing summary details of a job.
 type JobSummary struct {
 	_ struct{} `type:"structure"`
@@ -4445,6 +4925,9 @@ type JobSummary struct {
 	// SubmitJob was called). For array child jobs, this is when the child job was
 	// spawned by its parent and entered the PENDING state.
 	CreatedAt *int64 `locationName:"createdAt" type:"long"`
+
+	// The Amazon Resource Name (ARN) of the job.
+	JobArn *string `locationName:"jobArn" type:"string"`
 
 	// The ID of the job.
 	//
@@ -4500,6 +4983,12 @@ func (s *JobSummary) SetContainer(v *ContainerSummary) *JobSummary {
 // SetCreatedAt sets the CreatedAt field's value.
 func (s *JobSummary) SetCreatedAt(v int64) *JobSummary {
 	s.CreatedAt = &v
+	return s
+}
+
+// SetJobArn sets the JobArn field's value.
+func (s *JobSummary) SetJobArn(v string) *JobSummary {
+	s.JobArn = &v
 	return s
 }
 
@@ -4617,9 +5106,12 @@ type LaunchTemplateSpecification struct {
 	// The name of the launch template.
 	LaunchTemplateName *string `locationName:"launchTemplateName" type:"string"`
 
-	// The version number of the launch template.
+	// The version number of the launch template, $Latest, or $Default.
 	//
-	// Default: The default version of the launch template.
+	// If the value is $Latest, the latest version of the launch template is used.
+	// If the value is $Default, the default version of the launch template is used.
+	//
+	// Default: $Default.
 	Version *string `locationName:"version" type:"string"`
 }
 
@@ -4661,6 +5153,43 @@ type LinuxParameters struct {
 	// section of the Docker Remote API (https://docs.docker.com/engine/api/v1.23/)
 	// and the --device option to docker run (https://docs.docker.com/engine/reference/run/).
 	Devices []*Device `locationName:"devices" type:"list"`
+
+	// If true, run an init process inside the container that forwards signals and
+	// reaps processes. This parameter maps to the --init option to docker run (https://docs.docker.com/engine/reference/run/).
+	// This parameter requires version 1.25 of the Docker Remote API or greater
+	// on your container instance. To check the Docker Remote API version on your
+	// container instance, log into your container instance and run the following
+	// command: sudo docker version | grep "Server API version"
+	InitProcessEnabled *bool `locationName:"initProcessEnabled" type:"boolean"`
+
+	// The total amount of swap memory (in MiB) a container can use. This parameter
+	// will be translated to the --memory-swap option to docker run (https://docs.docker.com/engine/reference/run/)
+	// where the value would be the sum of the container memory plus the maxSwap
+	// value.
+	//
+	// If a maxSwap value of 0 is specified, the container will not use swap. Accepted
+	// values are 0 or any positive integer. If the maxSwap parameter is omitted,
+	// the container will use the swap configuration for the container instance
+	// it is running on. A maxSwap value must be set for the swappiness parameter
+	// to be used.
+	MaxSwap *int64 `locationName:"maxSwap" type:"integer"`
+
+	// The value for the size (in MiB) of the /dev/shm volume. This parameter maps
+	// to the --shm-size option to docker run (https://docs.docker.com/engine/reference/run/).
+	SharedMemorySize *int64 `locationName:"sharedMemorySize" type:"integer"`
+
+	// This allows you to tune a container's memory swappiness behavior. A swappiness
+	// value of 0 will cause swapping to not happen unless absolutely necessary.
+	// A swappiness value of 100 will cause pages to be swapped very aggressively.
+	// Accepted values are whole numbers between 0 and 100. If the swappiness parameter
+	// is not specified, a default value of 60 is used. If a value is not specified
+	// for maxSwap then this parameter is ignored. This parameter maps to the --memory-swappiness
+	// option to docker run (https://docs.docker.com/engine/reference/run/).
+	Swappiness *int64 `locationName:"swappiness" type:"integer"`
+
+	// The container path, mount options, and size (in MiB) of the tmpfs mount.
+	// This parameter maps to the --tmpfs option to docker run (https://docs.docker.com/engine/reference/run/).
+	Tmpfs []*Tmpfs `locationName:"tmpfs" type:"list"`
 }
 
 // String returns the string representation
@@ -4686,6 +5215,16 @@ func (s *LinuxParameters) Validate() error {
 			}
 		}
 	}
+	if s.Tmpfs != nil {
+		for i, v := range s.Tmpfs {
+			if v == nil {
+				continue
+			}
+			if err := v.Validate(); err != nil {
+				invalidParams.AddNested(fmt.Sprintf("%s[%v]", "Tmpfs", i), err.(request.ErrInvalidParams))
+			}
+		}
+	}
 
 	if invalidParams.Len() > 0 {
 		return invalidParams
@@ -4696,6 +5235,36 @@ func (s *LinuxParameters) Validate() error {
 // SetDevices sets the Devices field's value.
 func (s *LinuxParameters) SetDevices(v []*Device) *LinuxParameters {
 	s.Devices = v
+	return s
+}
+
+// SetInitProcessEnabled sets the InitProcessEnabled field's value.
+func (s *LinuxParameters) SetInitProcessEnabled(v bool) *LinuxParameters {
+	s.InitProcessEnabled = &v
+	return s
+}
+
+// SetMaxSwap sets the MaxSwap field's value.
+func (s *LinuxParameters) SetMaxSwap(v int64) *LinuxParameters {
+	s.MaxSwap = &v
+	return s
+}
+
+// SetSharedMemorySize sets the SharedMemorySize field's value.
+func (s *LinuxParameters) SetSharedMemorySize(v int64) *LinuxParameters {
+	s.SharedMemorySize = &v
+	return s
+}
+
+// SetSwappiness sets the Swappiness field's value.
+func (s *LinuxParameters) SetSwappiness(v int64) *LinuxParameters {
+	s.Swappiness = &v
+	return s
+}
+
+// SetTmpfs sets the Tmpfs field's value.
+func (s *LinuxParameters) SetTmpfs(v []*Tmpfs) *LinuxParameters {
+	s.Tmpfs = v
 	return s
 }
 
@@ -4818,6 +5387,206 @@ func (s *ListJobsOutput) SetJobSummaryList(v []*JobSummary) *ListJobsOutput {
 // SetNextToken sets the NextToken field's value.
 func (s *ListJobsOutput) SetNextToken(v string) *ListJobsOutput {
 	s.NextToken = &v
+	return s
+}
+
+type ListTagsForResourceInput struct {
+	_ struct{} `type:"structure"`
+
+	// The Amazon Resource Name (ARN) that identifies the resource for which to
+	// list the tags. AWS Batch resources that support tags are compute environments,
+	// jobs, job definitions, and job queues. ARNs for child jobs of array and multi-node
+	// parallel (MNP) jobs are not supported.
+	//
+	// ResourceArn is a required field
+	ResourceArn *string `location:"uri" locationName:"resourceArn" type:"string" required:"true"`
+}
+
+// String returns the string representation
+func (s ListTagsForResourceInput) String() string {
+	return awsutil.Prettify(s)
+}
+
+// GoString returns the string representation
+func (s ListTagsForResourceInput) GoString() string {
+	return s.String()
+}
+
+// Validate inspects the fields of the type to determine if they are valid.
+func (s *ListTagsForResourceInput) Validate() error {
+	invalidParams := request.ErrInvalidParams{Context: "ListTagsForResourceInput"}
+	if s.ResourceArn == nil {
+		invalidParams.Add(request.NewErrParamRequired("ResourceArn"))
+	}
+	if s.ResourceArn != nil && len(*s.ResourceArn) < 1 {
+		invalidParams.Add(request.NewErrParamMinLen("ResourceArn", 1))
+	}
+
+	if invalidParams.Len() > 0 {
+		return invalidParams
+	}
+	return nil
+}
+
+// SetResourceArn sets the ResourceArn field's value.
+func (s *ListTagsForResourceInput) SetResourceArn(v string) *ListTagsForResourceInput {
+	s.ResourceArn = &v
+	return s
+}
+
+type ListTagsForResourceOutput struct {
+	_ struct{} `type:"structure"`
+
+	// The tags for the resource.
+	Tags map[string]*string `locationName:"tags" min:"1" type:"map"`
+}
+
+// String returns the string representation
+func (s ListTagsForResourceOutput) String() string {
+	return awsutil.Prettify(s)
+}
+
+// GoString returns the string representation
+func (s ListTagsForResourceOutput) GoString() string {
+	return s.String()
+}
+
+// SetTags sets the Tags field's value.
+func (s *ListTagsForResourceOutput) SetTags(v map[string]*string) *ListTagsForResourceOutput {
+	s.Tags = v
+	return s
+}
+
+// Log configuration options to send to a custom log driver for the container.
+type LogConfiguration struct {
+	_ struct{} `type:"structure"`
+
+	// The log driver to use for the container. The valid values listed for this
+	// parameter are log drivers that the Amazon ECS container agent can communicate
+	// with by default.
+	//
+	// The supported log drivers are awslogs, fluentd, gelf, json-file, journald,
+	// logentries, syslog, and splunk.
+	//
+	// awslogs
+	//
+	// Specifies the Amazon CloudWatch Logs logging driver. For more information,
+	// see Using the awslogs Log Driver (https://docs.aws.amazon.com/batch/latest/userguide/using_awslogs.html)
+	// in the AWS Batch User Guide and Amazon CloudWatch Logs logging driver (https://docs.docker.com/config/containers/logging/awslogs/)
+	// in the Docker documentation.
+	//
+	// fluentd
+	//
+	// Specifies the Fluentd logging driver. For more information, including usage
+	// and options, see Fluentd logging driver (https://docs.docker.com/config/containers/logging/fluentd/)
+	// in the Docker documentation.
+	//
+	// gelf
+	//
+	// Specifies the Graylog Extended Format (GELF) logging driver. For more information,
+	// including usage and options, see Graylog Extended Format logging driver (https://docs.docker.com/config/containers/logging/gelf/)
+	// in the Docker documentation.
+	//
+	// journald
+	//
+	// Specifies the journald logging driver. For more information, including usage
+	// and options, see Journald logging driver (https://docs.docker.com/config/containers/logging/journald/)
+	// in the Docker documentation.
+	//
+	// json-file
+	//
+	// Specifies the JSON file logging driver. For more information, including usage
+	// and options, see JSON File logging driver (https://docs.docker.com/config/containers/logging/json-file/)
+	// in the Docker documentation.
+	//
+	// splunk
+	//
+	// Specifies the Splunk logging driver. For more information, including usage
+	// and options, see Splunk logging driver (https://docs.docker.com/config/containers/logging/splunk/)
+	// in the Docker documentation.
+	//
+	// syslog
+	//
+	// Specifies the syslog logging driver. For more information, including usage
+	// and options, see Syslog logging driver (https://docs.docker.com/config/containers/logging/syslog/)
+	// in the Docker documentation.
+	//
+	// If you have a custom driver that is not listed earlier that you would like
+	// to work with the Amazon ECS container agent, you can fork the Amazon ECS
+	// container agent project that is available on GitHub (https://github.com/aws/amazon-ecs-agent)
+	// and customize it to work with that driver. We encourage you to submit pull
+	// requests for changes that you would like to have included. However, Amazon
+	// Web Services does not currently support running modified copies of this software.
+	//
+	// This parameter requires version 1.18 of the Docker Remote API or greater
+	// on your container instance. To check the Docker Remote API version on your
+	// container instance, log into your container instance and run the following
+	// command: sudo docker version | grep "Server API version"
+	//
+	// LogDriver is a required field
+	LogDriver *string `locationName:"logDriver" type:"string" required:"true" enum:"LogDriver"`
+
+	// The configuration options to send to the log driver. This parameter requires
+	// version 1.19 of the Docker Remote API or greater on your container instance.
+	// To check the Docker Remote API version on your container instance, log into
+	// your container instance and run the following command: sudo docker version
+	// | grep "Server API version"
+	Options map[string]*string `locationName:"options" type:"map"`
+
+	// The secrets to pass to the log configuration. For more information, see Specifying
+	// Sensitive Data (https://docs.aws.amazon.com/batch/latest/userguide/specifying-sensitive-data.html)
+	// in the AWS Batch User Guide.
+	SecretOptions []*Secret `locationName:"secretOptions" type:"list"`
+}
+
+// String returns the string representation
+func (s LogConfiguration) String() string {
+	return awsutil.Prettify(s)
+}
+
+// GoString returns the string representation
+func (s LogConfiguration) GoString() string {
+	return s.String()
+}
+
+// Validate inspects the fields of the type to determine if they are valid.
+func (s *LogConfiguration) Validate() error {
+	invalidParams := request.ErrInvalidParams{Context: "LogConfiguration"}
+	if s.LogDriver == nil {
+		invalidParams.Add(request.NewErrParamRequired("LogDriver"))
+	}
+	if s.SecretOptions != nil {
+		for i, v := range s.SecretOptions {
+			if v == nil {
+				continue
+			}
+			if err := v.Validate(); err != nil {
+				invalidParams.AddNested(fmt.Sprintf("%s[%v]", "SecretOptions", i), err.(request.ErrInvalidParams))
+			}
+		}
+	}
+
+	if invalidParams.Len() > 0 {
+		return invalidParams
+	}
+	return nil
+}
+
+// SetLogDriver sets the LogDriver field's value.
+func (s *LogConfiguration) SetLogDriver(v string) *LogConfiguration {
+	s.LogDriver = &v
+	return s
+}
+
+// SetOptions sets the Options field's value.
+func (s *LogConfiguration) SetOptions(v map[string]*string) *LogConfiguration {
+	s.Options = v
+	return s
+}
+
+// SetSecretOptions sets the SecretOptions field's value.
+func (s *LogConfiguration) SetSecretOptions(v []*Secret) *LogConfiguration {
+	s.SecretOptions = v
 	return s
 }
 
@@ -5285,6 +6054,12 @@ type RegisterJobDefinitionInput struct {
 	// a timeout, it is not retried.
 	RetryStrategy *RetryStrategy `locationName:"retryStrategy" type:"structure"`
 
+	// The tags that you apply to the job definition to help you categorize and
+	// organize your resources. Each tag consists of a key and an optional value.
+	// For more information, see Tagging AWS Resources (https://docs.aws.amazon.com/general/latest/gr/aws_tagging.html)
+	// in AWS General Reference.
+	Tags map[string]*string `locationName:"tags" min:"1" type:"map"`
+
 	// The timeout configuration for jobs that are submitted with this job definition,
 	// after which AWS Batch terminates your jobs if they have not finished. If
 	// a job is terminated due to a timeout, it is not retried. The minimum value
@@ -5315,6 +6090,9 @@ func (s *RegisterJobDefinitionInput) Validate() error {
 	invalidParams := request.ErrInvalidParams{Context: "RegisterJobDefinitionInput"}
 	if s.JobDefinitionName == nil {
 		invalidParams.Add(request.NewErrParamRequired("JobDefinitionName"))
+	}
+	if s.Tags != nil && len(s.Tags) < 1 {
+		invalidParams.Add(request.NewErrParamMinLen("Tags", 1))
 	}
 	if s.Type == nil {
 		invalidParams.Add(request.NewErrParamRequired("Type"))
@@ -5363,6 +6141,12 @@ func (s *RegisterJobDefinitionInput) SetParameters(v map[string]*string) *Regist
 // SetRetryStrategy sets the RetryStrategy field's value.
 func (s *RegisterJobDefinitionInput) SetRetryStrategy(v *RetryStrategy) *RegisterJobDefinitionInput {
 	s.RetryStrategy = v
+	return s
+}
+
+// SetTags sets the Tags field's value.
+func (s *RegisterJobDefinitionInput) SetTags(v map[string]*string) *RegisterJobDefinitionInput {
+	s.Tags = v
 	return s
 }
 
@@ -5508,10 +6292,80 @@ func (s *RetryStrategy) SetAttempts(v int64) *RetryStrategy {
 	return s
 }
 
+// An object representing the secret to expose to your container. Secrets can
+// be exposed to a container in the following ways:
+//
+//    * To inject sensitive data into your containers as environment variables,
+//    use the secrets container definition parameter.
+//
+//    * To reference sensitive information in the log configuration of a container,
+//    use the secretOptions container definition parameter.
+//
+// For more information, see Specifying Sensitive Data (https://docs.aws.amazon.com/AmazonECS/latest/developerguide/specifying-sensitive-data.html)
+// in the Amazon Elastic Container Service Developer Guide.
+type Secret struct {
+	_ struct{} `type:"structure"`
+
+	// The name of the secret.
+	//
+	// Name is a required field
+	Name *string `locationName:"name" type:"string" required:"true"`
+
+	// The secret to expose to the container. The supported values are either the
+	// full ARN of the AWS Secrets Manager secret or the full ARN of the parameter
+	// in the AWS Systems Manager Parameter Store.
+	//
+	// If the AWS Systems Manager Parameter Store parameter exists in the same Region
+	// as the task you are launching, then you can use either the full ARN or name
+	// of the parameter. If the parameter exists in a different Region, then the
+	// full ARN must be specified.
+	//
+	// ValueFrom is a required field
+	ValueFrom *string `locationName:"valueFrom" type:"string" required:"true"`
+}
+
+// String returns the string representation
+func (s Secret) String() string {
+	return awsutil.Prettify(s)
+}
+
+// GoString returns the string representation
+func (s Secret) GoString() string {
+	return s.String()
+}
+
+// Validate inspects the fields of the type to determine if they are valid.
+func (s *Secret) Validate() error {
+	invalidParams := request.ErrInvalidParams{Context: "Secret"}
+	if s.Name == nil {
+		invalidParams.Add(request.NewErrParamRequired("Name"))
+	}
+	if s.ValueFrom == nil {
+		invalidParams.Add(request.NewErrParamRequired("ValueFrom"))
+	}
+
+	if invalidParams.Len() > 0 {
+		return invalidParams
+	}
+	return nil
+}
+
+// SetName sets the Name field's value.
+func (s *Secret) SetName(v string) *Secret {
+	s.Name = &v
+	return s
+}
+
+// SetValueFrom sets the ValueFrom field's value.
+func (s *Secret) SetValueFrom(v string) *Secret {
+	s.ValueFrom = &v
+	return s
+}
+
 // These errors are usually caused by a server issue.
 type ServerException struct {
-	_            struct{} `type:"structure"`
-	respMetadata protocol.ResponseMetadata
+	_            struct{}                  `type:"structure"`
+	RespMetadata protocol.ResponseMetadata `json:"-" xml:"-"`
 
 	Message_ *string `locationName:"message" type:"string"`
 }
@@ -5528,17 +6382,17 @@ func (s ServerException) GoString() string {
 
 func newErrorServerException(v protocol.ResponseMetadata) error {
 	return &ServerException{
-		respMetadata: v,
+		RespMetadata: v,
 	}
 }
 
 // Code returns the exception type name.
-func (s ServerException) Code() string {
+func (s *ServerException) Code() string {
 	return "ServerException"
 }
 
 // Message returns the exception's message.
-func (s ServerException) Message() string {
+func (s *ServerException) Message() string {
 	if s.Message_ != nil {
 		return *s.Message_
 	}
@@ -5546,22 +6400,22 @@ func (s ServerException) Message() string {
 }
 
 // OrigErr always returns nil, satisfies awserr.Error interface.
-func (s ServerException) OrigErr() error {
+func (s *ServerException) OrigErr() error {
 	return nil
 }
 
-func (s ServerException) Error() string {
+func (s *ServerException) Error() string {
 	return fmt.Sprintf("%s: %s", s.Code(), s.Message())
 }
 
 // Status code returns the HTTP status code for the request's response error.
-func (s ServerException) StatusCode() int {
-	return s.respMetadata.StatusCode
+func (s *ServerException) StatusCode() int {
+	return s.RespMetadata.StatusCode
 }
 
 // RequestID returns the service's response RequestID for request.
-func (s ServerException) RequestID() string {
-	return s.respMetadata.RequestID
+func (s *ServerException) RequestID() string {
+	return s.RespMetadata.RequestID
 }
 
 type SubmitJobInput struct {
@@ -5627,6 +6481,12 @@ type SubmitJobInput struct {
 	// defined in the job definition.
 	RetryStrategy *RetryStrategy `locationName:"retryStrategy" type:"structure"`
 
+	// The tags that you apply to the job request to help you categorize and organize
+	// your resources. Each tag consists of a key and an optional value. For more
+	// information, see Tagging AWS Resources (https://docs.aws.amazon.com/general/latest/gr/aws_tagging.html)
+	// in AWS General Reference.
+	Tags map[string]*string `locationName:"tags" min:"1" type:"map"`
+
 	// The timeout configuration for this SubmitJob operation. You can specify a
 	// timeout duration after which AWS Batch terminates your jobs if they have
 	// not finished. If a job is terminated due to a timeout, it is not retried.
@@ -5659,6 +6519,9 @@ func (s *SubmitJobInput) Validate() error {
 	}
 	if s.JobQueue == nil {
 		invalidParams.Add(request.NewErrParamRequired("JobQueue"))
+	}
+	if s.Tags != nil && len(s.Tags) < 1 {
+		invalidParams.Add(request.NewErrParamMinLen("Tags", 1))
 	}
 	if s.ContainerOverrides != nil {
 		if err := s.ContainerOverrides.Validate(); err != nil {
@@ -5731,6 +6594,12 @@ func (s *SubmitJobInput) SetRetryStrategy(v *RetryStrategy) *SubmitJobInput {
 	return s
 }
 
+// SetTags sets the Tags field's value.
+func (s *SubmitJobInput) SetTags(v map[string]*string) *SubmitJobInput {
+	s.Tags = v
+	return s
+}
+
 // SetTimeout sets the Timeout field's value.
 func (s *SubmitJobInput) SetTimeout(v *JobTimeout) *SubmitJobInput {
 	s.Timeout = v
@@ -5739,6 +6608,9 @@ func (s *SubmitJobInput) SetTimeout(v *JobTimeout) *SubmitJobInput {
 
 type SubmitJobOutput struct {
 	_ struct{} `type:"structure"`
+
+	// The Amazon Resource Name (ARN) for the job.
+	JobArn *string `locationName:"jobArn" type:"string"`
 
 	// The unique identifier for the job.
 	//
@@ -5761,6 +6633,12 @@ func (s SubmitJobOutput) GoString() string {
 	return s.String()
 }
 
+// SetJobArn sets the JobArn field's value.
+func (s *SubmitJobOutput) SetJobArn(v string) *SubmitJobOutput {
+	s.JobArn = &v
+	return s
+}
+
 // SetJobId sets the JobId field's value.
 func (s *SubmitJobOutput) SetJobId(v string) *SubmitJobOutput {
 	s.JobId = &v
@@ -5771,6 +6649,84 @@ func (s *SubmitJobOutput) SetJobId(v string) *SubmitJobOutput {
 func (s *SubmitJobOutput) SetJobName(v string) *SubmitJobOutput {
 	s.JobName = &v
 	return s
+}
+
+type TagResourceInput struct {
+	_ struct{} `type:"structure"`
+
+	// The Amazon Resource Name (ARN) of the resource to which to add tags. AWS
+	// Batch resources that support tags are compute environments, jobs, job definitions,
+	// and job queues. ARNs for child jobs of array and multi-node parallel (MNP)
+	// jobs are not supported.
+	//
+	// ResourceArn is a required field
+	ResourceArn *string `location:"uri" locationName:"resourceArn" type:"string" required:"true"`
+
+	// The tags that you apply to the resource to help you categorize and organize
+	// your resources. Each tag consists of a key and an optional value. For more
+	// information, see Tagging AWS Resources (https://docs.aws.amazon.com/general/latest/gr/aws_tagging.html)
+	// in AWS General Reference.
+	//
+	// Tags is a required field
+	Tags map[string]*string `locationName:"tags" min:"1" type:"map" required:"true"`
+}
+
+// String returns the string representation
+func (s TagResourceInput) String() string {
+	return awsutil.Prettify(s)
+}
+
+// GoString returns the string representation
+func (s TagResourceInput) GoString() string {
+	return s.String()
+}
+
+// Validate inspects the fields of the type to determine if they are valid.
+func (s *TagResourceInput) Validate() error {
+	invalidParams := request.ErrInvalidParams{Context: "TagResourceInput"}
+	if s.ResourceArn == nil {
+		invalidParams.Add(request.NewErrParamRequired("ResourceArn"))
+	}
+	if s.ResourceArn != nil && len(*s.ResourceArn) < 1 {
+		invalidParams.Add(request.NewErrParamMinLen("ResourceArn", 1))
+	}
+	if s.Tags == nil {
+		invalidParams.Add(request.NewErrParamRequired("Tags"))
+	}
+	if s.Tags != nil && len(s.Tags) < 1 {
+		invalidParams.Add(request.NewErrParamMinLen("Tags", 1))
+	}
+
+	if invalidParams.Len() > 0 {
+		return invalidParams
+	}
+	return nil
+}
+
+// SetResourceArn sets the ResourceArn field's value.
+func (s *TagResourceInput) SetResourceArn(v string) *TagResourceInput {
+	s.ResourceArn = &v
+	return s
+}
+
+// SetTags sets the Tags field's value.
+func (s *TagResourceInput) SetTags(v map[string]*string) *TagResourceInput {
+	s.Tags = v
+	return s
+}
+
+type TagResourceOutput struct {
+	_ struct{} `type:"structure"`
+}
+
+// String returns the string representation
+func (s TagResourceOutput) String() string {
+	return awsutil.Prettify(s)
+}
+
+// GoString returns the string representation
+func (s TagResourceOutput) GoString() string {
+	return s.String()
 }
 
 type TerminateJobInput struct {
@@ -5841,6 +6797,75 @@ func (s TerminateJobOutput) GoString() string {
 	return s.String()
 }
 
+// The container path, mount options, and size of the tmpfs mount.
+type Tmpfs struct {
+	_ struct{} `type:"structure"`
+
+	// The absolute file path in the container where the tmpfs volume is to be mounted.
+	//
+	// ContainerPath is a required field
+	ContainerPath *string `locationName:"containerPath" type:"string" required:"true"`
+
+	// The list of tmpfs volume mount options.
+	//
+	// Valid values: "defaults" | "ro" | "rw" | "suid" | "nosuid" | "dev" | "nodev"
+	// | "exec" | "noexec" | "sync" | "async" | "dirsync" | "remount" | "mand" |
+	// "nomand" | "atime" | "noatime" | "diratime" | "nodiratime" | "bind" | "rbind"
+	// | "unbindable" | "runbindable" | "private" | "rprivate" | "shared" | "rshared"
+	// | "slave" | "rslave" | "relatime" | "norelatime" | "strictatime" | "nostrictatime"
+	// | "mode" | "uid" | "gid" | "nr_inodes" | "nr_blocks" | "mpol"
+	MountOptions []*string `locationName:"mountOptions" type:"list"`
+
+	// The size (in MiB) of the tmpfs volume.
+	//
+	// Size is a required field
+	Size *int64 `locationName:"size" type:"integer" required:"true"`
+}
+
+// String returns the string representation
+func (s Tmpfs) String() string {
+	return awsutil.Prettify(s)
+}
+
+// GoString returns the string representation
+func (s Tmpfs) GoString() string {
+	return s.String()
+}
+
+// Validate inspects the fields of the type to determine if they are valid.
+func (s *Tmpfs) Validate() error {
+	invalidParams := request.ErrInvalidParams{Context: "Tmpfs"}
+	if s.ContainerPath == nil {
+		invalidParams.Add(request.NewErrParamRequired("ContainerPath"))
+	}
+	if s.Size == nil {
+		invalidParams.Add(request.NewErrParamRequired("Size"))
+	}
+
+	if invalidParams.Len() > 0 {
+		return invalidParams
+	}
+	return nil
+}
+
+// SetContainerPath sets the ContainerPath field's value.
+func (s *Tmpfs) SetContainerPath(v string) *Tmpfs {
+	s.ContainerPath = &v
+	return s
+}
+
+// SetMountOptions sets the MountOptions field's value.
+func (s *Tmpfs) SetMountOptions(v []*string) *Tmpfs {
+	s.MountOptions = v
+	return s
+}
+
+// SetSize sets the Size field's value.
+func (s *Tmpfs) SetSize(v int64) *Tmpfs {
+	s.Size = &v
+	return s
+}
+
 // The ulimit settings to pass to the container.
 type Ulimit struct {
 	_ struct{} `type:"structure"`
@@ -5906,6 +6931,81 @@ func (s *Ulimit) SetName(v string) *Ulimit {
 func (s *Ulimit) SetSoftLimit(v int64) *Ulimit {
 	s.SoftLimit = &v
 	return s
+}
+
+type UntagResourceInput struct {
+	_ struct{} `type:"structure"`
+
+	// The Amazon Resource Name (ARN) of the resource from which to delete tags.
+	// AWS Batch resources that support tags are compute environments, jobs, job
+	// definitions, and job queues. ARNs for child jobs of array and multi-node
+	// parallel (MNP) jobs are not supported.
+	//
+	// ResourceArn is a required field
+	ResourceArn *string `location:"uri" locationName:"resourceArn" type:"string" required:"true"`
+
+	// The keys of the tags to be removed.
+	//
+	// TagKeys is a required field
+	TagKeys []*string `location:"querystring" locationName:"tagKeys" min:"1" type:"list" required:"true"`
+}
+
+// String returns the string representation
+func (s UntagResourceInput) String() string {
+	return awsutil.Prettify(s)
+}
+
+// GoString returns the string representation
+func (s UntagResourceInput) GoString() string {
+	return s.String()
+}
+
+// Validate inspects the fields of the type to determine if they are valid.
+func (s *UntagResourceInput) Validate() error {
+	invalidParams := request.ErrInvalidParams{Context: "UntagResourceInput"}
+	if s.ResourceArn == nil {
+		invalidParams.Add(request.NewErrParamRequired("ResourceArn"))
+	}
+	if s.ResourceArn != nil && len(*s.ResourceArn) < 1 {
+		invalidParams.Add(request.NewErrParamMinLen("ResourceArn", 1))
+	}
+	if s.TagKeys == nil {
+		invalidParams.Add(request.NewErrParamRequired("TagKeys"))
+	}
+	if s.TagKeys != nil && len(s.TagKeys) < 1 {
+		invalidParams.Add(request.NewErrParamMinLen("TagKeys", 1))
+	}
+
+	if invalidParams.Len() > 0 {
+		return invalidParams
+	}
+	return nil
+}
+
+// SetResourceArn sets the ResourceArn field's value.
+func (s *UntagResourceInput) SetResourceArn(v string) *UntagResourceInput {
+	s.ResourceArn = &v
+	return s
+}
+
+// SetTagKeys sets the TagKeys field's value.
+func (s *UntagResourceInput) SetTagKeys(v []*string) *UntagResourceInput {
+	s.TagKeys = v
+	return s
+}
+
+type UntagResourceOutput struct {
+	_ struct{} `type:"structure"`
+}
+
+// String returns the string representation
+func (s UntagResourceOutput) String() string {
+	return awsutil.Prettify(s)
+}
+
+// GoString returns the string representation
+func (s UntagResourceOutput) GoString() string {
+	return s.String()
 }
 
 type UpdateComputeEnvironmentInput struct {
@@ -6040,7 +7140,10 @@ type UpdateJobQueueInput struct {
 	// preference over a job queue with a priority value of 1.
 	Priority *int64 `locationName:"priority" type:"integer"`
 
-	// Describes the queue's ability to accept new jobs.
+	// Describes the queue's ability to accept new jobs. If the job queue state
+	// is ENABLED, it is able to accept jobs. If the job queue state is DISABLED,
+	// new jobs cannot be added to the queue, but jobs already in the queue can
+	// finish.
 	State *string `locationName:"state" type:"string" enum:"JQState"`
 }
 
@@ -6180,6 +7283,14 @@ const (
 	ArrayJobDependencySequential = "SEQUENTIAL"
 )
 
+// ArrayJobDependency_Values returns all elements of the ArrayJobDependency enum
+func ArrayJobDependency_Values() []string {
+	return []string{
+		ArrayJobDependencyNToN,
+		ArrayJobDependencySequential,
+	}
+}
+
 const (
 	// CEStateEnabled is a CEState enum value
 	CEStateEnabled = "ENABLED"
@@ -6187,6 +7298,14 @@ const (
 	// CEStateDisabled is a CEState enum value
 	CEStateDisabled = "DISABLED"
 )
+
+// CEState_Values returns all elements of the CEState enum
+func CEState_Values() []string {
+	return []string{
+		CEStateEnabled,
+		CEStateDisabled,
+	}
+}
 
 const (
 	// CEStatusCreating is a CEStatus enum value
@@ -6208,6 +7327,18 @@ const (
 	CEStatusInvalid = "INVALID"
 )
 
+// CEStatus_Values returns all elements of the CEStatus enum
+func CEStatus_Values() []string {
+	return []string{
+		CEStatusCreating,
+		CEStatusUpdating,
+		CEStatusDeleting,
+		CEStatusDeleted,
+		CEStatusValid,
+		CEStatusInvalid,
+	}
+}
+
 const (
 	// CETypeManaged is a CEType enum value
 	CETypeManaged = "MANAGED"
@@ -6215,6 +7346,14 @@ const (
 	// CETypeUnmanaged is a CEType enum value
 	CETypeUnmanaged = "UNMANAGED"
 )
+
+// CEType_Values returns all elements of the CEType enum
+func CEType_Values() []string {
+	return []string{
+		CETypeManaged,
+		CETypeUnmanaged,
+	}
+}
 
 const (
 	// CRAllocationStrategyBestFit is a CRAllocationStrategy enum value
@@ -6227,6 +7366,15 @@ const (
 	CRAllocationStrategySpotCapacityOptimized = "SPOT_CAPACITY_OPTIMIZED"
 )
 
+// CRAllocationStrategy_Values returns all elements of the CRAllocationStrategy enum
+func CRAllocationStrategy_Values() []string {
+	return []string{
+		CRAllocationStrategyBestFit,
+		CRAllocationStrategyBestFitProgressive,
+		CRAllocationStrategySpotCapacityOptimized,
+	}
+}
+
 const (
 	// CRTypeEc2 is a CRType enum value
 	CRTypeEc2 = "EC2"
@@ -6234,6 +7382,14 @@ const (
 	// CRTypeSpot is a CRType enum value
 	CRTypeSpot = "SPOT"
 )
+
+// CRType_Values returns all elements of the CRType enum
+func CRType_Values() []string {
+	return []string{
+		CRTypeEc2,
+		CRTypeSpot,
+	}
+}
 
 const (
 	// DeviceCgroupPermissionRead is a DeviceCgroupPermission enum value
@@ -6246,6 +7402,15 @@ const (
 	DeviceCgroupPermissionMknod = "MKNOD"
 )
 
+// DeviceCgroupPermission_Values returns all elements of the DeviceCgroupPermission enum
+func DeviceCgroupPermission_Values() []string {
+	return []string{
+		DeviceCgroupPermissionRead,
+		DeviceCgroupPermissionWrite,
+		DeviceCgroupPermissionMknod,
+	}
+}
+
 const (
 	// JQStateEnabled is a JQState enum value
 	JQStateEnabled = "ENABLED"
@@ -6253,6 +7418,14 @@ const (
 	// JQStateDisabled is a JQState enum value
 	JQStateDisabled = "DISABLED"
 )
+
+// JQState_Values returns all elements of the JQState enum
+func JQState_Values() []string {
+	return []string{
+		JQStateEnabled,
+		JQStateDisabled,
+	}
+}
 
 const (
 	// JQStatusCreating is a JQStatus enum value
@@ -6274,6 +7447,18 @@ const (
 	JQStatusInvalid = "INVALID"
 )
 
+// JQStatus_Values returns all elements of the JQStatus enum
+func JQStatus_Values() []string {
+	return []string{
+		JQStatusCreating,
+		JQStatusUpdating,
+		JQStatusDeleting,
+		JQStatusDeleted,
+		JQStatusValid,
+		JQStatusInvalid,
+	}
+}
+
 const (
 	// JobDefinitionTypeContainer is a JobDefinitionType enum value
 	JobDefinitionTypeContainer = "container"
@@ -6281,6 +7466,14 @@ const (
 	// JobDefinitionTypeMultinode is a JobDefinitionType enum value
 	JobDefinitionTypeMultinode = "multinode"
 )
+
+// JobDefinitionType_Values returns all elements of the JobDefinitionType enum
+func JobDefinitionType_Values() []string {
+	return []string{
+		JobDefinitionTypeContainer,
+		JobDefinitionTypeMultinode,
+	}
+}
 
 const (
 	// JobStatusSubmitted is a JobStatus enum value
@@ -6305,7 +7498,63 @@ const (
 	JobStatusFailed = "FAILED"
 )
 
+// JobStatus_Values returns all elements of the JobStatus enum
+func JobStatus_Values() []string {
+	return []string{
+		JobStatusSubmitted,
+		JobStatusPending,
+		JobStatusRunnable,
+		JobStatusStarting,
+		JobStatusRunning,
+		JobStatusSucceeded,
+		JobStatusFailed,
+	}
+}
+
+const (
+	// LogDriverJsonFile is a LogDriver enum value
+	LogDriverJsonFile = "json-file"
+
+	// LogDriverSyslog is a LogDriver enum value
+	LogDriverSyslog = "syslog"
+
+	// LogDriverJournald is a LogDriver enum value
+	LogDriverJournald = "journald"
+
+	// LogDriverGelf is a LogDriver enum value
+	LogDriverGelf = "gelf"
+
+	// LogDriverFluentd is a LogDriver enum value
+	LogDriverFluentd = "fluentd"
+
+	// LogDriverAwslogs is a LogDriver enum value
+	LogDriverAwslogs = "awslogs"
+
+	// LogDriverSplunk is a LogDriver enum value
+	LogDriverSplunk = "splunk"
+)
+
+// LogDriver_Values returns all elements of the LogDriver enum
+func LogDriver_Values() []string {
+	return []string{
+		LogDriverJsonFile,
+		LogDriverSyslog,
+		LogDriverJournald,
+		LogDriverGelf,
+		LogDriverFluentd,
+		LogDriverAwslogs,
+		LogDriverSplunk,
+	}
+}
+
 const (
 	// ResourceTypeGpu is a ResourceType enum value
 	ResourceTypeGpu = "GPU"
 )
+
+// ResourceType_Values returns all elements of the ResourceType enum
+func ResourceType_Values() []string {
+	return []string{
+		ResourceTypeGpu,
+	}
+}

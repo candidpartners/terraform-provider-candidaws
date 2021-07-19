@@ -154,7 +154,7 @@ func (c *KinesisAnalyticsV2) AddApplicationInputRequest(input *AddApplicationInp
 
 // AddApplicationInput API operation for Amazon Kinesis Analytics.
 //
-// Adds a streaming source to your SQL-based Amazon Kinesis Data Analytics application.
+// Adds a streaming source to your SQL-based Kinesis Data Analytics application.
 //
 // You can add a streaming source when you create an application, or you can
 // use this operation to add a streaming source after you create an application.
@@ -259,10 +259,10 @@ func (c *KinesisAnalyticsV2) AddApplicationInputProcessingConfigurationRequest(i
 
 // AddApplicationInputProcessingConfiguration API operation for Amazon Kinesis Analytics.
 //
-// Adds an InputProcessingConfiguration to an SQL-based Kinesis Data Analytics
+// Adds an InputProcessingConfiguration to a SQL-based Kinesis Data Analytics
 // application. An input processor pre-processes records on the input stream
 // before the application's SQL code executes. Currently, the only input processor
-// available is AWS Lambda (https://aws.amazon.com/documentation/lambda/).
+// available is AWS Lambda (https://docs.aws.amazon.com/lambda/).
 //
 // Returns awserr.Error for service API and SDK errors. Use runtime type assertions
 // with awserr.Error's Code and Message methods to get detailed information about
@@ -355,8 +355,7 @@ func (c *KinesisAnalyticsV2) AddApplicationOutputRequest(input *AddApplicationOu
 
 // AddApplicationOutput API operation for Amazon Kinesis Analytics.
 //
-// Adds an external destination to your SQL-based Amazon Kinesis Data Analytics
-// application.
+// Adds an external destination to your SQL-based Kinesis Data Analytics application.
 //
 // If you want Kinesis Data Analytics to deliver data from an in-application
 // stream within your application to an external destination (such as an Kinesis
@@ -463,8 +462,8 @@ func (c *KinesisAnalyticsV2) AddApplicationReferenceDataSourceRequest(input *Add
 
 // AddApplicationReferenceDataSource API operation for Amazon Kinesis Analytics.
 //
-// Adds a reference data source to an existing SQL-based Amazon Kinesis Data
-// Analytics application.
+// Adds a reference data source to an existing SQL-based Kinesis Data Analytics
+// application.
 //
 // Kinesis Data Analytics reads reference data (that is, an Amazon S3 object)
 // and creates an in-application table within your application. In the request,
@@ -597,6 +596,9 @@ func (c *KinesisAnalyticsV2) AddApplicationVpcConfigurationRequest(input *AddApp
 //   This error can be the result of attempting to modify an application without
 //   using the current application ID.
 //
+//   * InvalidApplicationConfigurationException
+//   The user-provided application configuration is not valid.
+//
 // See also, https://docs.aws.amazon.com/goto/WebAPI/kinesisanalyticsv2-2018-05-23/AddApplicationVpcConfiguration
 func (c *KinesisAnalyticsV2) AddApplicationVpcConfiguration(input *AddApplicationVpcConfigurationInput) (*AddApplicationVpcConfigurationOutput, error) {
 	req, out := c.AddApplicationVpcConfigurationRequest(input)
@@ -663,9 +665,8 @@ func (c *KinesisAnalyticsV2) CreateApplicationRequest(input *CreateApplicationIn
 
 // CreateApplication API operation for Amazon Kinesis Analytics.
 //
-// Creates an Amazon Kinesis Data Analytics application. For information about
-// creating a Kinesis Data Analytics application, see Creating an Application
-// (https://docs.aws.amazon.com/kinesisanalytics/latest/java/getting-started.html).
+// Creates a Kinesis Data Analytics application. For information about creating
+// a Kinesis Data Analytics application, see Creating an Application (https://docs.aws.amazon.com/kinesisanalytics/latest/java/getting-started.html).
 //
 // Returns awserr.Error for service API and SDK errors. Use runtime type assertions
 // with awserr.Error's Code and Message methods to get detailed information about
@@ -796,6 +797,9 @@ func (c *KinesisAnalyticsV2) CreateApplicationSnapshotRequest(input *CreateAppli
 //
 //   * InvalidRequestException
 //   The request JSON is not valid for the operation.
+//
+//   * InvalidApplicationConfigurationException
+//   The user-provided application configuration is not valid.
 //
 // See also, https://docs.aws.amazon.com/goto/WebAPI/kinesisanalyticsv2-2018-05-23/CreateApplicationSnapshot
 func (c *KinesisAnalyticsV2) CreateApplicationSnapshot(input *CreateApplicationSnapshotInput) (*CreateApplicationSnapshotOutput, error) {
@@ -961,8 +965,7 @@ func (c *KinesisAnalyticsV2) DeleteApplicationCloudWatchLoggingOptionRequest(inp
 
 // DeleteApplicationCloudWatchLoggingOption API operation for Amazon Kinesis Analytics.
 //
-// Deletes an Amazon CloudWatch log stream from an Amazon Kinesis Data Analytics
-// application.
+// Deletes an Amazon CloudWatch log stream from an Kinesis Data Analytics application.
 //
 // Returns awserr.Error for service API and SDK errors. Use runtime type assertions
 // with awserr.Error's Code and Message methods to get detailed information about
@@ -1151,7 +1154,7 @@ func (c *KinesisAnalyticsV2) DeleteApplicationOutputRequest(input *DeleteApplica
 
 // DeleteApplicationOutput API operation for Amazon Kinesis Analytics.
 //
-// Deletes the output destination configuration from your SQL-based Amazon Kinesis
+// Deletes the output destination configuration from your SQL-based Kinesis
 // Data Analytics application's configuration. Kinesis Data Analytics will no
 // longer write data from the corresponding in-application stream to the external
 // output destination.
@@ -1248,7 +1251,7 @@ func (c *KinesisAnalyticsV2) DeleteApplicationReferenceDataSourceRequest(input *
 // DeleteApplicationReferenceDataSource API operation for Amazon Kinesis Analytics.
 //
 // Deletes a reference data source configuration from the specified SQL-based
-// Amazon Kinesis Data Analytics application's configuration.
+// Kinesis Data Analytics application's configuration.
 //
 // If the application is running, Kinesis Data Analytics immediately removes
 // the in-application table that you created using the AddApplicationReferenceDataSource
@@ -1462,6 +1465,9 @@ func (c *KinesisAnalyticsV2) DeleteApplicationVpcConfigurationRequest(input *Del
 //   This error can be the result of attempting to modify an application without
 //   using the current application ID.
 //
+//   * InvalidApplicationConfigurationException
+//   The user-provided application configuration is not valid.
+//
 // See also, https://docs.aws.amazon.com/goto/WebAPI/kinesisanalyticsv2-2018-05-23/DeleteApplicationVpcConfiguration
 func (c *KinesisAnalyticsV2) DeleteApplicationVpcConfiguration(input *DeleteApplicationVpcConfigurationInput) (*DeleteApplicationVpcConfigurationOutput, error) {
 	req, out := c.DeleteApplicationVpcConfigurationRequest(input)
@@ -1528,7 +1534,7 @@ func (c *KinesisAnalyticsV2) DescribeApplicationRequest(input *DescribeApplicati
 
 // DescribeApplication API operation for Amazon Kinesis Analytics.
 //
-// Returns information about a specific Amazon Kinesis Data Analytics application.
+// Returns information about a specific Kinesis Data Analytics application.
 //
 // If you want to retrieve a list of all applications in your account, use the
 // ListApplications operation.
@@ -1702,11 +1708,11 @@ func (c *KinesisAnalyticsV2) DiscoverInputSchemaRequest(input *DiscoverInputSche
 
 // DiscoverInputSchema API operation for Amazon Kinesis Analytics.
 //
-// Infers a schema for an SQL-based Amazon Kinesis Data Analytics application
-// by evaluating sample records on the specified streaming source (Kinesis data
-// stream or Kinesis Data Firehose delivery stream) or Amazon S3 object. In
-// the response, the operation returns the inferred schema and also the sample
-// records that the operation used to infer the schema.
+// Infers a schema for a SQL-based Kinesis Data Analytics application by evaluating
+// sample records on the specified streaming source (Kinesis data stream or
+// Kinesis Data Firehose delivery stream) or Amazon S3 object. In the response,
+// the operation returns the inferred schema and also the sample records that
+// the operation used to infer the schema.
 //
 // You can use the inferred schema when configuring a streaming source for your
 // application. When you create an application using the Kinesis Data Analytics
@@ -1725,12 +1731,12 @@ func (c *KinesisAnalyticsV2) DiscoverInputSchemaRequest(input *DiscoverInputSche
 //   The specified input parameter value is not valid.
 //
 //   * UnableToDetectSchemaException
-//   The data format is not valid. Amazon Kinesis Data Analytics cannot detect
-//   the schema for the given streaming source.
+//   The data format is not valid. Kinesis Data Analytics cannot detect the schema
+//   for the given streaming source.
 //
 //   * ResourceProvisionedThroughputExceededException
 //   Discovery failed to get a record from the streaming source because of the
-//   Amazon Kinesis Streams ProvisionedThroughputExceededException. For more information,
+//   Kinesis Streams ProvisionedThroughputExceededException. For more information,
 //   see GetRecords (http://docs.aws.amazon.com/kinesis/latest/APIReference/API_GetRecords.html)
 //   in the Amazon Kinesis Streams API Reference.
 //
@@ -1889,9 +1895,9 @@ func (c *KinesisAnalyticsV2) ListApplicationsRequest(input *ListApplicationsInpu
 
 // ListApplications API operation for Amazon Kinesis Analytics.
 //
-// Returns a list of Amazon Kinesis Data Analytics applications in your account.
-// For each application, the response includes the application name, Amazon
-// Resource Name (ARN), and status.
+// Returns a list of Kinesis Data Analytics applications in your account. For
+// each application, the response includes the application name, Amazon Resource
+// Name (ARN), and status.
 //
 // If you want detailed information about a specific application, use DescribeApplication.
 //
@@ -2061,8 +2067,8 @@ func (c *KinesisAnalyticsV2) StartApplicationRequest(input *StartApplicationInpu
 
 // StartApplication API operation for Amazon Kinesis Analytics.
 //
-// Starts the specified Amazon Kinesis Data Analytics application. After creating
-// an application, you must exclusively call this operation to start your application.
+// Starts the specified Kinesis Data Analytics application. After creating an
+// application, you must exclusively call this operation to start your application.
 //
 // Returns awserr.Error for service API and SDK errors. Use runtime type assertions
 // with awserr.Error's Code and Message methods to get detailed information about
@@ -2181,6 +2187,11 @@ func (c *KinesisAnalyticsV2) StopApplicationRequest(input *StopApplicationInput)
 //   * InvalidApplicationConfigurationException
 //   The user-provided application configuration is not valid.
 //
+//   * ConcurrentModificationException
+//   Exception thrown as a result of concurrent modifications to an application.
+//   This error can be the result of attempting to modify an application without
+//   using the current application ID.
+//
 // See also, https://docs.aws.amazon.com/goto/WebAPI/kinesisanalyticsv2-2018-05-23/StopApplication
 func (c *KinesisAnalyticsV2) StopApplication(input *StopApplicationInput) (*StopApplicationOutput, error) {
 	req, out := c.StopApplicationRequest(input)
@@ -2248,10 +2259,10 @@ func (c *KinesisAnalyticsV2) TagResourceRequest(input *TagResourceInput) (req *r
 
 // TagResource API operation for Amazon Kinesis Analytics.
 //
-// Adds one or more key-value tags to a Kinesis Analytics application. Note
-// that the maximum number of application tags includes system tags. The maximum
-// number of user-defined application tags is 50. For more information, see
-// Using Tagging (https://docs.aws.amazon.com/kinesisanalytics/latest/java/how-tagging.html).
+// Adds one or more key-value tags to a Kinesis Data Analytics application.
+// Note that the maximum number of application tags includes system tags. The
+// maximum number of user-defined application tags is 50. For more information,
+// see Using Tagging (https://docs.aws.amazon.com/kinesisanalytics/latest/java/how-tagging.html).
 //
 // Returns awserr.Error for service API and SDK errors. Use runtime type assertions
 // with awserr.Error's Code and Message methods to get detailed information about
@@ -2347,8 +2358,8 @@ func (c *KinesisAnalyticsV2) UntagResourceRequest(input *UntagResourceInput) (re
 
 // UntagResource API operation for Amazon Kinesis Analytics.
 //
-// Removes one or more tags from a Kinesis Analytics application. For more information,
-// see Using Tagging (https://docs.aws.amazon.com/kinesisanalytics/latest/java/how-tagging.html).
+// Removes one or more tags from a Kinesis Data Analytics application. For more
+// information, see Using Tagging (https://docs.aws.amazon.com/kinesisanalytics/latest/java/how-tagging.html).
 //
 // Returns awserr.Error for service API and SDK errors. Use runtime type assertions
 // with awserr.Error's Code and Message methods to get detailed information about
@@ -2443,12 +2454,15 @@ func (c *KinesisAnalyticsV2) UpdateApplicationRequest(input *UpdateApplicationIn
 
 // UpdateApplication API operation for Amazon Kinesis Analytics.
 //
-// Updates an existing Amazon Kinesis Data Analytics application. Using this
-// operation, you can update application code, input configuration, and output
-// configuration.
+// Updates an existing Kinesis Data Analytics application. Using this operation,
+// you can update application code, input configuration, and output configuration.
 //
 // Kinesis Data Analytics updates the ApplicationVersionId each time you update
 // your application.
+//
+// You cannot update the RuntimeEnvironment of an existing application. If you
+// need to update an application's RuntimeEnvironment, you must delete the application
+// and create it again.
 //
 // Returns awserr.Error for service API and SDK errors. Use runtime type assertions
 // with awserr.Error's Code and Message methods to get detailed information about
@@ -2856,8 +2870,8 @@ type AddApplicationInputProcessingConfigurationOutput struct {
 	ApplicationVersionId *int64 `min:"1" type:"long"`
 
 	// The input ID that is associated with the application input. This is the ID
-	// that Amazon Kinesis Data Analytics assigns to each input configuration that
-	// you add to your application.
+	// that Kinesis Data Analytics assigns to each input configuration that you
+	// add to your application.
 	InputId *string `min:"1" type:"string"`
 
 	// The description of the preprocessor that executes on records in this input
@@ -3115,8 +3129,8 @@ type AddApplicationReferenceDataSourceOutput struct {
 	// The application Amazon Resource Name (ARN).
 	ApplicationARN *string `min:"1" type:"string"`
 
-	// The updated application version ID. Amazon Kinesis Data Analytics increments
-	// this ID when the application is updated.
+	// The updated application version ID. Kinesis Data Analytics increments this
+	// ID when the application is updated.
 	ApplicationVersionId *int64 `min:"1" type:"long"`
 
 	// Describes reference data sources configured for the application.
@@ -3159,10 +3173,10 @@ type AddApplicationVpcConfigurationInput struct {
 	// ApplicationName is a required field
 	ApplicationName *string `min:"1" type:"string" required:"true"`
 
-	// The version of the application to which you want to add the input processing
-	// configuration. You can use the DescribeApplication operation to get the current
-	// application version. If the version specified is not the current version,
-	// the ConcurrentModificationException is returned.
+	// The version of the application to which you want to add the VPC configuration.
+	// You can use the DescribeApplication operation to get the current application
+	// version. If the version specified is not the current version, the ConcurrentModificationException
+	// is returned.
 	//
 	// CurrentApplicationVersionId is a required field
 	CurrentApplicationVersionId *int64 `min:"1" type:"long" required:"true"`
@@ -3273,7 +3287,7 @@ func (s *AddApplicationVpcConfigurationOutput) SetVpcConfigurationDescription(v 
 	return s
 }
 
-// Describes code configuration for a Java-based Kinesis Data Analytics application.
+// Describes code configuration for a Flink-based Kinesis Data Analytics application.
 type ApplicationCodeConfiguration struct {
 	_ struct{} `type:"structure"`
 
@@ -3326,7 +3340,7 @@ func (s *ApplicationCodeConfiguration) SetCodeContentType(v string) *Application
 	return s
 }
 
-// Describes code configuration for a Java-based Kinesis Data Analytics application.
+// Describes code configuration for a Flink-based Kinesis Data Analytics application.
 type ApplicationCodeConfigurationDescription struct {
 	_ struct{} `type:"structure"`
 
@@ -3361,7 +3375,8 @@ func (s *ApplicationCodeConfigurationDescription) SetCodeContentType(v string) *
 	return s
 }
 
-// Describes updates to a Java-based Amazon Kinesis Data Analytics application.
+// Describes code configuration updates to a Flink-based Kinesis Data Analytics
+// application.
 type ApplicationCodeConfigurationUpdate struct {
 	_ struct{} `type:"structure"`
 
@@ -3409,28 +3424,28 @@ func (s *ApplicationCodeConfigurationUpdate) SetCodeContentUpdate(v *CodeContent
 	return s
 }
 
-// Specifies the creation parameters for an Amazon Kinesis Data Analytics application.
+// Specifies the creation parameters for a Kinesis Data Analytics application.
 type ApplicationConfiguration struct {
 	_ struct{} `type:"structure"`
 
-	// The code location and type parameters for a Java-based Kinesis Data Analytics
+	// The code location and type parameters for a Flink-based Kinesis Data Analytics
 	// application.
 	//
 	// ApplicationCodeConfiguration is a required field
 	ApplicationCodeConfiguration *ApplicationCodeConfiguration `type:"structure" required:"true"`
 
-	// Describes whether snapshots are enabled for a Java-based Kinesis Data Analytics
+	// Describes whether snapshots are enabled for a Flink-based Kinesis Data Analytics
 	// application.
 	ApplicationSnapshotConfiguration *ApplicationSnapshotConfiguration `type:"structure"`
 
-	// Describes execution properties for a Java-based Kinesis Data Analytics application.
+	// Describes execution properties for a Flink-based Kinesis Data Analytics application.
 	EnvironmentProperties *EnvironmentProperties `type:"structure"`
 
-	// The creation and update parameters for a Java-based Kinesis Data Analytics
+	// The creation and update parameters for a Flink-based Kinesis Data Analytics
 	// application.
 	FlinkApplicationConfiguration *FlinkApplicationConfiguration `type:"structure"`
 
-	// The creation and update parameters for an SQL-based Kinesis Data Analytics
+	// The creation and update parameters for a SQL-based Kinesis Data Analytics
 	// application.
 	SqlApplicationConfiguration *SqlApplicationConfiguration `type:"structure"`
 
@@ -3533,28 +3548,28 @@ func (s *ApplicationConfiguration) SetVpcConfigurations(v []*VpcConfiguration) *
 }
 
 // Describes details about the application code and starting parameters for
-// an Amazon Kinesis Data Analytics application.
+// a Kinesis Data Analytics application.
 type ApplicationConfigurationDescription struct {
 	_ struct{} `type:"structure"`
 
-	// The details about the application code for a Java-based Kinesis Data Analytics
+	// The details about the application code for a Flink-based Kinesis Data Analytics
 	// application.
 	ApplicationCodeConfigurationDescription *ApplicationCodeConfigurationDescription `type:"structure"`
 
-	// Describes whether snapshots are enabled for a Java-based Kinesis Data Analytics
+	// Describes whether snapshots are enabled for a Flink-based Kinesis Data Analytics
 	// application.
 	ApplicationSnapshotConfigurationDescription *ApplicationSnapshotConfigurationDescription `type:"structure"`
 
-	// Describes execution properties for a Java-based Kinesis Data Analytics application.
+	// Describes execution properties for a Flink-based Kinesis Data Analytics application.
 	EnvironmentPropertyDescriptions *EnvironmentPropertyDescriptions `type:"structure"`
 
-	// The details about a Java-based Kinesis Data Analytics application.
+	// The details about a Flink-based Kinesis Data Analytics application.
 	FlinkApplicationConfigurationDescription *FlinkApplicationConfigurationDescription `type:"structure"`
 
 	// The details about the starting properties for a Kinesis Data Analytics application.
 	RunConfigurationDescription *RunConfigurationDescription `type:"structure"`
 
-	// The details about inputs, outputs, and reference data sources for an SQL-based
+	// The details about inputs, outputs, and reference data sources for a SQL-based
 	// Kinesis Data Analytics application.
 	SqlApplicationConfigurationDescription *SqlApplicationConfigurationDescription `type:"structure"`
 
@@ -3618,22 +3633,22 @@ func (s *ApplicationConfigurationDescription) SetVpcConfigurationDescriptions(v 
 type ApplicationConfigurationUpdate struct {
 	_ struct{} `type:"structure"`
 
-	// Describes updates to a Java-based Kinesis Data Analytics application's code
+	// Describes updates to a Flink-based Kinesis Data Analytics application's code
 	// configuration.
 	ApplicationCodeConfigurationUpdate *ApplicationCodeConfigurationUpdate `type:"structure"`
 
-	// Describes whether snapshots are enabled for a Java-based Kinesis Data Analytics
+	// Describes whether snapshots are enabled for a Flink-based Kinesis Data Analytics
 	// application.
 	ApplicationSnapshotConfigurationUpdate *ApplicationSnapshotConfigurationUpdate `type:"structure"`
 
-	// Describes updates to the environment properties for a Java-based Kinesis
+	// Describes updates to the environment properties for a Flink-based Kinesis
 	// Data Analytics application.
 	EnvironmentPropertyUpdates *EnvironmentPropertyUpdates `type:"structure"`
 
-	// Describes updates to a Java-based Kinesis Data Analytics application's configuration.
+	// Describes updates to a Flink-based Kinesis Data Analytics application's configuration.
 	FlinkApplicationConfigurationUpdate *FlinkApplicationConfigurationUpdate `type:"structure"`
 
-	// Describes updates to an SQL-based Kinesis Data Analytics application's configuration.
+	// Describes updates to a SQL-based Kinesis Data Analytics application's configuration.
 	SqlApplicationConfigurationUpdate *SqlApplicationConfigurationUpdate `type:"structure"`
 
 	// Updates to the array of descriptions of VPC configurations available to the
@@ -3742,7 +3757,8 @@ type ApplicationDetail struct {
 	// ApplicationARN is a required field
 	ApplicationARN *string `min:"1" type:"string" required:"true"`
 
-	// Provides details about the application's SQL or Java code and starting parameters.
+	// Provides details about the application's Java, SQL, or Scala code and starting
+	// parameters.
 	ApplicationConfigurationDescription *ApplicationConfigurationDescription `type:"structure"`
 
 	// The description of the application.
@@ -3773,7 +3789,7 @@ type ApplicationDetail struct {
 	// The current timestamp when the application was last updated.
 	LastUpdateTimestamp *time.Time `type:"timestamp"`
 
-	// The runtime environment for the application (SQL-1.0 or FLINK-1_6).
+	// The runtime environment for the application (SQL-1.0, FLINK-1_6, or FLINK-1_8).
 	//
 	// RuntimeEnvironment is a required field
 	RuntimeEnvironment *string `type:"string" required:"true" enum:"RuntimeEnvironment"`
@@ -3912,12 +3928,12 @@ func (s *ApplicationRestoreConfiguration) SetSnapshotName(v string) *Application
 	return s
 }
 
-// Describes whether snapshots are enabled for a Java-based Kinesis Data Analytics
+// Describes whether snapshots are enabled for a Flink-based Kinesis Data Analytics
 // application.
 type ApplicationSnapshotConfiguration struct {
 	_ struct{} `type:"structure"`
 
-	// Describes whether snapshots are enabled for a Java-based Kinesis Data Analytics
+	// Describes whether snapshots are enabled for a Flink-based Kinesis Data Analytics
 	// application.
 	//
 	// SnapshotsEnabled is a required field
@@ -3953,12 +3969,12 @@ func (s *ApplicationSnapshotConfiguration) SetSnapshotsEnabled(v bool) *Applicat
 	return s
 }
 
-// Describes whether snapshots are enabled for a Java-based Kinesis Data Analytics
+// Describes whether snapshots are enabled for a Flink-based Kinesis Data Analytics
 // application.
 type ApplicationSnapshotConfigurationDescription struct {
 	_ struct{} `type:"structure"`
 
-	// Describes whether snapshots are enabled for a Java-based Kinesis Data Analytics
+	// Describes whether snapshots are enabled for a Flink-based Kinesis Data Analytics
 	// application.
 	//
 	// SnapshotsEnabled is a required field
@@ -3981,12 +3997,12 @@ func (s *ApplicationSnapshotConfigurationDescription) SetSnapshotsEnabled(v bool
 	return s
 }
 
-// Describes updates to whether snapshots are enabled for a Java-based Kinesis
+// Describes updates to whether snapshots are enabled for a Flink-based Kinesis
 // Data Analytics application.
 type ApplicationSnapshotConfigurationUpdate struct {
 	_ struct{} `type:"structure"`
 
-	// Describes updates to whether snapshots are enabled for a Java-based Kinesis
+	// Describes updates to whether snapshots are enabled for a Flink-based Kinesis
 	// Data Analytics application.
 	//
 	// SnapshotsEnabledUpdate is a required field
@@ -4047,7 +4063,7 @@ type ApplicationSummary struct {
 	// ApplicationVersionId is a required field
 	ApplicationVersionId *int64 `min:"1" type:"long" required:"true"`
 
-	// The runtime environment for the application (SQL-1.0 or FLINK-1_6).
+	// The runtime environment for the application (SQL-1.0, FLINK-1_6, or FLINK-1_8).
 	//
 	// RuntimeEnvironment is a required field
 	RuntimeEnvironment *string `type:"string" required:"true" enum:"RuntimeEnvironment"`
@@ -4093,10 +4109,10 @@ func (s *ApplicationSummary) SetRuntimeEnvironment(v string) *ApplicationSummary
 	return s
 }
 
-// For an SQL-based application, provides additional mapping information when
-// the record format uses delimiters, such as CSV. For example, the following
-// sample records use CSV format, where the records use the '\n' as the row
-// delimiter and a comma (",") as the column delimiter:
+// For a SQL-based Kinesis Data Analytics application, provides additional mapping
+// information when the record format uses delimiters, such as CSV. For example,
+// the following sample records use CSV format, where the records use the '\n'
+// as the row delimiter and a comma (",") as the column delimiter:
 //
 // "name1", "address1"
 //
@@ -4163,8 +4179,8 @@ func (s *CSVMappingParameters) SetRecordRowDelimiter(v string) *CSVMappingParame
 
 // Describes an application's checkpointing configuration. Checkpointing is
 // the process of persisting application state for fault tolerance. For more
-// information, see Checkpoints for Fault Tolerance (https://ci.apache.org/projects/flink/flink-docs-release-1.6/concepts/programming-model.html#checkpoints-for-fault-tolerance)
-// in the Apache Flink Documentation (https://ci.apache.org/projects/flink/flink-docs-release-1.6/).
+// information, see Checkpoints for Fault Tolerance (https://ci.apache.org/projects/flink/flink-docs-release-1.8/concepts/programming-model.html#checkpoints-for-fault-tolerance)
+// in the Apache Flink Documentation (https://ci.apache.org/projects/flink/flink-docs-release-1.8/).
 type CheckpointConfiguration struct {
 	_ struct{} `type:"structure"`
 
@@ -4175,7 +4191,7 @@ type CheckpointConfiguration struct {
 	// another value using this API or in application code.
 	CheckpointInterval *int64 `min:"1" type:"long"`
 
-	// Describes whether checkpointing is enabled for a Java-based Kinesis Data
+	// Describes whether checkpointing is enabled for a Flink-based Kinesis Data
 	// Analytics application.
 	//
 	// If CheckpointConfiguration.ConfigurationType is DEFAULT, the application
@@ -4183,10 +4199,9 @@ type CheckpointConfiguration struct {
 	// to another value using this API or in application code.
 	CheckpointingEnabled *bool `type:"boolean"`
 
-	// Describes whether the application uses Amazon Kinesis Data Analytics' default
-	// checkpointing behavior. You must set this property to CUSTOM in order to
-	// set the CheckpointingEnabled, CheckpointInterval, or MinPauseBetweenCheckpoints
-	// parameters.
+	// Describes whether the application uses Kinesis Data Analytics' default checkpointing
+	// behavior. You must set this property to CUSTOM in order to set the CheckpointingEnabled,
+	// CheckpointInterval, or MinPauseBetweenCheckpoints parameters.
 	//
 	// If this value is set to DEFAULT, the application will use the following values,
 	// even if they are set to other values using APIs or application code:
@@ -4203,8 +4218,8 @@ type CheckpointConfiguration struct {
 	// Describes the minimum time in milliseconds after a checkpoint operation completes
 	// that a new checkpoint operation can start. If a checkpoint operation takes
 	// longer than the CheckpointInterval, the application otherwise performs continual
-	// checkpoint operations. For more information, see Tuning Checkpointing (https://ci.apache.org/projects/flink/flink-docs-stable/ops/state/large_state_tuning.html#tuning-checkpointing)
-	// in the Apache Flink Documentation (https://ci.apache.org/projects/flink/flink-docs-release-1.6/).
+	// checkpoint operations. For more information, see Tuning Checkpointing (https://ci.apache.org/projects/flink/flink-docs-release-1.8/ops/state/large_state_tuning.html#tuning-checkpointing)
+	// in the Apache Flink Documentation (https://ci.apache.org/projects/flink/flink-docs-release-1.8/).
 	//
 	// If CheckpointConfiguration.ConfigurationType is DEFAULT, the application
 	// will use a MinPauseBetweenCheckpoints value of 5000, even if this value is
@@ -4262,7 +4277,7 @@ func (s *CheckpointConfiguration) SetMinPauseBetweenCheckpoints(v int64) *Checkp
 	return s
 }
 
-// Describes checkpointing parameters for a Java-based Amazon Kinesis Data Analytics
+// Describes checkpointing parameters for a Flink-based Kinesis Data Analytics
 // application.
 type CheckpointConfigurationDescription struct {
 	_ struct{} `type:"structure"`
@@ -4274,7 +4289,7 @@ type CheckpointConfigurationDescription struct {
 	// another value using this API or in application code.
 	CheckpointInterval *int64 `min:"1" type:"long"`
 
-	// Describes whether checkpointing is enabled for a Java-based Kinesis Data
+	// Describes whether checkpointing is enabled for a Flink-based Kinesis Data
 	// Analytics application.
 	//
 	// If CheckpointConfiguration.ConfigurationType is DEFAULT, the application
@@ -4338,8 +4353,8 @@ func (s *CheckpointConfigurationDescription) SetMinPauseBetweenCheckpoints(v int
 	return s
 }
 
-// Describes updates to the checkpointing parameters for a Java-based Amazon
-// Kinesis Data Analytics application.
+// Describes updates to the checkpointing parameters for a Flink-based Kinesis
+// Data Analytics application.
 type CheckpointConfigurationUpdate struct {
 	_ struct{} `type:"structure"`
 
@@ -4576,17 +4591,17 @@ func (s *CloudWatchLoggingOptionUpdate) SetLogStreamARNUpdate(v string) *CloudWa
 }
 
 // Specifies either the application code, or the location of the application
-// code, for a Java-based Amazon Kinesis Data Analytics application.
+// code, for a Flink-based Kinesis Data Analytics application.
 type CodeContent struct {
 	_ struct{} `type:"structure"`
 
 	// Information about the Amazon S3 bucket containing the application code.
 	S3ContentLocation *S3ContentLocation `type:"structure"`
 
-	// The text-format code for a Java-based Kinesis Data Analytics application.
+	// The text-format code for a Flink-based Kinesis Data Analytics application.
 	TextContent *string `type:"string"`
 
-	// The zip-format code for a Java-based Kinesis Data Analytics application.
+	// The zip-format code for a Flink-based Kinesis Data Analytics application.
 	//
 	// ZipFileContent is automatically base64 encoded/decoded by the SDK.
 	ZipFileContent []byte `type:"blob"`
@@ -4635,7 +4650,7 @@ func (s *CodeContent) SetZipFileContent(v []byte) *CodeContent {
 	return s
 }
 
-// Describes details about the application code for a Java-based Kinesis Data
+// Describes details about the application code for a Flink-based Kinesis Data
 // Analytics application.
 type CodeContentDescription struct {
 	_ struct{} `type:"structure"`
@@ -4689,7 +4704,7 @@ func (s *CodeContentDescription) SetTextContent(v string) *CodeContentDescriptio
 	return s
 }
 
-// Describes an update to the code of a Java-based Kinesis Data Analytics application.
+// Describes an update to the code of a Flink-based Kinesis Data Analytics application.
 type CodeContentUpdate struct {
 	_ struct{} `type:"structure"`
 
@@ -4751,8 +4766,8 @@ func (s *CodeContentUpdate) SetZipFileContentUpdate(v []byte) *CodeContentUpdate
 // The user-provided application code (query) is not valid. This can be a simple
 // syntax error.
 type CodeValidationException struct {
-	_            struct{} `type:"structure"`
-	respMetadata protocol.ResponseMetadata
+	_            struct{}                  `type:"structure"`
+	RespMetadata protocol.ResponseMetadata `json:"-" xml:"-"`
 
 	Message_ *string `locationName:"Message" type:"string"`
 }
@@ -4769,17 +4784,17 @@ func (s CodeValidationException) GoString() string {
 
 func newErrorCodeValidationException(v protocol.ResponseMetadata) error {
 	return &CodeValidationException{
-		respMetadata: v,
+		RespMetadata: v,
 	}
 }
 
 // Code returns the exception type name.
-func (s CodeValidationException) Code() string {
+func (s *CodeValidationException) Code() string {
 	return "CodeValidationException"
 }
 
 // Message returns the exception's message.
-func (s CodeValidationException) Message() string {
+func (s *CodeValidationException) Message() string {
 	if s.Message_ != nil {
 		return *s.Message_
 	}
@@ -4787,30 +4802,30 @@ func (s CodeValidationException) Message() string {
 }
 
 // OrigErr always returns nil, satisfies awserr.Error interface.
-func (s CodeValidationException) OrigErr() error {
+func (s *CodeValidationException) OrigErr() error {
 	return nil
 }
 
-func (s CodeValidationException) Error() string {
+func (s *CodeValidationException) Error() string {
 	return fmt.Sprintf("%s: %s", s.Code(), s.Message())
 }
 
 // Status code returns the HTTP status code for the request's response error.
-func (s CodeValidationException) StatusCode() int {
-	return s.respMetadata.StatusCode
+func (s *CodeValidationException) StatusCode() int {
+	return s.RespMetadata.StatusCode
 }
 
 // RequestID returns the service's response RequestID for request.
-func (s CodeValidationException) RequestID() string {
-	return s.respMetadata.RequestID
+func (s *CodeValidationException) RequestID() string {
+	return s.RespMetadata.RequestID
 }
 
 // Exception thrown as a result of concurrent modifications to an application.
 // This error can be the result of attempting to modify an application without
 // using the current application ID.
 type ConcurrentModificationException struct {
-	_            struct{} `type:"structure"`
-	respMetadata protocol.ResponseMetadata
+	_            struct{}                  `type:"structure"`
+	RespMetadata protocol.ResponseMetadata `json:"-" xml:"-"`
 
 	Message_ *string `locationName:"Message" type:"string"`
 }
@@ -4827,17 +4842,17 @@ func (s ConcurrentModificationException) GoString() string {
 
 func newErrorConcurrentModificationException(v protocol.ResponseMetadata) error {
 	return &ConcurrentModificationException{
-		respMetadata: v,
+		RespMetadata: v,
 	}
 }
 
 // Code returns the exception type name.
-func (s ConcurrentModificationException) Code() string {
+func (s *ConcurrentModificationException) Code() string {
 	return "ConcurrentModificationException"
 }
 
 // Message returns the exception's message.
-func (s ConcurrentModificationException) Message() string {
+func (s *ConcurrentModificationException) Message() string {
 	if s.Message_ != nil {
 		return *s.Message_
 	}
@@ -4845,22 +4860,22 @@ func (s ConcurrentModificationException) Message() string {
 }
 
 // OrigErr always returns nil, satisfies awserr.Error interface.
-func (s ConcurrentModificationException) OrigErr() error {
+func (s *ConcurrentModificationException) OrigErr() error {
 	return nil
 }
 
-func (s ConcurrentModificationException) Error() string {
+func (s *ConcurrentModificationException) Error() string {
 	return fmt.Sprintf("%s: %s", s.Code(), s.Message())
 }
 
 // Status code returns the HTTP status code for the request's response error.
-func (s ConcurrentModificationException) StatusCode() int {
-	return s.respMetadata.StatusCode
+func (s *ConcurrentModificationException) StatusCode() int {
+	return s.RespMetadata.StatusCode
 }
 
 // RequestID returns the service's response RequestID for request.
-func (s ConcurrentModificationException) RequestID() string {
-	return s.respMetadata.RequestID
+func (s *ConcurrentModificationException) RequestID() string {
+	return s.RespMetadata.RequestID
 }
 
 type CreateApplicationInput struct {
@@ -4881,7 +4896,7 @@ type CreateApplicationInput struct {
 	// application configuration errors.
 	CloudWatchLoggingOptions []*CloudWatchLoggingOption `type:"list"`
 
-	// The runtime environment for the application (SQL-1.0 or FLINK-1_6).
+	// The runtime environment for the application (SQL-1.0, FLINK-1_6, or FLINK-1_8).
 	//
 	// RuntimeEnvironment is a required field
 	RuntimeEnvironment *string `type:"string" required:"true" enum:"RuntimeEnvironment"`
@@ -5984,7 +5999,7 @@ func (s *DescribeApplicationSnapshotOutput) SetSnapshotDetails(v *SnapshotDetail
 }
 
 // Describes the data format when records are written to the destination in
-// an SQL-based Amazon Kinesis Data Analytics application.
+// a SQL-based Kinesis Data Analytics application.
 type DestinationSchema struct {
 	_ struct{} `type:"structure"`
 
@@ -6169,7 +6184,7 @@ func (s *DiscoverInputSchemaOutput) SetRawInputRecords(v []*string) *DiscoverInp
 	return s
 }
 
-// Describes execution properties for a Java-based Kinesis Data Analytics application.
+// Describes execution properties for a Flink-based Kinesis Data Analytics application.
 type EnvironmentProperties struct {
 	_ struct{} `type:"structure"`
 
@@ -6218,7 +6233,7 @@ func (s *EnvironmentProperties) SetPropertyGroups(v []*PropertyGroup) *Environme
 	return s
 }
 
-// Describes the execution properties for a Java-based Amazon Kinesis Data Analytics
+// Describes the execution properties for a Flink-based Kinesis Data Analytics
 // application.
 type EnvironmentPropertyDescriptions struct {
 	_ struct{} `type:"structure"`
@@ -6243,8 +6258,8 @@ func (s *EnvironmentPropertyDescriptions) SetPropertyGroupDescriptions(v []*Prop
 	return s
 }
 
-// Describes updates to the execution property groups for a Java-based Amazon
-// Kinesis Data Analytics application.
+// Describes updates to the execution property groups for a Flink-based Kinesis
+// Data Analytics application.
 type EnvironmentPropertyUpdates struct {
 	_ struct{} `type:"structure"`
 
@@ -6293,15 +6308,15 @@ func (s *EnvironmentPropertyUpdates) SetPropertyGroups(v []*PropertyGroup) *Envi
 	return s
 }
 
-// Describes configuration parameters for a Java-based Amazon Kinesis Data Analytics
+// Describes configuration parameters for a Flink-based Kinesis Data Analytics
 // application.
 type FlinkApplicationConfiguration struct {
 	_ struct{} `type:"structure"`
 
 	// Describes an application's checkpointing configuration. Checkpointing is
 	// the process of persisting application state for fault tolerance. For more
-	// information, see Checkpoints for Fault Tolerance (https://ci.apache.org/projects/flink/flink-docs-release-1.6/concepts/programming-model.html#checkpoints-for-fault-tolerance)
-	// in the Apache Flink Documentation (https://ci.apache.org/projects/flink/flink-docs-release-1.6/).
+	// information, see Checkpoints for Fault Tolerance (https://ci.apache.org/projects/flink/flink-docs-release-1.8/concepts/programming-model.html#checkpoints-for-fault-tolerance)
+	// in the Apache Flink Documentation (https://ci.apache.org/projects/flink/flink-docs-release-1.8/).
 	CheckpointConfiguration *CheckpointConfiguration `type:"structure"`
 
 	// Describes configuration parameters for Amazon CloudWatch logging for an application.
@@ -6364,7 +6379,7 @@ func (s *FlinkApplicationConfiguration) SetParallelismConfiguration(v *Paralleli
 	return s
 }
 
-// Describes configuration parameters for a Java-based Amazon Kinesis Data Analytics
+// Describes configuration parameters for a Flink-based Kinesis Data Analytics
 // application.
 type FlinkApplicationConfigurationDescription struct {
 	_ struct{} `type:"structure"`
@@ -6374,8 +6389,8 @@ type FlinkApplicationConfigurationDescription struct {
 	CheckpointConfigurationDescription *CheckpointConfigurationDescription `type:"structure"`
 
 	// The job plan for an application. For more information about the job plan,
-	// see Jobs and Scheduling (https://ci.apache.org/projects/flink/flink-docs-stable/internals/job_scheduling.html)
-	// in the Apache Flink Documentation (https://ci.apache.org/projects/flink/flink-docs-release-1.6/).
+	// see Jobs and Scheduling (https://ci.apache.org/projects/flink/flink-docs-release-1.8/internals/job_scheduling.html)
+	// in the Apache Flink Documentation (https://ci.apache.org/projects/flink/flink-docs-release-1.8/).
 	// To retrieve the job plan for the application, use the DescribeApplicationRequest$IncludeAdditionalDetails
 	// parameter of the DescribeApplication operation.
 	JobPlanDescription *string `type:"string"`
@@ -6421,8 +6436,8 @@ func (s *FlinkApplicationConfigurationDescription) SetParallelismConfigurationDe
 	return s
 }
 
-// Describes updates to the configuration parameters for a Java-based Amazon
-// Kinesis Data Analytics application.
+// Describes updates to the configuration parameters for a Flink-based Kinesis
+// Data Analytics application.
 type FlinkApplicationConfigurationUpdate struct {
 	_ struct{} `type:"structure"`
 
@@ -6487,17 +6502,21 @@ func (s *FlinkApplicationConfigurationUpdate) SetParallelismConfigurationUpdate(
 	return s
 }
 
-// Describes the starting parameters for an Apache Flink-based Kinesis Data
-// Analytics application.
+// Describes the starting parameters for a Flink-based Kinesis Data Analytics
+// application.
 type FlinkRunConfiguration struct {
 	_ struct{} `type:"structure"`
 
-	// When restoring from a savepoint, specifies whether the runtime is allowed
+	// When restoring from a snapshot, specifies whether the runtime is allowed
 	// to skip a state that cannot be mapped to the new program. This will happen
-	// if the program is updated between savepoints to remove stateful parameters,
-	// and state data in the savepoint no longer corresponds to valid application
+	// if the program is updated between snapshots to remove stateful parameters,
+	// and state data in the snapshot no longer corresponds to valid application
 	// data. For more information, see Allowing Non-Restored State (https://ci.apache.org/projects/flink/flink-docs-release-1.8/ops/state/savepoints.html#allowing-non-restored-state)
 	// in the Apache Flink documentation (https://ci.apache.org/projects/flink/flink-docs-release-1.8/).
+	//
+	// This value defaults to false. If you update your application without specifying
+	// this parameter, AllowNonRestoredState will be set to false, even if it was
+	// previously set to true.
 	AllowNonRestoredState *bool `type:"boolean"`
 }
 
@@ -6517,9 +6536,9 @@ func (s *FlinkRunConfiguration) SetAllowNonRestoredState(v bool) *FlinkRunConfig
 	return s
 }
 
-// When you configure the application input for an SQL-based Amazon Kinesis
-// Data Analytics application, you specify the streaming source, the in-application
-// stream name that is created, and the mapping between the two.
+// When you configure the application input for a SQL-based Kinesis Data Analytics
+// application, you specify the streaming source, the in-application stream
+// name that is created, and the mapping between the two.
 type Input struct {
 	_ struct{} `type:"structure"`
 
@@ -6649,8 +6668,8 @@ func (s *Input) SetNamePrefix(v string) *Input {
 	return s
 }
 
-// Describes the application input configuration for an SQL-based Amazon Kinesis
-// Data Analytics application.
+// Describes the application input configuration for a SQL-based Kinesis Data
+// Analytics application.
 type InputDescription struct {
 	_ struct{} `type:"structure"`
 
@@ -6755,8 +6774,8 @@ func (s *InputDescription) SetNamePrefix(v string) *InputDescription {
 }
 
 // An object that contains the Amazon Resource Name (ARN) of the AWS Lambda
-// function that is used to preprocess records in the stream in an SQL-based
-// Amazon Kinesis Data Analytics application.
+// function that is used to preprocess records in the stream in a SQL-based
+// Kinesis Data Analytics application.
 type InputLambdaProcessor struct {
 	_ struct{} `type:"structure"`
 
@@ -6764,7 +6783,7 @@ type InputLambdaProcessor struct {
 	//
 	// To specify an earlier version of the Lambda function than the latest, include
 	// the Lambda function version in the Lambda function ARN. For more information
-	// about Lambda ARNs, see Example ARNs: AWS Lambda (/general/latest/gr/aws-arns-and-namespaces.html#arn-syntax-lambda)
+	// about Lambda ARNs, see Example ARNs: AWS Lambda (https://docs.aws.amazon.com/general/latest/gr/aws-arns-and-namespaces.html#arn-syntax-lambda)
 	//
 	// ResourceARN is a required field
 	ResourceARN *string `min:"1" type:"string" required:"true"`
@@ -6802,9 +6821,9 @@ func (s *InputLambdaProcessor) SetResourceARN(v string) *InputLambdaProcessor {
 	return s
 }
 
-// For an SQL-based Amazon Kinesis Data Analytics application, an object that
-// contains the Amazon Resource Name (ARN) of the AWS Lambda function that is
-// used to preprocess records in the stream.
+// For a SQL-based Kinesis Data Analytics application, an object that contains
+// the Amazon Resource Name (ARN) of the AWS Lambda function that is used to
+// preprocess records in the stream.
 type InputLambdaProcessorDescription struct {
 	_ struct{} `type:"structure"`
 
@@ -6813,7 +6832,7 @@ type InputLambdaProcessorDescription struct {
 	//
 	// To specify an earlier version of the Lambda function than the latest, include
 	// the Lambda function version in the Lambda function ARN. For more information
-	// about Lambda ARNs, see Example ARNs: AWS Lambda (/general/latest/gr/aws-arns-and-namespaces.html#arn-syntax-lambda)
+	// about Lambda ARNs, see Example ARNs: AWS Lambda (https://docs.aws.amazon.com/general/latest/gr/aws-arns-and-namespaces.html#arn-syntax-lambda)
 	//
 	// ResourceARN is a required field
 	ResourceARN *string `min:"1" type:"string" required:"true"`
@@ -6848,9 +6867,9 @@ func (s *InputLambdaProcessorDescription) SetRoleARN(v string) *InputLambdaProce
 	return s
 }
 
-// For an SQL-based Amazon Kinesis Data Analytics application, represents an
-// update to the InputLambdaProcessor that is used to preprocess the records
-// in the stream.
+// For a SQL-based Kinesis Data Analytics application, represents an update
+// to the InputLambdaProcessor that is used to preprocess the records in the
+// stream.
 type InputLambdaProcessorUpdate struct {
 	_ struct{} `type:"structure"`
 
@@ -6859,7 +6878,7 @@ type InputLambdaProcessorUpdate struct {
 	//
 	// To specify an earlier version of the Lambda function than the latest, include
 	// the Lambda function version in the Lambda function ARN. For more information
-	// about Lambda ARNs, see Example ARNs: AWS Lambda (/general/latest/gr/aws-arns-and-namespaces.html#arn-syntax-lambda)
+	// about Lambda ARNs, see Example ARNs: AWS Lambda (https://docs.aws.amazon.com/general/latest/gr/aws-arns-and-namespaces.html#arn-syntax-lambda)
 	//
 	// ResourceARNUpdate is a required field
 	ResourceARNUpdate *string `min:"1" type:"string" required:"true"`
@@ -6897,8 +6916,8 @@ func (s *InputLambdaProcessorUpdate) SetResourceARNUpdate(v string) *InputLambda
 	return s
 }
 
-// For an SQL-based Amazon Kinesis Data Analytics application, describes the
-// number of in-application streams to create for a given streaming source.
+// For a SQL-based Kinesis Data Analytics application, describes the number
+// of in-application streams to create for a given streaming source.
 type InputParallelism struct {
 	_ struct{} `type:"structure"`
 
@@ -6935,8 +6954,8 @@ func (s *InputParallelism) SetCount(v int64) *InputParallelism {
 	return s
 }
 
-// For an SQL-based Amazon Kinesis Data Analytics application, provides updates
-// to the parallelism count.
+// For a SQL-based Kinesis Data Analytics application, provides updates to the
+// parallelism count.
 type InputParallelismUpdate struct {
 	_ struct{} `type:"structure"`
 
@@ -6979,10 +6998,10 @@ func (s *InputParallelismUpdate) SetCountUpdate(v int64) *InputParallelismUpdate
 	return s
 }
 
-// For an SQL-based Amazon Kinesis Data Analytics application, describes a processor
+// For a SQL-based Kinesis Data Analytics application, describes a processor
 // that is used to preprocess the records in the stream before being processed
 // by your application code. Currently, the only input processor available is
-// AWS Lambda (https://aws.amazon.com/documentation/lambda/).
+// AWS Lambda (https://docs.aws.amazon.com/lambda/).
 type InputProcessingConfiguration struct {
 	_ struct{} `type:"structure"`
 
@@ -7027,9 +7046,9 @@ func (s *InputProcessingConfiguration) SetInputLambdaProcessor(v *InputLambdaPro
 	return s
 }
 
-// For an SQL-based Amazon Kinesis Data Analytics application, provides the
-// configuration information about an input processor. Currently, the only input
-// processor available is AWS Lambda (https://aws.amazon.com/documentation/lambda/).
+// For a SQL-based Kinesis Data Analytics application, provides the configuration
+// information about an input processor. Currently, the only input processor
+// available is AWS Lambda (https://docs.aws.amazon.com/lambda/).
 type InputProcessingConfigurationDescription struct {
 	_ struct{} `type:"structure"`
 
@@ -7053,8 +7072,8 @@ func (s *InputProcessingConfigurationDescription) SetInputLambdaProcessorDescrip
 	return s
 }
 
-// For an SQL-based Amazon Kinesis Data Analytics application, describes updates
-// to an InputProcessingConfiguration.
+// For a SQL-based Kinesis Data Analytics application, describes updates to
+// an InputProcessingConfiguration.
 type InputProcessingConfigurationUpdate struct {
 	_ struct{} `type:"structure"`
 
@@ -7098,8 +7117,8 @@ func (s *InputProcessingConfigurationUpdate) SetInputLambdaProcessorUpdate(v *In
 	return s
 }
 
-// Describes updates for an SQL-based Amazon Kinesis Data Analytics application's
-// input schema.
+// Describes updates for an SQL-based Kinesis Data Analytics application's input
+// schema.
 type InputSchemaUpdate struct {
 	_ struct{} `type:"structure"`
 
@@ -7110,7 +7129,7 @@ type InputSchemaUpdate struct {
 
 	// Specifies the encoding of the records in the streaming source; for example,
 	// UTF-8.
-	RecordEncodingUpdate *string `type:"string"`
+	RecordEncodingUpdate *string `min:"5" type:"string"`
 
 	// Specifies the format of the records on the streaming source.
 	RecordFormatUpdate *RecordFormat `type:"structure"`
@@ -7131,6 +7150,9 @@ func (s *InputSchemaUpdate) Validate() error {
 	invalidParams := request.ErrInvalidParams{Context: "InputSchemaUpdate"}
 	if s.RecordColumnUpdates != nil && len(s.RecordColumnUpdates) < 1 {
 		invalidParams.Add(request.NewErrParamMinLen("RecordColumnUpdates", 1))
+	}
+	if s.RecordEncodingUpdate != nil && len(*s.RecordEncodingUpdate) < 5 {
+		invalidParams.Add(request.NewErrParamMinLen("RecordEncodingUpdate", 5))
 	}
 	if s.RecordColumnUpdates != nil {
 		for i, v := range s.RecordColumnUpdates {
@@ -7206,8 +7228,8 @@ func (s *InputStartingPositionConfiguration) SetInputStartingPosition(v string) 
 	return s
 }
 
-// For an SQL-based Amazon Kinesis Data Analytics application, describes updates
-// to a specific input configuration (identified by the InputId of an application).
+// For a SQL-based Kinesis Data Analytics application, describes updates to
+// a specific input configuration (identified by the InputId of an application).
 type InputUpdate struct {
 	_ struct{} `type:"structure"`
 
@@ -7339,8 +7361,8 @@ func (s *InputUpdate) SetNamePrefixUpdate(v string) *InputUpdate {
 
 // The user-provided application configuration is not valid.
 type InvalidApplicationConfigurationException struct {
-	_            struct{} `type:"structure"`
-	respMetadata protocol.ResponseMetadata
+	_            struct{}                  `type:"structure"`
+	RespMetadata protocol.ResponseMetadata `json:"-" xml:"-"`
 
 	Message_ *string `locationName:"Message" type:"string"`
 }
@@ -7357,17 +7379,17 @@ func (s InvalidApplicationConfigurationException) GoString() string {
 
 func newErrorInvalidApplicationConfigurationException(v protocol.ResponseMetadata) error {
 	return &InvalidApplicationConfigurationException{
-		respMetadata: v,
+		RespMetadata: v,
 	}
 }
 
 // Code returns the exception type name.
-func (s InvalidApplicationConfigurationException) Code() string {
+func (s *InvalidApplicationConfigurationException) Code() string {
 	return "InvalidApplicationConfigurationException"
 }
 
 // Message returns the exception's message.
-func (s InvalidApplicationConfigurationException) Message() string {
+func (s *InvalidApplicationConfigurationException) Message() string {
 	if s.Message_ != nil {
 		return *s.Message_
 	}
@@ -7375,28 +7397,28 @@ func (s InvalidApplicationConfigurationException) Message() string {
 }
 
 // OrigErr always returns nil, satisfies awserr.Error interface.
-func (s InvalidApplicationConfigurationException) OrigErr() error {
+func (s *InvalidApplicationConfigurationException) OrigErr() error {
 	return nil
 }
 
-func (s InvalidApplicationConfigurationException) Error() string {
+func (s *InvalidApplicationConfigurationException) Error() string {
 	return fmt.Sprintf("%s: %s", s.Code(), s.Message())
 }
 
 // Status code returns the HTTP status code for the request's response error.
-func (s InvalidApplicationConfigurationException) StatusCode() int {
-	return s.respMetadata.StatusCode
+func (s *InvalidApplicationConfigurationException) StatusCode() int {
+	return s.RespMetadata.StatusCode
 }
 
 // RequestID returns the service's response RequestID for request.
-func (s InvalidApplicationConfigurationException) RequestID() string {
-	return s.respMetadata.RequestID
+func (s *InvalidApplicationConfigurationException) RequestID() string {
+	return s.RespMetadata.RequestID
 }
 
 // The specified input parameter value is not valid.
 type InvalidArgumentException struct {
-	_            struct{} `type:"structure"`
-	respMetadata protocol.ResponseMetadata
+	_            struct{}                  `type:"structure"`
+	RespMetadata protocol.ResponseMetadata `json:"-" xml:"-"`
 
 	Message_ *string `locationName:"Message" type:"string"`
 }
@@ -7413,17 +7435,17 @@ func (s InvalidArgumentException) GoString() string {
 
 func newErrorInvalidArgumentException(v protocol.ResponseMetadata) error {
 	return &InvalidArgumentException{
-		respMetadata: v,
+		RespMetadata: v,
 	}
 }
 
 // Code returns the exception type name.
-func (s InvalidArgumentException) Code() string {
+func (s *InvalidArgumentException) Code() string {
 	return "InvalidArgumentException"
 }
 
 // Message returns the exception's message.
-func (s InvalidArgumentException) Message() string {
+func (s *InvalidArgumentException) Message() string {
 	if s.Message_ != nil {
 		return *s.Message_
 	}
@@ -7431,28 +7453,28 @@ func (s InvalidArgumentException) Message() string {
 }
 
 // OrigErr always returns nil, satisfies awserr.Error interface.
-func (s InvalidArgumentException) OrigErr() error {
+func (s *InvalidArgumentException) OrigErr() error {
 	return nil
 }
 
-func (s InvalidArgumentException) Error() string {
+func (s *InvalidArgumentException) Error() string {
 	return fmt.Sprintf("%s: %s", s.Code(), s.Message())
 }
 
 // Status code returns the HTTP status code for the request's response error.
-func (s InvalidArgumentException) StatusCode() int {
-	return s.respMetadata.StatusCode
+func (s *InvalidArgumentException) StatusCode() int {
+	return s.RespMetadata.StatusCode
 }
 
 // RequestID returns the service's response RequestID for request.
-func (s InvalidArgumentException) RequestID() string {
-	return s.respMetadata.RequestID
+func (s *InvalidArgumentException) RequestID() string {
+	return s.RespMetadata.RequestID
 }
 
 // The request JSON is not valid for the operation.
 type InvalidRequestException struct {
-	_            struct{} `type:"structure"`
-	respMetadata protocol.ResponseMetadata
+	_            struct{}                  `type:"structure"`
+	RespMetadata protocol.ResponseMetadata `json:"-" xml:"-"`
 
 	Message_ *string `locationName:"Message" type:"string"`
 }
@@ -7469,17 +7491,17 @@ func (s InvalidRequestException) GoString() string {
 
 func newErrorInvalidRequestException(v protocol.ResponseMetadata) error {
 	return &InvalidRequestException{
-		respMetadata: v,
+		RespMetadata: v,
 	}
 }
 
 // Code returns the exception type name.
-func (s InvalidRequestException) Code() string {
+func (s *InvalidRequestException) Code() string {
 	return "InvalidRequestException"
 }
 
 // Message returns the exception's message.
-func (s InvalidRequestException) Message() string {
+func (s *InvalidRequestException) Message() string {
 	if s.Message_ != nil {
 		return *s.Message_
 	}
@@ -7487,26 +7509,26 @@ func (s InvalidRequestException) Message() string {
 }
 
 // OrigErr always returns nil, satisfies awserr.Error interface.
-func (s InvalidRequestException) OrigErr() error {
+func (s *InvalidRequestException) OrigErr() error {
 	return nil
 }
 
-func (s InvalidRequestException) Error() string {
+func (s *InvalidRequestException) Error() string {
 	return fmt.Sprintf("%s: %s", s.Code(), s.Message())
 }
 
 // Status code returns the HTTP status code for the request's response error.
-func (s InvalidRequestException) StatusCode() int {
-	return s.respMetadata.StatusCode
+func (s *InvalidRequestException) StatusCode() int {
+	return s.RespMetadata.StatusCode
 }
 
 // RequestID returns the service's response RequestID for request.
-func (s InvalidRequestException) RequestID() string {
-	return s.respMetadata.RequestID
+func (s *InvalidRequestException) RequestID() string {
+	return s.RespMetadata.RequestID
 }
 
-// For an SQL-based Amazon Kinesis Data Analytics application, provides additional
-// mapping information when JSON is the record format on the streaming source.
+// For a SQL-based Kinesis Data Analytics application, provides additional mapping
+// information when JSON is the record format on the streaming source.
 type JSONMappingParameters struct {
 	_ struct{} `type:"structure"`
 
@@ -7548,9 +7570,9 @@ func (s *JSONMappingParameters) SetRecordRowPath(v string) *JSONMappingParameter
 	return s
 }
 
-// For an SQL-based Amazon Kinesis Data Analytics application, identifies a
-// Kinesis Data Firehose delivery stream as the streaming source. You provide
-// the delivery stream's Amazon Resource Name (ARN).
+// For a SQL-based Kinesis Data Analytics application, identifies a Kinesis
+// Data Firehose delivery stream as the streaming source. You provide the delivery
+// stream's Amazon Resource Name (ARN).
 type KinesisFirehoseInput struct {
 	_ struct{} `type:"structure"`
 
@@ -7633,9 +7655,9 @@ func (s *KinesisFirehoseInputDescription) SetRoleARN(v string) *KinesisFirehoseI
 	return s
 }
 
-// For an SQL-based Amazon Kinesis Data Analytics application, when updating
-// application input configuration, provides information about a Kinesis Data
-// Firehose delivery stream as the streaming source.
+// For a SQL-based Kinesis Data Analytics application, when updating application
+// input configuration, provides information about a Kinesis Data Firehose delivery
+// stream as the streaming source.
 type KinesisFirehoseInputUpdate struct {
 	_ struct{} `type:"structure"`
 
@@ -7677,10 +7699,9 @@ func (s *KinesisFirehoseInputUpdate) SetResourceARNUpdate(v string) *KinesisFire
 	return s
 }
 
-// For an SQL-based Amazon Kinesis Data Analytics application, when configuring
-// application output, identifies a Kinesis Data Firehose delivery stream as
-// the destination. You provide the stream Amazon Resource Name (ARN) of the
-// delivery stream.
+// For a SQL-based Kinesis Data Analytics application, when configuring application
+// output, identifies a Kinesis Data Firehose delivery stream as the destination.
+// You provide the stream Amazon Resource Name (ARN) of the delivery stream.
 type KinesisFirehoseOutput struct {
 	_ struct{} `type:"structure"`
 
@@ -7722,8 +7743,8 @@ func (s *KinesisFirehoseOutput) SetResourceARN(v string) *KinesisFirehoseOutput 
 	return s
 }
 
-// For an SQL-based Amazon Kinesis Data Analytics application's output, describes
-// the Kinesis Data Firehose delivery stream that is configured as its destination.
+// For a SQL-based Kinesis Data Analytics application's output, describes the
+// Kinesis Data Firehose delivery stream that is configured as its destination.
 type KinesisFirehoseOutputDescription struct {
 	_ struct{} `type:"structure"`
 
@@ -7763,8 +7784,8 @@ func (s *KinesisFirehoseOutputDescription) SetRoleARN(v string) *KinesisFirehose
 	return s
 }
 
-// For an SQL-based Amazon Kinesis Data Analytics application, when updating
-// an output configuration using the UpdateApplication operation, provides information
+// For a SQL-based Kinesis Data Analytics application, when updating an output
+// configuration using the UpdateApplication operation, provides information
 // about a Kinesis Data Firehose delivery stream that is configured as the destination.
 type KinesisFirehoseOutputUpdate struct {
 	_ struct{} `type:"structure"`
@@ -7807,8 +7828,8 @@ func (s *KinesisFirehoseOutputUpdate) SetResourceARNUpdate(v string) *KinesisFir
 	return s
 }
 
-// Identifies an Amazon Kinesis data stream as the streaming source. You provide
-// the stream's Amazon Resource Name (ARN).
+// Identifies a Kinesis data stream as the streaming source. You provide the
+// stream's Amazon Resource Name (ARN).
 type KinesisStreamsInput struct {
 	_ struct{} `type:"structure"`
 
@@ -7850,8 +7871,8 @@ func (s *KinesisStreamsInput) SetResourceARN(v string) *KinesisStreamsInput {
 	return s
 }
 
-// For an SQL-based Amazon Kinesis Data Analytics application, describes the
-// Kinesis data stream that is configured as the streaming source in the application
+// For a SQL-based Kinesis Data Analytics application, describes the Kinesis
+// data stream that is configured as the streaming source in the application
 // input configuration.
 type KinesisStreamsInputDescription struct {
 	_ struct{} `type:"structure"`
@@ -7892,9 +7913,9 @@ func (s *KinesisStreamsInputDescription) SetRoleARN(v string) *KinesisStreamsInp
 	return s
 }
 
-// When you update the input configuration for an SQL-based Amazon Kinesis Data
-// Analytics application, provides information about an Amazon Kinesis stream
-// as the streaming source.
+// When you update the input configuration for a SQL-based Kinesis Data Analytics
+// application, provides information about a Kinesis stream as the streaming
+// source.
 type KinesisStreamsInputUpdate struct {
 	_ struct{} `type:"structure"`
 
@@ -7936,9 +7957,9 @@ func (s *KinesisStreamsInputUpdate) SetResourceARNUpdate(v string) *KinesisStrea
 	return s
 }
 
-// When you configure an SQL-based Amazon Kinesis Data Analytics application's
-// output, identifies a Kinesis data stream as the destination. You provide
-// the stream Amazon Resource Name (ARN).
+// When you configure a SQL-based Kinesis Data Analytics application's output,
+// identifies a Kinesis data stream as the destination. You provide the stream
+// Amazon Resource Name (ARN).
 type KinesisStreamsOutput struct {
 	_ struct{} `type:"structure"`
 
@@ -7980,8 +8001,8 @@ func (s *KinesisStreamsOutput) SetResourceARN(v string) *KinesisStreamsOutput {
 	return s
 }
 
-// For an SQL-based Amazon Kinesis Data Analytics application's output, describes
-// the Kinesis data stream that is configured as its destination.
+// For an SQL-based Kinesis Data Analytics application's output, describes the
+// Kinesis data stream that is configured as its destination.
 type KinesisStreamsOutputDescription struct {
 	_ struct{} `type:"structure"`
 
@@ -8021,9 +8042,9 @@ func (s *KinesisStreamsOutputDescription) SetRoleARN(v string) *KinesisStreamsOu
 	return s
 }
 
-// When you update an SQL-based Amazon Kinesis Data Analytics application's
-// output configuration using the UpdateApplication operation, provides information
-// about a Kinesis data stream that is configured as the destination.
+// When you update a SQL-based Kinesis Data Analytics application's output configuration
+// using the UpdateApplication operation, provides information about a Kinesis
+// data stream that is configured as the destination.
 type KinesisStreamsOutputUpdate struct {
 	_ struct{} `type:"structure"`
 
@@ -8066,9 +8087,9 @@ func (s *KinesisStreamsOutputUpdate) SetResourceARNUpdate(v string) *KinesisStre
 	return s
 }
 
-// When you configure an SQL-based Amazon Kinesis Data Analytics application's
-// output, identifies an AWS Lambda function as the destination. You provide
-// the function Amazon Resource Name (ARN) of the Lambda function.
+// When you configure a SQL-based Kinesis Data Analytics application's output,
+// identifies an AWS Lambda function as the destination. You provide the function
+// Amazon Resource Name (ARN) of the Lambda function.
 type LambdaOutput struct {
 	_ struct{} `type:"structure"`
 
@@ -8077,7 +8098,7 @@ type LambdaOutput struct {
 	//
 	// To specify an earlier version of the Lambda function than the latest, include
 	// the Lambda function version in the Lambda function ARN. For more information
-	// about Lambda ARNs, see Example ARNs: AWS Lambda (/general/latest/gr/aws-arns-and-namespaces.html#arn-syntax-lambda)
+	// about Lambda ARNs, see Example ARNs: AWS Lambda (https://docs.aws.amazon.com/general/latest/gr/aws-arns-and-namespaces.html#arn-syntax-lambda)
 	//
 	// ResourceARN is a required field
 	ResourceARN *string `min:"1" type:"string" required:"true"`
@@ -8115,8 +8136,8 @@ func (s *LambdaOutput) SetResourceARN(v string) *LambdaOutput {
 	return s
 }
 
-// For an SQL-based Amazon Kinesis Data Analytics application output, describes
-// the AWS Lambda function that is configured as its destination.
+// For a SQL-based Kinesis Data Analytics application's output, describes the
+// AWS Lambda function that is configured as its destination.
 type LambdaOutputDescription struct {
 	_ struct{} `type:"structure"`
 
@@ -8156,8 +8177,8 @@ func (s *LambdaOutputDescription) SetRoleARN(v string) *LambdaOutputDescription 
 	return s
 }
 
-// When you update an SQL-based Amazon Kinesis Data Analytics application's
-// output configuration using the UpdateApplication operation, provides information
+// When you update an SQL-based Kinesis Data Analytics application's output
+// configuration using the UpdateApplication operation, provides information
 // about an AWS Lambda function that is configured as the destination.
 type LambdaOutputUpdate struct {
 	_ struct{} `type:"structure"`
@@ -8166,7 +8187,7 @@ type LambdaOutputUpdate struct {
 	//
 	// To specify an earlier version of the Lambda function than the latest, include
 	// the Lambda function version in the Lambda function ARN. For more information
-	// about Lambda ARNs, see Example ARNs: AWS Lambda (/general/latest/gr/aws-arns-and-namespaces.html#arn-syntax-lambda)
+	// about Lambda ARNs, see Example ARNs: AWS Lambda (https://docs.aws.amazon.com/general/latest/gr/aws-arns-and-namespaces.html#arn-syntax-lambda)
 	//
 	// ResourceARNUpdate is a required field
 	ResourceARNUpdate *string `min:"1" type:"string" required:"true"`
@@ -8206,8 +8227,8 @@ func (s *LambdaOutputUpdate) SetResourceARNUpdate(v string) *LambdaOutputUpdate 
 
 // The number of allowed resources has been exceeded.
 type LimitExceededException struct {
-	_            struct{} `type:"structure"`
-	respMetadata protocol.ResponseMetadata
+	_            struct{}                  `type:"structure"`
+	RespMetadata protocol.ResponseMetadata `json:"-" xml:"-"`
 
 	Message_ *string `locationName:"Message" type:"string"`
 }
@@ -8224,17 +8245,17 @@ func (s LimitExceededException) GoString() string {
 
 func newErrorLimitExceededException(v protocol.ResponseMetadata) error {
 	return &LimitExceededException{
-		respMetadata: v,
+		RespMetadata: v,
 	}
 }
 
 // Code returns the exception type name.
-func (s LimitExceededException) Code() string {
+func (s *LimitExceededException) Code() string {
 	return "LimitExceededException"
 }
 
 // Message returns the exception's message.
-func (s LimitExceededException) Message() string {
+func (s *LimitExceededException) Message() string {
 	if s.Message_ != nil {
 		return *s.Message_
 	}
@@ -8242,22 +8263,22 @@ func (s LimitExceededException) Message() string {
 }
 
 // OrigErr always returns nil, satisfies awserr.Error interface.
-func (s LimitExceededException) OrigErr() error {
+func (s *LimitExceededException) OrigErr() error {
 	return nil
 }
 
-func (s LimitExceededException) Error() string {
+func (s *LimitExceededException) Error() string {
 	return fmt.Sprintf("%s: %s", s.Code(), s.Message())
 }
 
 // Status code returns the HTTP status code for the request's response error.
-func (s LimitExceededException) StatusCode() int {
-	return s.respMetadata.StatusCode
+func (s *LimitExceededException) StatusCode() int {
+	return s.RespMetadata.StatusCode
 }
 
 // RequestID returns the service's response RequestID for request.
-func (s LimitExceededException) RequestID() string {
-	return s.respMetadata.RequestID
+func (s *LimitExceededException) RequestID() string {
+	return s.RespMetadata.RequestID
 }
 
 type ListApplicationSnapshotsInput struct {
@@ -8512,10 +8533,10 @@ func (s *ListTagsForResourceOutput) SetTags(v []*Tag) *ListTagsForResourceOutput
 	return s
 }
 
-// When you configure an SQL-based Amazon Kinesis Data Analytics application's
-// input at the time of creating or updating an application, provides additional
-// mapping information specific to the record format (such as JSON, CSV, or
-// record fields delimited by some delimiter) on the streaming source.
+// When you configure a SQL-based Kinesis Data Analytics application's input
+// at the time of creating or updating an application, provides additional mapping
+// information specific to the record format (such as JSON, CSV, or record fields
+// delimited by some delimiter) on the streaming source.
 type MappingParameters struct {
 	_ struct{} `type:"structure"`
 
@@ -8570,7 +8591,7 @@ func (s *MappingParameters) SetJSONMappingParameters(v *JSONMappingParameters) *
 	return s
 }
 
-// Describes configuration parameters for Amazon CloudWatch logging for a Java-based
+// Describes configuration parameters for Amazon CloudWatch logging for a Flink-based
 // Kinesis Data Analytics application. For more information about CloudWatch
 // logging, see Monitoring (https://docs.aws.amazon.com/kinesisanalytics/latest/java/monitoring-overview.html).
 type MonitoringConfiguration struct {
@@ -8586,7 +8607,9 @@ type MonitoringConfiguration struct {
 	// Describes the verbosity of the CloudWatch Logs for an application.
 	LogLevel *string `type:"string" enum:"LogLevel"`
 
-	// Describes the granularity of the CloudWatch Logs for an application.
+	// Describes the granularity of the CloudWatch Logs for an application. The
+	// Parallelism level is not recommended for applications with a Parallelism
+	// over 64 due to excessive costs.
 	MetricsLevel *string `type:"string" enum:"MetricsLevel"`
 }
 
@@ -8631,7 +8654,7 @@ func (s *MonitoringConfiguration) SetMetricsLevel(v string) *MonitoringConfigura
 	return s
 }
 
-// Describes configuration parameters for CloudWatch logging for a Java-based
+// Describes configuration parameters for CloudWatch logging for a Flink-based
 // Kinesis Data Analytics application.
 type MonitoringConfigurationDescription struct {
 	_ struct{} `type:"structure"`
@@ -8676,7 +8699,7 @@ func (s *MonitoringConfigurationDescription) SetMetricsLevel(v string) *Monitori
 }
 
 // Describes updates to configuration parameters for Amazon CloudWatch logging
-// for a Java-based Kinesis Data Analytics application.
+// for a Flink-based Kinesis Data Analytics application.
 type MonitoringConfigurationUpdate struct {
 	_ struct{} `type:"structure"`
 
@@ -8689,6 +8712,8 @@ type MonitoringConfigurationUpdate struct {
 	LogLevelUpdate *string `type:"string" enum:"LogLevel"`
 
 	// Describes updates to the granularity of the CloudWatch Logs for an application.
+	// The Parallelism level is not recommended for applications with a Parallelism
+	// over 64 due to excessive costs.
 	MetricsLevelUpdate *string `type:"string" enum:"MetricsLevel"`
 }
 
@@ -8720,10 +8745,10 @@ func (s *MonitoringConfigurationUpdate) SetMetricsLevelUpdate(v string) *Monitor
 	return s
 }
 
-// Describes an SQL-based Amazon Kinesis Data Analytics application's output
-// configuration, in which you identify an in-application stream and a destination
-// where you want the in-application stream data to be written. The destination
-// can be a Kinesis data stream or a Kinesis Data Firehose delivery stream.
+// Describes a SQL-based Kinesis Data Analytics application's output configuration,
+// in which you identify an in-application stream and a destination where you
+// want the in-application stream data to be written. The destination can be
+// a Kinesis data stream or a Kinesis Data Firehose delivery stream.
 type Output struct {
 	_ struct{} `type:"structure"`
 
@@ -8732,10 +8757,10 @@ type Output struct {
 	// DestinationSchema is a required field
 	DestinationSchema *DestinationSchema `type:"structure" required:"true"`
 
-	// Identifies an Amazon Kinesis Data Firehose delivery stream as the destination.
+	// Identifies a Kinesis Data Firehose delivery stream as the destination.
 	KinesisFirehoseOutput *KinesisFirehoseOutput `type:"structure"`
 
-	// Identifies an Amazon Kinesis data stream as the destination.
+	// Identifies a Kinesis data stream as the destination.
 	KinesisStreamsOutput *KinesisStreamsOutput `type:"structure"`
 
 	// Identifies an AWS Lambda function as the destination.
@@ -8826,10 +8851,10 @@ func (s *Output) SetName(v string) *Output {
 	return s
 }
 
-// For an SQL-based Amazon Kinesis Data Analytics application, describes the
-// application output configuration, which includes the in-application stream
-// name and the destination where the stream data is written. The destination
-// can be a Kinesis data stream or a Kinesis Data Firehose delivery stream.
+// For a SQL-based Kinesis Data Analytics application, describes the application
+// output configuration, which includes the in-application stream name and the
+// destination where the stream data is written. The destination can be a Kinesis
+// data stream or a Kinesis Data Firehose delivery stream.
 type OutputDescription struct {
 	_ struct{} `type:"structure"`
 
@@ -8901,8 +8926,8 @@ func (s *OutputDescription) SetOutputId(v string) *OutputDescription {
 	return s
 }
 
-// For an SQL-based Amazon Kinesis Data Analytics application, describes updates
-// to the output configuration identified by the OutputId.
+// For a SQL-based Kinesis Data Analytics application, describes updates to
+// the output configuration identified by the OutputId.
 type OutputUpdate struct {
 	_ struct{} `type:"structure"`
 
@@ -9014,10 +9039,10 @@ func (s *OutputUpdate) SetOutputId(v string) *OutputUpdate {
 	return s
 }
 
-// Describes parameters for how a Java-based Amazon Kinesis Data Analytics application
-// executes multiple tasks simultaneously. For more information about parallelism,
-// see Parallel Execution (https://ci.apache.org/projects/flink/flink-docs-stable/dev/parallel.html)
-// in the Apache Flink Documentation (https://ci.apache.org/projects/flink/flink-docs-release-1.6/).
+// Describes parameters for how a Flink-based Kinesis Data Analytics application
+// application executes multiple tasks simultaneously. For more information
+// about parallelism, see Parallel Execution (https://ci.apache.org/projects/flink/flink-docs-release-1.8/dev/parallel.html)
+// in the Apache Flink Documentation (https://ci.apache.org/projects/flink/flink-docs-release-1.8/).
 type ParallelismConfiguration struct {
 	_ struct{} `type:"structure"`
 
@@ -9033,7 +9058,7 @@ type ParallelismConfiguration struct {
 	// ConfigurationType is a required field
 	ConfigurationType *string `type:"string" required:"true" enum:"ConfigurationType"`
 
-	// Describes the initial number of parallel tasks that a Java-based Kinesis
+	// Describes the initial number of parallel tasks that a Flink-based Kinesis
 	// Data Analytics application can perform. If AutoScalingEnabled is set to True,
 	// Kinesis Data Analytics increases the CurrentParallelism value in response
 	// to application load. The service can increase the CurrentParallelism value
@@ -9044,7 +9069,7 @@ type ParallelismConfiguration struct {
 	// Parallelism setting.
 	Parallelism *int64 `min:"1" type:"integer"`
 
-	// Describes the number of parallel tasks that a Java-based Kinesis Data Analytics
+	// Describes the number of parallel tasks that a Flink-based Kinesis Data Analytics
 	// application can perform per Kinesis Processing Unit (KPU) used by the application.
 	// For more information about KPUs, see Amazon Kinesis Data Analytics Pricing
 	// (http://aws.amazon.com/kinesis/data-analytics/pricing/).
@@ -9104,7 +9129,7 @@ func (s *ParallelismConfiguration) SetParallelismPerKPU(v int64) *ParallelismCon
 	return s
 }
 
-// Describes parameters for how a Java-based Kinesis Data Analytics application
+// Describes parameters for how a Flink-based Kinesis Data Analytics application
 // executes multiple tasks simultaneously.
 type ParallelismConfigurationDescription struct {
 	_ struct{} `type:"structure"`
@@ -9117,7 +9142,7 @@ type ParallelismConfigurationDescription struct {
 	// Data Analytics service.
 	ConfigurationType *string `type:"string" enum:"ConfigurationType"`
 
-	// Describes the current number of parallel tasks that a Java-based Kinesis
+	// Describes the current number of parallel tasks that a Flink-based Kinesis
 	// Data Analytics application can perform. If AutoScalingEnabled is set to True,
 	// Kinesis Data Analytics can increase this value in response to application
 	// load. The service can increase this value up to the maximum parallelism,
@@ -9127,7 +9152,7 @@ type ParallelismConfigurationDescription struct {
 	// can reduce the CurrentParallelism value down to the Parallelism setting.
 	CurrentParallelism *int64 `min:"1" type:"integer"`
 
-	// Describes the initial number of parallel tasks that a Java-based Kinesis
+	// Describes the initial number of parallel tasks that a Flink-based Kinesis
 	// Data Analytics application can perform. If AutoScalingEnabled is set to True,
 	// then Kinesis Data Analytics can increase the CurrentParallelism value in
 	// response to application load. The service can increase CurrentParallelism
@@ -9138,7 +9163,7 @@ type ParallelismConfigurationDescription struct {
 	// Parallelism setting.
 	Parallelism *int64 `min:"1" type:"integer"`
 
-	// Describes the number of parallel tasks that a Java-based Kinesis Data Analytics
+	// Describes the number of parallel tasks that a Flink-based Kinesis Data Analytics
 	// application can perform per Kinesis Processing Unit (KPU) used by the application.
 	ParallelismPerKPU *int64 `min:"1" type:"integer"`
 }
@@ -9183,7 +9208,7 @@ func (s *ParallelismConfigurationDescription) SetParallelismPerKPU(v int64) *Par
 	return s
 }
 
-// Describes updates to parameters for how a Java-based Kinesis Data Analytics
+// Describes updates to parameters for how a Flink-based Kinesis Data Analytics
 // application executes multiple tasks simultaneously.
 type ParallelismConfigurationUpdate struct {
 	_ struct{} `type:"structure"`
@@ -9263,7 +9288,7 @@ func (s *ParallelismConfigurationUpdate) SetParallelismUpdate(v int64) *Parallel
 	return s
 }
 
-// Property key-value pairs passed into a Java-based Kinesis Data Analytics
+// Property key-value pairs passed into a Flink-based Kinesis Data Analytics
 // application.
 type PropertyGroup struct {
 	_ struct{} `type:"structure"`
@@ -9323,9 +9348,9 @@ func (s *PropertyGroup) SetPropertyMap(v map[string]*string) *PropertyGroup {
 	return s
 }
 
-// For an SQL-based Amazon Kinesis Data Analytics application, describes the
-// mapping of each data element in the streaming source to the corresponding
-// column in the in-application stream.
+// For a SQL-based Kinesis Data Analytics application, describes the mapping
+// of each data element in the streaming source to the corresponding column
+// in the in-application stream.
 //
 // Also used to describe the format of the reference data source.
 type RecordColumn struct {
@@ -9339,7 +9364,7 @@ type RecordColumn struct {
 	// or reference table.
 	//
 	// Name is a required field
-	Name *string `type:"string" required:"true"`
+	Name *string `min:"1" type:"string" required:"true"`
 
 	// The type of column created in the in-application input stream or reference
 	// table.
@@ -9363,6 +9388,9 @@ func (s *RecordColumn) Validate() error {
 	invalidParams := request.ErrInvalidParams{Context: "RecordColumn"}
 	if s.Name == nil {
 		invalidParams.Add(request.NewErrParamRequired("Name"))
+	}
+	if s.Name != nil && len(*s.Name) < 1 {
+		invalidParams.Add(request.NewErrParamMinLen("Name", 1))
 	}
 	if s.SqlType == nil {
 		invalidParams.Add(request.NewErrParamRequired("SqlType"))
@@ -9395,9 +9423,9 @@ func (s *RecordColumn) SetSqlType(v string) *RecordColumn {
 	return s
 }
 
-// For an SQL-based Amazon Kinesis Data Analytics application, describes the
-// record format and relevant mapping information that should be applied to
-// schematize the records on the stream.
+// For a SQL-based Kinesis Data Analytics application, describes the record
+// format and relevant mapping information that should be applied to schematize
+// the records on the stream.
 type RecordFormat struct {
 	_ struct{} `type:"structure"`
 
@@ -9453,11 +9481,11 @@ func (s *RecordFormat) SetRecordFormatType(v string) *RecordFormat {
 	return s
 }
 
-// For an SQL-based Amazon Kinesis Data Analytics application, describes the
-// reference data source by providing the source information (Amazon S3 bucket
-// name and object key name), the resulting in-application table name that is
-// created, and the necessary schema to map the data elements in the Amazon
-// S3 object to the in-application table.
+// For a SQL-based Kinesis Data Analytics application, describes the reference
+// data source by providing the source information (Amazon S3 bucket name and
+// object key name), the resulting in-application table name that is created,
+// and the necessary schema to map the data elements in the Amazon S3 object
+// to the in-application table.
 type ReferenceDataSource struct {
 	_ struct{} `type:"structure"`
 
@@ -9536,8 +9564,8 @@ func (s *ReferenceDataSource) SetTableName(v string) *ReferenceDataSource {
 	return s
 }
 
-// For an SQL-based Amazon Kinesis Data Analytics application, describes the
-// reference data source configured for an application.
+// For a SQL-based Kinesis Data Analytics application, describes the reference
+// data source configured for an application.
 type ReferenceDataSourceDescription struct {
 	_ struct{} `type:"structure"`
 
@@ -9599,12 +9627,11 @@ func (s *ReferenceDataSourceDescription) SetTableName(v string) *ReferenceDataSo
 	return s
 }
 
-// When you update a reference data source configuration for a SQL-based Amazon
-// Kinesis Data Analytics application, this object provides all the updated
-// values (such as the source bucket name and object key name), the in-application
-// table name that is created, and updated mapping information that maps the
-// data in the Amazon S3 object to the in-application reference table that is
-// created.
+// When you update a reference data source configuration for a SQL-based Kinesis
+// Data Analytics application, this object provides all the updated values (such
+// as the source bucket name and object key name), the in-application table
+// name that is created, and updated mapping information that maps the data
+// in the Amazon S3 object to the in-application reference table that is created.
 type ReferenceDataSourceUpdate struct {
 	_ struct{} `type:"structure"`
 
@@ -9692,8 +9719,8 @@ func (s *ReferenceDataSourceUpdate) SetTableNameUpdate(v string) *ReferenceDataS
 
 // The application is not available for this operation.
 type ResourceInUseException struct {
-	_            struct{} `type:"structure"`
-	respMetadata protocol.ResponseMetadata
+	_            struct{}                  `type:"structure"`
+	RespMetadata protocol.ResponseMetadata `json:"-" xml:"-"`
 
 	Message_ *string `locationName:"Message" type:"string"`
 }
@@ -9710,17 +9737,17 @@ func (s ResourceInUseException) GoString() string {
 
 func newErrorResourceInUseException(v protocol.ResponseMetadata) error {
 	return &ResourceInUseException{
-		respMetadata: v,
+		RespMetadata: v,
 	}
 }
 
 // Code returns the exception type name.
-func (s ResourceInUseException) Code() string {
+func (s *ResourceInUseException) Code() string {
 	return "ResourceInUseException"
 }
 
 // Message returns the exception's message.
-func (s ResourceInUseException) Message() string {
+func (s *ResourceInUseException) Message() string {
 	if s.Message_ != nil {
 		return *s.Message_
 	}
@@ -9728,28 +9755,28 @@ func (s ResourceInUseException) Message() string {
 }
 
 // OrigErr always returns nil, satisfies awserr.Error interface.
-func (s ResourceInUseException) OrigErr() error {
+func (s *ResourceInUseException) OrigErr() error {
 	return nil
 }
 
-func (s ResourceInUseException) Error() string {
+func (s *ResourceInUseException) Error() string {
 	return fmt.Sprintf("%s: %s", s.Code(), s.Message())
 }
 
 // Status code returns the HTTP status code for the request's response error.
-func (s ResourceInUseException) StatusCode() int {
-	return s.respMetadata.StatusCode
+func (s *ResourceInUseException) StatusCode() int {
+	return s.RespMetadata.StatusCode
 }
 
 // RequestID returns the service's response RequestID for request.
-func (s ResourceInUseException) RequestID() string {
-	return s.respMetadata.RequestID
+func (s *ResourceInUseException) RequestID() string {
+	return s.RespMetadata.RequestID
 }
 
 // Specified application can't be found.
 type ResourceNotFoundException struct {
-	_            struct{} `type:"structure"`
-	respMetadata protocol.ResponseMetadata
+	_            struct{}                  `type:"structure"`
+	RespMetadata protocol.ResponseMetadata `json:"-" xml:"-"`
 
 	Message_ *string `locationName:"Message" type:"string"`
 }
@@ -9766,17 +9793,17 @@ func (s ResourceNotFoundException) GoString() string {
 
 func newErrorResourceNotFoundException(v protocol.ResponseMetadata) error {
 	return &ResourceNotFoundException{
-		respMetadata: v,
+		RespMetadata: v,
 	}
 }
 
 // Code returns the exception type name.
-func (s ResourceNotFoundException) Code() string {
+func (s *ResourceNotFoundException) Code() string {
 	return "ResourceNotFoundException"
 }
 
 // Message returns the exception's message.
-func (s ResourceNotFoundException) Message() string {
+func (s *ResourceNotFoundException) Message() string {
 	if s.Message_ != nil {
 		return *s.Message_
 	}
@@ -9784,31 +9811,31 @@ func (s ResourceNotFoundException) Message() string {
 }
 
 // OrigErr always returns nil, satisfies awserr.Error interface.
-func (s ResourceNotFoundException) OrigErr() error {
+func (s *ResourceNotFoundException) OrigErr() error {
 	return nil
 }
 
-func (s ResourceNotFoundException) Error() string {
+func (s *ResourceNotFoundException) Error() string {
 	return fmt.Sprintf("%s: %s", s.Code(), s.Message())
 }
 
 // Status code returns the HTTP status code for the request's response error.
-func (s ResourceNotFoundException) StatusCode() int {
-	return s.respMetadata.StatusCode
+func (s *ResourceNotFoundException) StatusCode() int {
+	return s.RespMetadata.StatusCode
 }
 
 // RequestID returns the service's response RequestID for request.
-func (s ResourceNotFoundException) RequestID() string {
-	return s.respMetadata.RequestID
+func (s *ResourceNotFoundException) RequestID() string {
+	return s.RespMetadata.RequestID
 }
 
 // Discovery failed to get a record from the streaming source because of the
-// Amazon Kinesis Streams ProvisionedThroughputExceededException. For more information,
+// Kinesis Streams ProvisionedThroughputExceededException. For more information,
 // see GetRecords (http://docs.aws.amazon.com/kinesis/latest/APIReference/API_GetRecords.html)
 // in the Amazon Kinesis Streams API Reference.
 type ResourceProvisionedThroughputExceededException struct {
-	_            struct{} `type:"structure"`
-	respMetadata protocol.ResponseMetadata
+	_            struct{}                  `type:"structure"`
+	RespMetadata protocol.ResponseMetadata `json:"-" xml:"-"`
 
 	Message_ *string `locationName:"Message" type:"string"`
 }
@@ -9825,17 +9852,17 @@ func (s ResourceProvisionedThroughputExceededException) GoString() string {
 
 func newErrorResourceProvisionedThroughputExceededException(v protocol.ResponseMetadata) error {
 	return &ResourceProvisionedThroughputExceededException{
-		respMetadata: v,
+		RespMetadata: v,
 	}
 }
 
 // Code returns the exception type name.
-func (s ResourceProvisionedThroughputExceededException) Code() string {
+func (s *ResourceProvisionedThroughputExceededException) Code() string {
 	return "ResourceProvisionedThroughputExceededException"
 }
 
 // Message returns the exception's message.
-func (s ResourceProvisionedThroughputExceededException) Message() string {
+func (s *ResourceProvisionedThroughputExceededException) Message() string {
 	if s.Message_ != nil {
 		return *s.Message_
 	}
@@ -9843,37 +9870,37 @@ func (s ResourceProvisionedThroughputExceededException) Message() string {
 }
 
 // OrigErr always returns nil, satisfies awserr.Error interface.
-func (s ResourceProvisionedThroughputExceededException) OrigErr() error {
+func (s *ResourceProvisionedThroughputExceededException) OrigErr() error {
 	return nil
 }
 
-func (s ResourceProvisionedThroughputExceededException) Error() string {
+func (s *ResourceProvisionedThroughputExceededException) Error() string {
 	return fmt.Sprintf("%s: %s", s.Code(), s.Message())
 }
 
 // Status code returns the HTTP status code for the request's response error.
-func (s ResourceProvisionedThroughputExceededException) StatusCode() int {
-	return s.respMetadata.StatusCode
+func (s *ResourceProvisionedThroughputExceededException) StatusCode() int {
+	return s.RespMetadata.StatusCode
 }
 
 // RequestID returns the service's response RequestID for request.
-func (s ResourceProvisionedThroughputExceededException) RequestID() string {
-	return s.respMetadata.RequestID
+func (s *ResourceProvisionedThroughputExceededException) RequestID() string {
+	return s.RespMetadata.RequestID
 }
 
-// Describes the starting parameters for an Amazon Kinesis Data Analytics application.
+// Describes the starting parameters for an Kinesis Data Analytics application.
 type RunConfiguration struct {
 	_ struct{} `type:"structure"`
 
 	// Describes the restore behavior of a restarting application.
 	ApplicationRestoreConfiguration *ApplicationRestoreConfiguration `type:"structure"`
 
-	// Describes the starting parameters for an Apache Flink-based Kinesis Data
-	// Analytics application.
+	// Describes the starting parameters for a Flink-based Kinesis Data Analytics
+	// application.
 	FlinkRunConfiguration *FlinkRunConfiguration `type:"structure"`
 
-	// Describes the starting parameters for an SQL-based Kinesis Data Analytics
-	// application.
+	// Describes the starting parameters for a SQL-based Kinesis Data Analytics
+	// application application.
 	SqlRunConfigurations []*SqlRunConfiguration `type:"list"`
 }
 
@@ -9936,6 +9963,10 @@ type RunConfigurationDescription struct {
 
 	// Describes the restore behavior of a restarting application.
 	ApplicationRestoreConfigurationDescription *ApplicationRestoreConfiguration `type:"structure"`
+
+	// Describes the starting parameters for a Flink-based Kinesis Data Analytics
+	// application.
+	FlinkRunConfigurationDescription *FlinkRunConfiguration `type:"structure"`
 }
 
 // String returns the string representation
@@ -9954,6 +9985,12 @@ func (s *RunConfigurationDescription) SetApplicationRestoreConfigurationDescript
 	return s
 }
 
+// SetFlinkRunConfigurationDescription sets the FlinkRunConfigurationDescription field's value.
+func (s *RunConfigurationDescription) SetFlinkRunConfigurationDescription(v *FlinkRunConfiguration) *RunConfigurationDescription {
+	s.FlinkRunConfigurationDescription = v
+	return s
+}
+
 // Describes the updates to the starting parameters for a Kinesis Data Analytics
 // application.
 type RunConfigurationUpdate struct {
@@ -9962,8 +9999,8 @@ type RunConfigurationUpdate struct {
 	// Describes updates to the restore behavior of a restarting application.
 	ApplicationRestoreConfiguration *ApplicationRestoreConfiguration `type:"structure"`
 
-	// Describes the starting parameters for an Apache Flink-based Kinesis Data
-	// Analytics application.
+	// Describes the starting parameters for a Flink-based Kinesis Data Analytics
+	// application.
 	FlinkRunConfiguration *FlinkRunConfiguration `type:"structure"`
 }
 
@@ -10004,7 +10041,7 @@ func (s *RunConfigurationUpdate) SetFlinkRunConfiguration(v *FlinkRunConfigurati
 	return s
 }
 
-// Describes the location of a Java-based Amazon Kinesis Data Analytics application's
+// Describes the location of a Flink-based Kinesis Data Analytics application's
 // code stored in an S3 bucket.
 type S3ApplicationCodeLocationDescription struct {
 	_ struct{} `type:"structure"`
@@ -10052,7 +10089,7 @@ func (s *S3ApplicationCodeLocationDescription) SetObjectVersion(v string) *S3App
 	return s
 }
 
-// For an SQL-based Amazon Kinesis Data Analytics application, provides a description
+// For a SQL-based Kinesis Data Analytics application, provides a description
 // of an Amazon S3 data source, including the Amazon Resource Name (ARN) of
 // the S3 bucket and the name of the Amazon S3 object that contains the data.
 type S3Configuration struct {
@@ -10113,7 +10150,7 @@ func (s *S3Configuration) SetFileKey(v string) *S3Configuration {
 	return s
 }
 
-// For a Java-based Amazon Kinesis Data Analytics application, provides a description
+// For a Flink-based Kinesis Data Analytics application, provides a description
 // of an Amazon S3 object, including the Amazon Resource Name (ARN) of the S3
 // bucket, the name of the Amazon S3 object that contains the data, and the
 // version number of the Amazon S3 object that contains the data.
@@ -10185,8 +10222,8 @@ func (s *S3ContentLocation) SetObjectVersion(v string) *S3ContentLocation {
 	return s
 }
 
-// Describes an update for the Amazon S3 code content location for a Java-based
-// Amazon Kinesis Data Analytics application.
+// Describes an update for the Amazon S3 code content location for a Flink-based
+// Kinesis Data Analytics application.
 type S3ContentLocationUpdate struct {
 	_ struct{} `type:"structure"`
 
@@ -10245,8 +10282,8 @@ func (s *S3ContentLocationUpdate) SetObjectVersionUpdate(v string) *S3ContentLoc
 	return s
 }
 
-// For an SQL-based Amazon Kinesis Data Analytics application, identifies the
-// Amazon S3 bucket and object that contains the reference data.
+// For a SQL-based Kinesis Data Analytics application, identifies the Amazon
+// S3 bucket and object that contains the reference data.
 //
 // A Kinesis Data Analytics application loads reference data only once. If the
 // data changes, you call the UpdateApplication operation to trigger reloading
@@ -10299,8 +10336,8 @@ func (s *S3ReferenceDataSource) SetFileKey(v string) *S3ReferenceDataSource {
 	return s
 }
 
-// For an SQL-based Amazon Kinesis Data Analytics application, provides the
-// bucket name and object key name that stores the reference data.
+// For a SQL-based Kinesis Data Analytics application, provides the bucket name
+// and object key name that stores the reference data.
 type S3ReferenceDataSourceDescription struct {
 	_ struct{} `type:"structure"`
 
@@ -10352,9 +10389,8 @@ func (s *S3ReferenceDataSourceDescription) SetReferenceRoleARN(v string) *S3Refe
 	return s
 }
 
-// For an SQL-based Amazon Kinesis Data Analytics application, describes the
-// Amazon S3 bucket name and object key name for an in-application reference
-// table.
+// For a SQL-based Kinesis Data Analytics application, describes the Amazon
+// S3 bucket name and object key name for an in-application reference table.
 type S3ReferenceDataSourceUpdate struct {
 	_ struct{} `type:"structure"`
 
@@ -10405,8 +10441,8 @@ func (s *S3ReferenceDataSourceUpdate) SetFileKeyUpdate(v string) *S3ReferenceDat
 
 // The service cannot complete the request.
 type ServiceUnavailableException struct {
-	_            struct{} `type:"structure"`
-	respMetadata protocol.ResponseMetadata
+	_            struct{}                  `type:"structure"`
+	RespMetadata protocol.ResponseMetadata `json:"-" xml:"-"`
 
 	Message_ *string `locationName:"Message" type:"string"`
 }
@@ -10423,17 +10459,17 @@ func (s ServiceUnavailableException) GoString() string {
 
 func newErrorServiceUnavailableException(v protocol.ResponseMetadata) error {
 	return &ServiceUnavailableException{
-		respMetadata: v,
+		RespMetadata: v,
 	}
 }
 
 // Code returns the exception type name.
-func (s ServiceUnavailableException) Code() string {
+func (s *ServiceUnavailableException) Code() string {
 	return "ServiceUnavailableException"
 }
 
 // Message returns the exception's message.
-func (s ServiceUnavailableException) Message() string {
+func (s *ServiceUnavailableException) Message() string {
 	if s.Message_ != nil {
 		return *s.Message_
 	}
@@ -10441,22 +10477,22 @@ func (s ServiceUnavailableException) Message() string {
 }
 
 // OrigErr always returns nil, satisfies awserr.Error interface.
-func (s ServiceUnavailableException) OrigErr() error {
+func (s *ServiceUnavailableException) OrigErr() error {
 	return nil
 }
 
-func (s ServiceUnavailableException) Error() string {
+func (s *ServiceUnavailableException) Error() string {
 	return fmt.Sprintf("%s: %s", s.Code(), s.Message())
 }
 
 // Status code returns the HTTP status code for the request's response error.
-func (s ServiceUnavailableException) StatusCode() int {
-	return s.respMetadata.StatusCode
+func (s *ServiceUnavailableException) StatusCode() int {
+	return s.RespMetadata.StatusCode
 }
 
 // RequestID returns the service's response RequestID for request.
-func (s ServiceUnavailableException) RequestID() string {
-	return s.respMetadata.RequestID
+func (s *ServiceUnavailableException) RequestID() string {
+	return s.RespMetadata.RequestID
 }
 
 // Provides details about a snapshot of application state.
@@ -10516,9 +10552,9 @@ func (s *SnapshotDetails) SetSnapshotStatus(v string) *SnapshotDetails {
 	return s
 }
 
-// For an SQL-based Amazon Kinesis Data Analytics application, describes the
-// format of the data in the streaming source, and how each data element maps
-// to corresponding columns created in the in-application stream.
+// For a SQL-based Kinesis Data Analytics application, describes the format
+// of the data in the streaming source, and how each data element maps to corresponding
+// columns created in the in-application stream.
 type SourceSchema struct {
 	_ struct{} `type:"structure"`
 
@@ -10529,7 +10565,7 @@ type SourceSchema struct {
 
 	// Specifies the encoding of the records in the streaming source. For example,
 	// UTF-8.
-	RecordEncoding *string `type:"string"`
+	RecordEncoding *string `min:"5" type:"string"`
 
 	// Specifies the format of the records on the streaming source.
 	//
@@ -10555,6 +10591,9 @@ func (s *SourceSchema) Validate() error {
 	}
 	if s.RecordColumns != nil && len(s.RecordColumns) < 1 {
 		invalidParams.Add(request.NewErrParamMinLen("RecordColumns", 1))
+	}
+	if s.RecordEncoding != nil && len(*s.RecordEncoding) < 5 {
+		invalidParams.Add(request.NewErrParamMinLen("RecordEncoding", 5))
 	}
 	if s.RecordFormat == nil {
 		invalidParams.Add(request.NewErrParamRequired("RecordFormat"))
@@ -10599,7 +10638,7 @@ func (s *SourceSchema) SetRecordFormat(v *RecordFormat) *SourceSchema {
 	return s
 }
 
-// Describes the inputs, outputs, and reference data sources for an SQL-based
+// Describes the inputs, outputs, and reference data sources for a SQL-based
 // Kinesis Data Analytics application.
 type SqlApplicationConfiguration struct {
 	_ struct{} `type:"structure"`
@@ -10684,7 +10723,7 @@ func (s *SqlApplicationConfiguration) SetReferenceDataSources(v []*ReferenceData
 	return s
 }
 
-// Describes the inputs, outputs, and reference data sources for an SQL-based
+// Describes the inputs, outputs, and reference data sources for a SQL-based
 // Kinesis Data Analytics application.
 type SqlApplicationConfigurationDescription struct {
 	_ struct{} `type:"structure"`
@@ -10731,7 +10770,7 @@ func (s *SqlApplicationConfigurationDescription) SetReferenceDataSourceDescripti
 }
 
 // Describes updates to the input streams, destination streams, and reference
-// data sources for an SQL-based Kinesis Data Analytics application.
+// data sources for a SQL-based Kinesis Data Analytics application.
 type SqlApplicationConfigurationUpdate struct {
 	_ struct{} `type:"structure"`
 
@@ -10816,7 +10855,7 @@ func (s *SqlApplicationConfigurationUpdate) SetReferenceDataSourceUpdates(v []*R
 	return s
 }
 
-// Describes the starting parameters for an SQL-based Kinesis Data Analytics
+// Describes the starting parameters for a SQL-based Kinesis Data Analytics
 // application.
 type SqlRunConfiguration struct {
 	_ struct{} `type:"structure"`
@@ -10957,6 +10996,16 @@ type StopApplicationInput struct {
 	//
 	// ApplicationName is a required field
 	ApplicationName *string `min:"1" type:"string" required:"true"`
+
+	// Set to true to force the application to stop. If you set Force to true, Kinesis
+	// Data Analytics stops the application without taking a snapshot.
+	//
+	// You can only force stop a Flink-based Kinesis Data Analytics application.
+	// You can't force stop a SQL-based Kinesis Data Analytics application.
+	//
+	// The application must be in the STARTING, UPDATING, STOPPING, AUTOSCALING,
+	// or RUNNING state.
+	Force *bool `type:"boolean"`
 }
 
 // String returns the string representation
@@ -10988,6 +11037,12 @@ func (s *StopApplicationInput) Validate() error {
 // SetApplicationName sets the ApplicationName field's value.
 func (s *StopApplicationInput) SetApplicationName(v string) *StopApplicationInput {
 	s.ApplicationName = &v
+	return s
+}
+
+// SetForce sets the Force field's value.
+func (s *StopApplicationInput) SetForce(v bool) *StopApplicationInput {
+	s.Force = &v
 	return s
 }
 
@@ -11146,8 +11201,8 @@ func (s TagResourceOutput) GoString() string {
 // Note that the maximum number of application tags includes system tags. The
 // maximum number of user-defined application tags is 50.
 type TooManyTagsException struct {
-	_            struct{} `type:"structure"`
-	respMetadata protocol.ResponseMetadata
+	_            struct{}                  `type:"structure"`
+	RespMetadata protocol.ResponseMetadata `json:"-" xml:"-"`
 
 	Message_ *string `locationName:"message" type:"string"`
 }
@@ -11164,17 +11219,17 @@ func (s TooManyTagsException) GoString() string {
 
 func newErrorTooManyTagsException(v protocol.ResponseMetadata) error {
 	return &TooManyTagsException{
-		respMetadata: v,
+		RespMetadata: v,
 	}
 }
 
 // Code returns the exception type name.
-func (s TooManyTagsException) Code() string {
+func (s *TooManyTagsException) Code() string {
 	return "TooManyTagsException"
 }
 
 // Message returns the exception's message.
-func (s TooManyTagsException) Message() string {
+func (s *TooManyTagsException) Message() string {
 	if s.Message_ != nil {
 		return *s.Message_
 	}
@@ -11182,29 +11237,29 @@ func (s TooManyTagsException) Message() string {
 }
 
 // OrigErr always returns nil, satisfies awserr.Error interface.
-func (s TooManyTagsException) OrigErr() error {
+func (s *TooManyTagsException) OrigErr() error {
 	return nil
 }
 
-func (s TooManyTagsException) Error() string {
+func (s *TooManyTagsException) Error() string {
 	return fmt.Sprintf("%s: %s", s.Code(), s.Message())
 }
 
 // Status code returns the HTTP status code for the request's response error.
-func (s TooManyTagsException) StatusCode() int {
-	return s.respMetadata.StatusCode
+func (s *TooManyTagsException) StatusCode() int {
+	return s.RespMetadata.StatusCode
 }
 
 // RequestID returns the service's response RequestID for request.
-func (s TooManyTagsException) RequestID() string {
-	return s.respMetadata.RequestID
+func (s *TooManyTagsException) RequestID() string {
+	return s.RespMetadata.RequestID
 }
 
-// The data format is not valid. Amazon Kinesis Data Analytics cannot detect
-// the schema for the given streaming source.
+// The data format is not valid. Kinesis Data Analytics cannot detect the schema
+// for the given streaming source.
 type UnableToDetectSchemaException struct {
-	_            struct{} `type:"structure"`
-	respMetadata protocol.ResponseMetadata
+	_            struct{}                  `type:"structure"`
+	RespMetadata protocol.ResponseMetadata `json:"-" xml:"-"`
 
 	Message_ *string `locationName:"Message" type:"string"`
 
@@ -11228,17 +11283,17 @@ func (s UnableToDetectSchemaException) GoString() string {
 
 func newErrorUnableToDetectSchemaException(v protocol.ResponseMetadata) error {
 	return &UnableToDetectSchemaException{
-		respMetadata: v,
+		RespMetadata: v,
 	}
 }
 
 // Code returns the exception type name.
-func (s UnableToDetectSchemaException) Code() string {
+func (s *UnableToDetectSchemaException) Code() string {
 	return "UnableToDetectSchemaException"
 }
 
 // Message returns the exception's message.
-func (s UnableToDetectSchemaException) Message() string {
+func (s *UnableToDetectSchemaException) Message() string {
 	if s.Message_ != nil {
 		return *s.Message_
 	}
@@ -11246,29 +11301,29 @@ func (s UnableToDetectSchemaException) Message() string {
 }
 
 // OrigErr always returns nil, satisfies awserr.Error interface.
-func (s UnableToDetectSchemaException) OrigErr() error {
+func (s *UnableToDetectSchemaException) OrigErr() error {
 	return nil
 }
 
-func (s UnableToDetectSchemaException) Error() string {
+func (s *UnableToDetectSchemaException) Error() string {
 	return fmt.Sprintf("%s: %s\n%s", s.Code(), s.Message(), s.String())
 }
 
 // Status code returns the HTTP status code for the request's response error.
-func (s UnableToDetectSchemaException) StatusCode() int {
-	return s.respMetadata.StatusCode
+func (s *UnableToDetectSchemaException) StatusCode() int {
+	return s.RespMetadata.StatusCode
 }
 
 // RequestID returns the service's response RequestID for request.
-func (s UnableToDetectSchemaException) RequestID() string {
-	return s.respMetadata.RequestID
+func (s *UnableToDetectSchemaException) RequestID() string {
+	return s.RespMetadata.RequestID
 }
 
 // The request was rejected because a specified parameter is not supported or
 // a specified resource is not valid for this operation.
 type UnsupportedOperationException struct {
-	_            struct{} `type:"structure"`
-	respMetadata protocol.ResponseMetadata
+	_            struct{}                  `type:"structure"`
+	RespMetadata protocol.ResponseMetadata `json:"-" xml:"-"`
 
 	Message_ *string `locationName:"Message" type:"string"`
 }
@@ -11285,17 +11340,17 @@ func (s UnsupportedOperationException) GoString() string {
 
 func newErrorUnsupportedOperationException(v protocol.ResponseMetadata) error {
 	return &UnsupportedOperationException{
-		respMetadata: v,
+		RespMetadata: v,
 	}
 }
 
 // Code returns the exception type name.
-func (s UnsupportedOperationException) Code() string {
+func (s *UnsupportedOperationException) Code() string {
 	return "UnsupportedOperationException"
 }
 
 // Message returns the exception's message.
-func (s UnsupportedOperationException) Message() string {
+func (s *UnsupportedOperationException) Message() string {
 	if s.Message_ != nil {
 		return *s.Message_
 	}
@@ -11303,28 +11358,29 @@ func (s UnsupportedOperationException) Message() string {
 }
 
 // OrigErr always returns nil, satisfies awserr.Error interface.
-func (s UnsupportedOperationException) OrigErr() error {
+func (s *UnsupportedOperationException) OrigErr() error {
 	return nil
 }
 
-func (s UnsupportedOperationException) Error() string {
+func (s *UnsupportedOperationException) Error() string {
 	return fmt.Sprintf("%s: %s", s.Code(), s.Message())
 }
 
 // Status code returns the HTTP status code for the request's response error.
-func (s UnsupportedOperationException) StatusCode() int {
-	return s.respMetadata.StatusCode
+func (s *UnsupportedOperationException) StatusCode() int {
+	return s.RespMetadata.StatusCode
 }
 
 // RequestID returns the service's response RequestID for request.
-func (s UnsupportedOperationException) RequestID() string {
-	return s.respMetadata.RequestID
+func (s *UnsupportedOperationException) RequestID() string {
+	return s.RespMetadata.RequestID
 }
 
 type UntagResourceInput struct {
 	_ struct{} `type:"structure"`
 
-	// The ARN of the Kinesis Analytics application from which to remove the tags.
+	// The ARN of the Kinesis Data Analytics application from which to remove the
+	// tags.
 	//
 	// ResourceARN is a required field
 	ResourceARN *string `min:"1" type:"string" required:"true"`
@@ -11739,6 +11795,15 @@ const (
 	ApplicationRestoreTypeRestoreFromCustomSnapshot = "RESTORE_FROM_CUSTOM_SNAPSHOT"
 )
 
+// ApplicationRestoreType_Values returns all elements of the ApplicationRestoreType enum
+func ApplicationRestoreType_Values() []string {
+	return []string{
+		ApplicationRestoreTypeSkipRestoreFromSnapshot,
+		ApplicationRestoreTypeRestoreFromLatestSnapshot,
+		ApplicationRestoreTypeRestoreFromCustomSnapshot,
+	}
+}
+
 const (
 	// ApplicationStatusDeleting is a ApplicationStatus enum value
 	ApplicationStatusDeleting = "DELETING"
@@ -11757,7 +11822,27 @@ const (
 
 	// ApplicationStatusUpdating is a ApplicationStatus enum value
 	ApplicationStatusUpdating = "UPDATING"
+
+	// ApplicationStatusAutoscaling is a ApplicationStatus enum value
+	ApplicationStatusAutoscaling = "AUTOSCALING"
+
+	// ApplicationStatusForceStopping is a ApplicationStatus enum value
+	ApplicationStatusForceStopping = "FORCE_STOPPING"
 )
+
+// ApplicationStatus_Values returns all elements of the ApplicationStatus enum
+func ApplicationStatus_Values() []string {
+	return []string{
+		ApplicationStatusDeleting,
+		ApplicationStatusStarting,
+		ApplicationStatusStopping,
+		ApplicationStatusReady,
+		ApplicationStatusRunning,
+		ApplicationStatusUpdating,
+		ApplicationStatusAutoscaling,
+		ApplicationStatusForceStopping,
+	}
+}
 
 const (
 	// CodeContentTypePlaintext is a CodeContentType enum value
@@ -11767,6 +11852,14 @@ const (
 	CodeContentTypeZipfile = "ZIPFILE"
 )
 
+// CodeContentType_Values returns all elements of the CodeContentType enum
+func CodeContentType_Values() []string {
+	return []string{
+		CodeContentTypePlaintext,
+		CodeContentTypeZipfile,
+	}
+}
+
 const (
 	// ConfigurationTypeDefault is a ConfigurationType enum value
 	ConfigurationTypeDefault = "DEFAULT"
@@ -11774,6 +11867,14 @@ const (
 	// ConfigurationTypeCustom is a ConfigurationType enum value
 	ConfigurationTypeCustom = "CUSTOM"
 )
+
+// ConfigurationType_Values returns all elements of the ConfigurationType enum
+func ConfigurationType_Values() []string {
+	return []string{
+		ConfigurationTypeDefault,
+		ConfigurationTypeCustom,
+	}
+}
 
 const (
 	// InputStartingPositionNow is a InputStartingPosition enum value
@@ -11785,6 +11886,15 @@ const (
 	// InputStartingPositionLastStoppedPoint is a InputStartingPosition enum value
 	InputStartingPositionLastStoppedPoint = "LAST_STOPPED_POINT"
 )
+
+// InputStartingPosition_Values returns all elements of the InputStartingPosition enum
+func InputStartingPosition_Values() []string {
+	return []string{
+		InputStartingPositionNow,
+		InputStartingPositionTrimHorizon,
+		InputStartingPositionLastStoppedPoint,
+	}
+}
 
 const (
 	// LogLevelInfo is a LogLevel enum value
@@ -11800,6 +11910,16 @@ const (
 	LogLevelDebug = "DEBUG"
 )
 
+// LogLevel_Values returns all elements of the LogLevel enum
+func LogLevel_Values() []string {
+	return []string{
+		LogLevelInfo,
+		LogLevelWarn,
+		LogLevelError,
+		LogLevelDebug,
+	}
+}
+
 const (
 	// MetricsLevelApplication is a MetricsLevel enum value
 	MetricsLevelApplication = "APPLICATION"
@@ -11814,6 +11934,16 @@ const (
 	MetricsLevelParallelism = "PARALLELISM"
 )
 
+// MetricsLevel_Values returns all elements of the MetricsLevel enum
+func MetricsLevel_Values() []string {
+	return []string{
+		MetricsLevelApplication,
+		MetricsLevelTask,
+		MetricsLevelOperator,
+		MetricsLevelParallelism,
+	}
+}
+
 const (
 	// RecordFormatTypeJson is a RecordFormatType enum value
 	RecordFormatTypeJson = "JSON"
@@ -11821,6 +11951,14 @@ const (
 	// RecordFormatTypeCsv is a RecordFormatType enum value
 	RecordFormatTypeCsv = "CSV"
 )
+
+// RecordFormatType_Values returns all elements of the RecordFormatType enum
+func RecordFormatType_Values() []string {
+	return []string{
+		RecordFormatTypeJson,
+		RecordFormatTypeCsv,
+	}
+}
 
 const (
 	// RuntimeEnvironmentSql10 is a RuntimeEnvironment enum value
@@ -11832,6 +11970,15 @@ const (
 	// RuntimeEnvironmentFlink18 is a RuntimeEnvironment enum value
 	RuntimeEnvironmentFlink18 = "FLINK-1_8"
 )
+
+// RuntimeEnvironment_Values returns all elements of the RuntimeEnvironment enum
+func RuntimeEnvironment_Values() []string {
+	return []string{
+		RuntimeEnvironmentSql10,
+		RuntimeEnvironmentFlink16,
+		RuntimeEnvironmentFlink18,
+	}
+}
 
 const (
 	// SnapshotStatusCreating is a SnapshotStatus enum value
@@ -11846,3 +11993,13 @@ const (
 	// SnapshotStatusFailed is a SnapshotStatus enum value
 	SnapshotStatusFailed = "FAILED"
 )
+
+// SnapshotStatus_Values returns all elements of the SnapshotStatus enum
+func SnapshotStatus_Values() []string {
+	return []string{
+		SnapshotStatusCreating,
+		SnapshotStatusReady,
+		SnapshotStatusDeleting,
+		SnapshotStatusFailed,
+	}
+}

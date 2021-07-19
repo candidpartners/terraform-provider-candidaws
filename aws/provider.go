@@ -173,6 +173,7 @@ func Provider() terraform.ResourceProvider {
 			"aws_iam_role_policy_attachment":          resourceAwsIamRolePolicyAttachment(),
 			"aws_quicksight_data_source":              resourceAwsQuickSightDataSource(),
 			"aws_quicksight_group_membership":         resourceAwsQuickSightGroupMembership(),
+			"aws_quicksight_iam_policy_assignment":    resourceAwsQuickSightIAMPolicyAssignment(),
 			"aws_internet_gateway_detach":             resourceAwsInternetGatewayDetach(),
 			"aws_internet_gateway_delete":             resourceAwsInternetGatewayDelete(),
 		},

@@ -13,6 +13,99 @@ import (
 	"github.com/aws/aws-sdk-go/private/protocol/restjson"
 )
 
+const opApplyArchiveRule = "ApplyArchiveRule"
+
+// ApplyArchiveRuleRequest generates a "aws/request.Request" representing the
+// client's request for the ApplyArchiveRule operation. The "output" return
+// value will be populated with the request's response once the request completes
+// successfully.
+//
+// Use "Send" method on the returned Request to send the API call to the service.
+// the "output" return value is not valid until after Send returns without error.
+//
+// See ApplyArchiveRule for more information on using the ApplyArchiveRule
+// API call, and error handling.
+//
+// This method is useful when you want to inject custom logic or configuration
+// into the SDK's request lifecycle. Such as custom headers, or retry logic.
+//
+//
+//    // Example sending a request using the ApplyArchiveRuleRequest method.
+//    req, resp := client.ApplyArchiveRuleRequest(params)
+//
+//    err := req.Send()
+//    if err == nil { // resp is now filled
+//        fmt.Println(resp)
+//    }
+//
+// See also, https://docs.aws.amazon.com/goto/WebAPI/accessanalyzer-2019-11-01/ApplyArchiveRule
+func (c *AccessAnalyzer) ApplyArchiveRuleRequest(input *ApplyArchiveRuleInput) (req *request.Request, output *ApplyArchiveRuleOutput) {
+	op := &request.Operation{
+		Name:       opApplyArchiveRule,
+		HTTPMethod: "PUT",
+		HTTPPath:   "/archive-rule",
+	}
+
+	if input == nil {
+		input = &ApplyArchiveRuleInput{}
+	}
+
+	output = &ApplyArchiveRuleOutput{}
+	req = c.newRequest(op, input, output)
+	req.Handlers.Unmarshal.Swap(restjson.UnmarshalHandler.Name, protocol.UnmarshalDiscardBodyHandler)
+	return
+}
+
+// ApplyArchiveRule API operation for Access Analyzer.
+//
+// Retroactively applies the archive rule to existing findings that meet the
+// archive rule criteria.
+//
+// Returns awserr.Error for service API and SDK errors. Use runtime type assertions
+// with awserr.Error's Code and Message methods to get detailed information about
+// the error.
+//
+// See the AWS API reference guide for Access Analyzer's
+// API operation ApplyArchiveRule for usage and error information.
+//
+// Returned Error Types:
+//   * ResourceNotFoundException
+//   The specified resource could not be found.
+//
+//   * ValidationException
+//   Validation exception error.
+//
+//   * InternalServerException
+//   Internal server error.
+//
+//   * ThrottlingException
+//   Throttling limit exceeded error.
+//
+//   * AccessDeniedException
+//   You do not have sufficient access to perform this action.
+//
+// See also, https://docs.aws.amazon.com/goto/WebAPI/accessanalyzer-2019-11-01/ApplyArchiveRule
+func (c *AccessAnalyzer) ApplyArchiveRule(input *ApplyArchiveRuleInput) (*ApplyArchiveRuleOutput, error) {
+	req, out := c.ApplyArchiveRuleRequest(input)
+	return out, req.Send()
+}
+
+// ApplyArchiveRuleWithContext is the same as ApplyArchiveRule with the addition of
+// the ability to pass a context and additional request options.
+//
+// See ApplyArchiveRule for details on how to use this API operation.
+//
+// The context must be non-nil and will be used for request cancellation. If
+// the context is nil a panic will occur. In the future the SDK may create
+// sub-contexts for http.Requests. See https://golang.org/pkg/context/
+// for more information on using Contexts.
+func (c *AccessAnalyzer) ApplyArchiveRuleWithContext(ctx aws.Context, input *ApplyArchiveRuleInput, opts ...request.Option) (*ApplyArchiveRuleOutput, error) {
+	req, out := c.ApplyArchiveRuleRequest(input)
+	req.SetContext(ctx)
+	req.ApplyOptions(opts...)
+	return out, req.Send()
+}
+
 const opCreateAnalyzer = "CreateAnalyzer"
 
 // CreateAnalyzerRequest generates a "aws/request.Request" representing the
@@ -153,7 +246,8 @@ func (c *AccessAnalyzer) CreateArchiveRuleRequest(input *CreateArchiveRuleInput)
 // CreateArchiveRule API operation for Access Analyzer.
 //
 // Creates an archive rule for the specified analyzer. Archive rules automatically
-// archive findings that meet the criteria you define when you create the rule.
+// archive new findings that meet the criteria you define when you create the
+// rule.
 //
 // Returns awserr.Error for service API and SDK errors. Use runtime type assertions
 // with awserr.Error's Code and Message methods to get detailed information about
@@ -1900,8 +1994,8 @@ func (c *AccessAnalyzer) UpdateFindingsWithContext(ctx aws.Context, input *Updat
 
 // You do not have sufficient access to perform this action.
 type AccessDeniedException struct {
-	_            struct{} `type:"structure"`
-	respMetadata protocol.ResponseMetadata
+	_            struct{}                  `type:"structure"`
+	RespMetadata protocol.ResponseMetadata `json:"-" xml:"-"`
 
 	Message_ *string `locationName:"message" type:"string"`
 }
@@ -1918,17 +2012,17 @@ func (s AccessDeniedException) GoString() string {
 
 func newErrorAccessDeniedException(v protocol.ResponseMetadata) error {
 	return &AccessDeniedException{
-		respMetadata: v,
+		RespMetadata: v,
 	}
 }
 
 // Code returns the exception type name.
-func (s AccessDeniedException) Code() string {
+func (s *AccessDeniedException) Code() string {
 	return "AccessDeniedException"
 }
 
 // Message returns the exception's message.
-func (s AccessDeniedException) Message() string {
+func (s *AccessDeniedException) Message() string {
 	if s.Message_ != nil {
 		return *s.Message_
 	}
@@ -1936,22 +2030,22 @@ func (s AccessDeniedException) Message() string {
 }
 
 // OrigErr always returns nil, satisfies awserr.Error interface.
-func (s AccessDeniedException) OrigErr() error {
+func (s *AccessDeniedException) OrigErr() error {
 	return nil
 }
 
-func (s AccessDeniedException) Error() string {
+func (s *AccessDeniedException) Error() string {
 	return fmt.Sprintf("%s: %s", s.Code(), s.Message())
 }
 
 // Status code returns the HTTP status code for the request's response error.
-func (s AccessDeniedException) StatusCode() int {
-	return s.respMetadata.StatusCode
+func (s *AccessDeniedException) StatusCode() int {
+	return s.RespMetadata.StatusCode
 }
 
 // RequestID returns the service's response RequestID for request.
-func (s AccessDeniedException) RequestID() string {
-	return s.respMetadata.RequestID
+func (s *AccessDeniedException) RequestID() string {
+	return s.RespMetadata.RequestID
 }
 
 // Contains details about the analyzed resource.
@@ -1986,12 +2080,18 @@ type AnalyzedResource struct {
 	// ResourceArn is a required field
 	ResourceArn *string `locationName:"resourceArn" type:"string" required:"true"`
 
+	// The AWS account ID that owns the resource.
+	//
+	// ResourceOwnerAccount is a required field
+	ResourceOwnerAccount *string `locationName:"resourceOwnerAccount" type:"string" required:"true"`
+
 	// The type of the resource that was analyzed.
 	//
 	// ResourceType is a required field
 	ResourceType *string `locationName:"resourceType" type:"string" required:"true" enum:"ResourceType"`
 
-	// Indicates how the access that generated the finding is granted.
+	// Indicates how the access that generated the finding is granted. This is populated
+	// for Amazon S3 bucket findings.
 	SharedVia []*string `locationName:"sharedVia" type:"list"`
 
 	// The current status of the finding generated from the analyzed resource.
@@ -2049,6 +2149,12 @@ func (s *AnalyzedResource) SetResourceArn(v string) *AnalyzedResource {
 	return s
 }
 
+// SetResourceOwnerAccount sets the ResourceOwnerAccount field's value.
+func (s *AnalyzedResource) SetResourceOwnerAccount(v string) *AnalyzedResource {
+	s.ResourceOwnerAccount = &v
+	return s
+}
+
 // SetResourceType sets the ResourceType field's value.
 func (s *AnalyzedResource) SetResourceType(v string) *AnalyzedResource {
 	s.ResourceType = &v
@@ -2082,6 +2188,11 @@ type AnalyzedResourceSummary struct {
 	// ResourceArn is a required field
 	ResourceArn *string `locationName:"resourceArn" type:"string" required:"true"`
 
+	// The AWS account ID that owns the resource.
+	//
+	// ResourceOwnerAccount is a required field
+	ResourceOwnerAccount *string `locationName:"resourceOwnerAccount" type:"string" required:"true"`
+
 	// The type of resource that was analyzed.
 	//
 	// ResourceType is a required field
@@ -2101,6 +2212,12 @@ func (s AnalyzedResourceSummary) GoString() string {
 // SetResourceArn sets the ResourceArn field's value.
 func (s *AnalyzedResourceSummary) SetResourceArn(v string) *AnalyzedResourceSummary {
 	s.ResourceArn = &v
+	return s
+}
+
+// SetResourceOwnerAccount sets the ResourceOwnerAccount field's value.
+func (s *AnalyzedResourceSummary) SetResourceOwnerAccount(v string) *AnalyzedResourceSummary {
+	s.ResourceOwnerAccount = &v
 	return s
 }
 
@@ -2134,6 +2251,23 @@ type AnalyzerSummary struct {
 	//
 	// Name is a required field
 	Name *string `locationName:"name" min:"1" type:"string" required:"true"`
+
+	// The status of the analyzer. An Active analyzer successfully monitors supported
+	// resources and generates new findings. The analyzer is Disabled when a user
+	// action, such as removing trusted access for IAM Access Analyzer from AWS
+	// Organizations, causes the analyzer to stop generating new findings. The status
+	// is Creating when the analyzer creation is in progress and Failed when the
+	// analyzer creation has failed.
+	//
+	// Status is a required field
+	Status *string `locationName:"status" type:"string" required:"true" enum:"AnalyzerStatus"`
+
+	// The statusReason provides more details about the current status of the analyzer.
+	// For example, if the creation for the analyzer fails, a Failed status is displayed.
+	// For an analyzer with organization as the type, this failure can be due to
+	// an issue with creating the service-linked roles required in the member accounts
+	// of the AWS organization.
+	StatusReason *StatusReason `locationName:"statusReason" type:"structure"`
 
 	// The tags added to the analyzer.
 	Tags map[string]*string `locationName:"tags" type:"map"`
@@ -2185,6 +2319,18 @@ func (s *AnalyzerSummary) SetName(v string) *AnalyzerSummary {
 	return s
 }
 
+// SetStatus sets the Status field's value.
+func (s *AnalyzerSummary) SetStatus(v string) *AnalyzerSummary {
+	s.Status = &v
+	return s
+}
+
+// SetStatusReason sets the StatusReason field's value.
+func (s *AnalyzerSummary) SetStatusReason(v *StatusReason) *AnalyzerSummary {
+	s.StatusReason = v
+	return s
+}
+
 // SetTags sets the Tags field's value.
 func (s *AnalyzerSummary) SetTags(v map[string]*string) *AnalyzerSummary {
 	s.Tags = v
@@ -2195,6 +2341,85 @@ func (s *AnalyzerSummary) SetTags(v map[string]*string) *AnalyzerSummary {
 func (s *AnalyzerSummary) SetType(v string) *AnalyzerSummary {
 	s.Type = &v
 	return s
+}
+
+// Retroactively applies an archive rule.
+type ApplyArchiveRuleInput struct {
+	_ struct{} `type:"structure"`
+
+	// The Amazon resource name (ARN) of the analyzer.
+	//
+	// AnalyzerArn is a required field
+	AnalyzerArn *string `locationName:"analyzerArn" type:"string" required:"true"`
+
+	// A client token.
+	ClientToken *string `locationName:"clientToken" type:"string" idempotencyToken:"true"`
+
+	// The name of the rule to apply.
+	//
+	// RuleName is a required field
+	RuleName *string `locationName:"ruleName" min:"1" type:"string" required:"true"`
+}
+
+// String returns the string representation
+func (s ApplyArchiveRuleInput) String() string {
+	return awsutil.Prettify(s)
+}
+
+// GoString returns the string representation
+func (s ApplyArchiveRuleInput) GoString() string {
+	return s.String()
+}
+
+// Validate inspects the fields of the type to determine if they are valid.
+func (s *ApplyArchiveRuleInput) Validate() error {
+	invalidParams := request.ErrInvalidParams{Context: "ApplyArchiveRuleInput"}
+	if s.AnalyzerArn == nil {
+		invalidParams.Add(request.NewErrParamRequired("AnalyzerArn"))
+	}
+	if s.RuleName == nil {
+		invalidParams.Add(request.NewErrParamRequired("RuleName"))
+	}
+	if s.RuleName != nil && len(*s.RuleName) < 1 {
+		invalidParams.Add(request.NewErrParamMinLen("RuleName", 1))
+	}
+
+	if invalidParams.Len() > 0 {
+		return invalidParams
+	}
+	return nil
+}
+
+// SetAnalyzerArn sets the AnalyzerArn field's value.
+func (s *ApplyArchiveRuleInput) SetAnalyzerArn(v string) *ApplyArchiveRuleInput {
+	s.AnalyzerArn = &v
+	return s
+}
+
+// SetClientToken sets the ClientToken field's value.
+func (s *ApplyArchiveRuleInput) SetClientToken(v string) *ApplyArchiveRuleInput {
+	s.ClientToken = &v
+	return s
+}
+
+// SetRuleName sets the RuleName field's value.
+func (s *ApplyArchiveRuleInput) SetRuleName(v string) *ApplyArchiveRuleInput {
+	s.RuleName = &v
+	return s
+}
+
+type ApplyArchiveRuleOutput struct {
+	_ struct{} `type:"structure"`
+}
+
+// String returns the string representation
+func (s ApplyArchiveRuleOutput) String() string {
+	return awsutil.Prettify(s)
+}
+
+// GoString returns the string representation
+func (s ApplyArchiveRuleOutput) GoString() string {
+	return s.String()
 }
 
 // Contains information about an archive rule.
@@ -2258,8 +2483,8 @@ func (s *ArchiveRuleSummary) SetUpdatedAt(v time.Time) *ArchiveRuleSummary {
 
 // A conflict exception error.
 type ConflictException struct {
-	_            struct{} `type:"structure"`
-	respMetadata protocol.ResponseMetadata
+	_            struct{}                  `type:"structure"`
+	RespMetadata protocol.ResponseMetadata `json:"-" xml:"-"`
 
 	Message_ *string `locationName:"message" type:"string"`
 
@@ -2286,17 +2511,17 @@ func (s ConflictException) GoString() string {
 
 func newErrorConflictException(v protocol.ResponseMetadata) error {
 	return &ConflictException{
-		respMetadata: v,
+		RespMetadata: v,
 	}
 }
 
 // Code returns the exception type name.
-func (s ConflictException) Code() string {
+func (s *ConflictException) Code() string {
 	return "ConflictException"
 }
 
 // Message returns the exception's message.
-func (s ConflictException) Message() string {
+func (s *ConflictException) Message() string {
 	if s.Message_ != nil {
 		return *s.Message_
 	}
@@ -2304,22 +2529,22 @@ func (s ConflictException) Message() string {
 }
 
 // OrigErr always returns nil, satisfies awserr.Error interface.
-func (s ConflictException) OrigErr() error {
+func (s *ConflictException) OrigErr() error {
 	return nil
 }
 
-func (s ConflictException) Error() string {
+func (s *ConflictException) Error() string {
 	return fmt.Sprintf("%s: %s\n%s", s.Code(), s.Message(), s.String())
 }
 
 // Status code returns the HTTP status code for the request's response error.
-func (s ConflictException) StatusCode() int {
-	return s.respMetadata.StatusCode
+func (s *ConflictException) StatusCode() int {
+	return s.RespMetadata.StatusCode
 }
 
 // RequestID returns the service's response RequestID for request.
-func (s ConflictException) RequestID() string {
-	return s.respMetadata.RequestID
+func (s *ConflictException) RequestID() string {
+	return s.RespMetadata.RequestID
 }
 
 // Creates an analyzer.
@@ -2805,10 +3030,19 @@ type Finding struct {
 	// The resource that an external principal has access to.
 	Resource *string `locationName:"resource" type:"string"`
 
+	// The AWS account ID that owns the resource.
+	//
+	// ResourceOwnerAccount is a required field
+	ResourceOwnerAccount *string `locationName:"resourceOwnerAccount" type:"string" required:"true"`
+
 	// The type of the resource reported in the finding.
 	//
 	// ResourceType is a required field
 	ResourceType *string `locationName:"resourceType" type:"string" required:"true" enum:"ResourceType"`
+
+	// The sources of the finding. This indicates how the access that generated
+	// the finding is granted. It is populated for Amazon S3 bucket findings.
+	Sources []*FindingSource `locationName:"sources" type:"list"`
 
 	// The current status of the finding.
 	//
@@ -2885,9 +3119,21 @@ func (s *Finding) SetResource(v string) *Finding {
 	return s
 }
 
+// SetResourceOwnerAccount sets the ResourceOwnerAccount field's value.
+func (s *Finding) SetResourceOwnerAccount(v string) *Finding {
+	s.ResourceOwnerAccount = &v
+	return s
+}
+
 // SetResourceType sets the ResourceType field's value.
 func (s *Finding) SetResourceType(v string) *Finding {
 	s.ResourceType = &v
+	return s
+}
+
+// SetSources sets the Sources field's value.
+func (s *Finding) SetSources(v []*FindingSource) *Finding {
+	s.Sources = v
 	return s
 }
 
@@ -2900,6 +3146,68 @@ func (s *Finding) SetStatus(v string) *Finding {
 // SetUpdatedAt sets the UpdatedAt field's value.
 func (s *Finding) SetUpdatedAt(v time.Time) *Finding {
 	s.UpdatedAt = &v
+	return s
+}
+
+// The source of the finding. This indicates how the access that generated the
+// finding is granted. It is populated for Amazon S3 bucket findings.
+type FindingSource struct {
+	_ struct{} `type:"structure"`
+
+	// Includes details about how the access that generated the finding is granted.
+	// This is populated for Amazon S3 bucket findings.
+	Detail *FindingSourceDetail `locationName:"detail" type:"structure"`
+
+	// Indicates the type of access that generated the finding.
+	//
+	// Type is a required field
+	Type *string `locationName:"type" type:"string" required:"true" enum:"FindingSourceType"`
+}
+
+// String returns the string representation
+func (s FindingSource) String() string {
+	return awsutil.Prettify(s)
+}
+
+// GoString returns the string representation
+func (s FindingSource) GoString() string {
+	return s.String()
+}
+
+// SetDetail sets the Detail field's value.
+func (s *FindingSource) SetDetail(v *FindingSourceDetail) *FindingSource {
+	s.Detail = v
+	return s
+}
+
+// SetType sets the Type field's value.
+func (s *FindingSource) SetType(v string) *FindingSource {
+	s.Type = &v
+	return s
+}
+
+// Includes details about how the access that generated the finding is granted.
+// This is populated for Amazon S3 bucket findings.
+type FindingSourceDetail struct {
+	_ struct{} `type:"structure"`
+
+	// The ARN of the access point that generated the finding.
+	AccessPointArn *string `locationName:"accessPointArn" type:"string"`
+}
+
+// String returns the string representation
+func (s FindingSourceDetail) String() string {
+	return awsutil.Prettify(s)
+}
+
+// GoString returns the string representation
+func (s FindingSourceDetail) GoString() string {
+	return s.String()
+}
+
+// SetAccessPointArn sets the AccessPointArn field's value.
+func (s *FindingSourceDetail) SetAccessPointArn(v string) *FindingSourceDetail {
+	s.AccessPointArn = &v
 	return s
 }
 
@@ -2945,10 +3253,19 @@ type FindingSummary struct {
 	// The resource that the external principal has access to.
 	Resource *string `locationName:"resource" type:"string"`
 
+	// The AWS account ID that owns the resource.
+	//
+	// ResourceOwnerAccount is a required field
+	ResourceOwnerAccount *string `locationName:"resourceOwnerAccount" type:"string" required:"true"`
+
 	// The type of the resource that the external principal has access to.
 	//
 	// ResourceType is a required field
 	ResourceType *string `locationName:"resourceType" type:"string" required:"true" enum:"ResourceType"`
+
+	// The sources of the finding. This indicates how the access that generated
+	// the finding is granted. It is populated for Amazon S3 bucket findings.
+	Sources []*FindingSource `locationName:"sources" type:"list"`
 
 	// The status of the finding.
 	//
@@ -3025,9 +3342,21 @@ func (s *FindingSummary) SetResource(v string) *FindingSummary {
 	return s
 }
 
+// SetResourceOwnerAccount sets the ResourceOwnerAccount field's value.
+func (s *FindingSummary) SetResourceOwnerAccount(v string) *FindingSummary {
+	s.ResourceOwnerAccount = &v
+	return s
+}
+
 // SetResourceType sets the ResourceType field's value.
 func (s *FindingSummary) SetResourceType(v string) *FindingSummary {
 	s.ResourceType = &v
+	return s
+}
+
+// SetSources sets the Sources field's value.
+func (s *FindingSummary) SetSources(v []*FindingSource) *FindingSummary {
+	s.Sources = v
 	return s
 }
 
@@ -3423,8 +3752,8 @@ func (s *InlineArchiveRule) SetRuleName(v string) *InlineArchiveRule {
 
 // Internal server error.
 type InternalServerException struct {
-	_            struct{} `type:"structure"`
-	respMetadata protocol.ResponseMetadata
+	_            struct{}                  `type:"structure"`
+	RespMetadata protocol.ResponseMetadata `json:"-" xml:"-"`
 
 	Message_ *string `locationName:"message" type:"string"`
 
@@ -3444,17 +3773,17 @@ func (s InternalServerException) GoString() string {
 
 func newErrorInternalServerException(v protocol.ResponseMetadata) error {
 	return &InternalServerException{
-		respMetadata: v,
+		RespMetadata: v,
 	}
 }
 
 // Code returns the exception type name.
-func (s InternalServerException) Code() string {
+func (s *InternalServerException) Code() string {
 	return "InternalServerException"
 }
 
 // Message returns the exception's message.
-func (s InternalServerException) Message() string {
+func (s *InternalServerException) Message() string {
 	if s.Message_ != nil {
 		return *s.Message_
 	}
@@ -3462,22 +3791,22 @@ func (s InternalServerException) Message() string {
 }
 
 // OrigErr always returns nil, satisfies awserr.Error interface.
-func (s InternalServerException) OrigErr() error {
+func (s *InternalServerException) OrigErr() error {
 	return nil
 }
 
-func (s InternalServerException) Error() string {
+func (s *InternalServerException) Error() string {
 	return fmt.Sprintf("%s: %s\n%s", s.Code(), s.Message(), s.String())
 }
 
 // Status code returns the HTTP status code for the request's response error.
-func (s InternalServerException) StatusCode() int {
-	return s.respMetadata.StatusCode
+func (s *InternalServerException) StatusCode() int {
+	return s.RespMetadata.StatusCode
 }
 
 // RequestID returns the service's response RequestID for request.
-func (s InternalServerException) RequestID() string {
-	return s.respMetadata.RequestID
+func (s *InternalServerException) RequestID() string {
+	return s.RespMetadata.RequestID
 }
 
 // Retrieves a list of resources that have been analyzed.
@@ -3942,8 +4271,8 @@ func (s *ListTagsForResourceOutput) SetTags(v map[string]*string) *ListTagsForRe
 
 // The specified resource could not be found.
 type ResourceNotFoundException struct {
-	_            struct{} `type:"structure"`
-	respMetadata protocol.ResponseMetadata
+	_            struct{}                  `type:"structure"`
+	RespMetadata protocol.ResponseMetadata `json:"-" xml:"-"`
 
 	Message_ *string `locationName:"message" type:"string"`
 
@@ -3970,17 +4299,17 @@ func (s ResourceNotFoundException) GoString() string {
 
 func newErrorResourceNotFoundException(v protocol.ResponseMetadata) error {
 	return &ResourceNotFoundException{
-		respMetadata: v,
+		RespMetadata: v,
 	}
 }
 
 // Code returns the exception type name.
-func (s ResourceNotFoundException) Code() string {
+func (s *ResourceNotFoundException) Code() string {
 	return "ResourceNotFoundException"
 }
 
 // Message returns the exception's message.
-func (s ResourceNotFoundException) Message() string {
+func (s *ResourceNotFoundException) Message() string {
 	if s.Message_ != nil {
 		return *s.Message_
 	}
@@ -3988,28 +4317,28 @@ func (s ResourceNotFoundException) Message() string {
 }
 
 // OrigErr always returns nil, satisfies awserr.Error interface.
-func (s ResourceNotFoundException) OrigErr() error {
+func (s *ResourceNotFoundException) OrigErr() error {
 	return nil
 }
 
-func (s ResourceNotFoundException) Error() string {
+func (s *ResourceNotFoundException) Error() string {
 	return fmt.Sprintf("%s: %s\n%s", s.Code(), s.Message(), s.String())
 }
 
 // Status code returns the HTTP status code for the request's response error.
-func (s ResourceNotFoundException) StatusCode() int {
-	return s.respMetadata.StatusCode
+func (s *ResourceNotFoundException) StatusCode() int {
+	return s.RespMetadata.StatusCode
 }
 
 // RequestID returns the service's response RequestID for request.
-func (s ResourceNotFoundException) RequestID() string {
-	return s.respMetadata.RequestID
+func (s *ResourceNotFoundException) RequestID() string {
+	return s.RespMetadata.RequestID
 }
 
 // Service quote met error.
 type ServiceQuotaExceededException struct {
-	_            struct{} `type:"structure"`
-	respMetadata protocol.ResponseMetadata
+	_            struct{}                  `type:"structure"`
+	RespMetadata protocol.ResponseMetadata `json:"-" xml:"-"`
 
 	Message_ *string `locationName:"message" type:"string"`
 
@@ -4036,17 +4365,17 @@ func (s ServiceQuotaExceededException) GoString() string {
 
 func newErrorServiceQuotaExceededException(v protocol.ResponseMetadata) error {
 	return &ServiceQuotaExceededException{
-		respMetadata: v,
+		RespMetadata: v,
 	}
 }
 
 // Code returns the exception type name.
-func (s ServiceQuotaExceededException) Code() string {
+func (s *ServiceQuotaExceededException) Code() string {
 	return "ServiceQuotaExceededException"
 }
 
 // Message returns the exception's message.
-func (s ServiceQuotaExceededException) Message() string {
+func (s *ServiceQuotaExceededException) Message() string {
 	if s.Message_ != nil {
 		return *s.Message_
 	}
@@ -4054,22 +4383,22 @@ func (s ServiceQuotaExceededException) Message() string {
 }
 
 // OrigErr always returns nil, satisfies awserr.Error interface.
-func (s ServiceQuotaExceededException) OrigErr() error {
+func (s *ServiceQuotaExceededException) OrigErr() error {
 	return nil
 }
 
-func (s ServiceQuotaExceededException) Error() string {
+func (s *ServiceQuotaExceededException) Error() string {
 	return fmt.Sprintf("%s: %s\n%s", s.Code(), s.Message(), s.String())
 }
 
 // Status code returns the HTTP status code for the request's response error.
-func (s ServiceQuotaExceededException) StatusCode() int {
-	return s.respMetadata.StatusCode
+func (s *ServiceQuotaExceededException) StatusCode() int {
+	return s.RespMetadata.StatusCode
 }
 
 // RequestID returns the service's response RequestID for request.
-func (s ServiceQuotaExceededException) RequestID() string {
-	return s.respMetadata.RequestID
+func (s *ServiceQuotaExceededException) RequestID() string {
+	return s.RespMetadata.RequestID
 }
 
 // The criteria used to sort.
@@ -4173,6 +4502,36 @@ func (s StartResourceScanOutput) GoString() string {
 	return s.String()
 }
 
+// Provides more details about the current status of the analyzer. For example,
+// if the creation for the analyzer fails, a Failed status is displayed. For
+// an analyzer with organization as the type, this failure can be due to an
+// issue with creating the service-linked roles required in the member accounts
+// of the AWS organization.
+type StatusReason struct {
+	_ struct{} `type:"structure"`
+
+	// The reason code for the current status of the analyzer.
+	//
+	// Code is a required field
+	Code *string `locationName:"code" type:"string" required:"true" enum:"ReasonCode"`
+}
+
+// String returns the string representation
+func (s StatusReason) String() string {
+	return awsutil.Prettify(s)
+}
+
+// GoString returns the string representation
+func (s StatusReason) GoString() string {
+	return s.String()
+}
+
+// SetCode sets the Code field's value.
+func (s *StatusReason) SetCode(v string) *StatusReason {
+	s.Code = &v
+	return s
+}
+
 // Adds a tag to the specified resource.
 type TagResourceInput struct {
 	_ struct{} `type:"structure"`
@@ -4246,8 +4605,8 @@ func (s TagResourceOutput) GoString() string {
 
 // Throttling limit exceeded error.
 type ThrottlingException struct {
-	_            struct{} `type:"structure"`
-	respMetadata protocol.ResponseMetadata
+	_            struct{}                  `type:"structure"`
+	RespMetadata protocol.ResponseMetadata `json:"-" xml:"-"`
 
 	Message_ *string `locationName:"message" type:"string"`
 
@@ -4267,17 +4626,17 @@ func (s ThrottlingException) GoString() string {
 
 func newErrorThrottlingException(v protocol.ResponseMetadata) error {
 	return &ThrottlingException{
-		respMetadata: v,
+		RespMetadata: v,
 	}
 }
 
 // Code returns the exception type name.
-func (s ThrottlingException) Code() string {
+func (s *ThrottlingException) Code() string {
 	return "ThrottlingException"
 }
 
 // Message returns the exception's message.
-func (s ThrottlingException) Message() string {
+func (s *ThrottlingException) Message() string {
 	if s.Message_ != nil {
 		return *s.Message_
 	}
@@ -4285,22 +4644,22 @@ func (s ThrottlingException) Message() string {
 }
 
 // OrigErr always returns nil, satisfies awserr.Error interface.
-func (s ThrottlingException) OrigErr() error {
+func (s *ThrottlingException) OrigErr() error {
 	return nil
 }
 
-func (s ThrottlingException) Error() string {
+func (s *ThrottlingException) Error() string {
 	return fmt.Sprintf("%s: %s\n%s", s.Code(), s.Message(), s.String())
 }
 
 // Status code returns the HTTP status code for the request's response error.
-func (s ThrottlingException) StatusCode() int {
-	return s.respMetadata.StatusCode
+func (s *ThrottlingException) StatusCode() int {
+	return s.RespMetadata.StatusCode
 }
 
 // RequestID returns the service's response RequestID for request.
-func (s ThrottlingException) RequestID() string {
-	return s.respMetadata.RequestID
+func (s *ThrottlingException) RequestID() string {
+	return s.RespMetadata.RequestID
 }
 
 // Removes a tag from the specified resource.
@@ -4579,8 +4938,8 @@ func (s UpdateFindingsOutput) GoString() string {
 
 // Validation exception error.
 type ValidationException struct {
-	_            struct{} `type:"structure"`
-	respMetadata protocol.ResponseMetadata
+	_            struct{}                  `type:"structure"`
+	RespMetadata protocol.ResponseMetadata `json:"-" xml:"-"`
 
 	// A list of fields that didn't validate.
 	FieldList []*ValidationExceptionField `locationName:"fieldList" type:"list"`
@@ -4605,17 +4964,17 @@ func (s ValidationException) GoString() string {
 
 func newErrorValidationException(v protocol.ResponseMetadata) error {
 	return &ValidationException{
-		respMetadata: v,
+		RespMetadata: v,
 	}
 }
 
 // Code returns the exception type name.
-func (s ValidationException) Code() string {
+func (s *ValidationException) Code() string {
 	return "ValidationException"
 }
 
 // Message returns the exception's message.
-func (s ValidationException) Message() string {
+func (s *ValidationException) Message() string {
 	if s.Message_ != nil {
 		return *s.Message_
 	}
@@ -4623,22 +4982,22 @@ func (s ValidationException) Message() string {
 }
 
 // OrigErr always returns nil, satisfies awserr.Error interface.
-func (s ValidationException) OrigErr() error {
+func (s *ValidationException) OrigErr() error {
 	return nil
 }
 
-func (s ValidationException) Error() string {
+func (s *ValidationException) Error() string {
 	return fmt.Sprintf("%s: %s\n%s", s.Code(), s.Message(), s.String())
 }
 
 // Status code returns the HTTP status code for the request's response error.
-func (s ValidationException) StatusCode() int {
-	return s.respMetadata.StatusCode
+func (s *ValidationException) StatusCode() int {
+	return s.RespMetadata.StatusCode
 }
 
 // RequestID returns the service's response RequestID for request.
-func (s ValidationException) RequestID() string {
-	return s.respMetadata.RequestID
+func (s *ValidationException) RequestID() string {
+	return s.RespMetadata.RequestID
 }
 
 // Contains information about a validation exception.
@@ -4679,6 +5038,50 @@ func (s *ValidationExceptionField) SetName(v string) *ValidationExceptionField {
 }
 
 const (
+	// AnalyzerStatusActive is a AnalyzerStatus enum value
+	AnalyzerStatusActive = "ACTIVE"
+
+	// AnalyzerStatusCreating is a AnalyzerStatus enum value
+	AnalyzerStatusCreating = "CREATING"
+
+	// AnalyzerStatusDisabled is a AnalyzerStatus enum value
+	AnalyzerStatusDisabled = "DISABLED"
+
+	// AnalyzerStatusFailed is a AnalyzerStatus enum value
+	AnalyzerStatusFailed = "FAILED"
+)
+
+// AnalyzerStatus_Values returns all elements of the AnalyzerStatus enum
+func AnalyzerStatus_Values() []string {
+	return []string{
+		AnalyzerStatusActive,
+		AnalyzerStatusCreating,
+		AnalyzerStatusDisabled,
+		AnalyzerStatusFailed,
+	}
+}
+
+const (
+	// FindingSourceTypePolicy is a FindingSourceType enum value
+	FindingSourceTypePolicy = "POLICY"
+
+	// FindingSourceTypeBucketAcl is a FindingSourceType enum value
+	FindingSourceTypeBucketAcl = "BUCKET_ACL"
+
+	// FindingSourceTypeS3AccessPoint is a FindingSourceType enum value
+	FindingSourceTypeS3AccessPoint = "S3_ACCESS_POINT"
+)
+
+// FindingSourceType_Values returns all elements of the FindingSourceType enum
+func FindingSourceType_Values() []string {
+	return []string{
+		FindingSourceTypePolicy,
+		FindingSourceTypeBucketAcl,
+		FindingSourceTypeS3AccessPoint,
+	}
+}
+
+const (
 	// FindingStatusActive is a FindingStatus enum value
 	FindingStatusActive = "ACTIVE"
 
@@ -4689,6 +5092,15 @@ const (
 	FindingStatusResolved = "RESOLVED"
 )
 
+// FindingStatus_Values returns all elements of the FindingStatus enum
+func FindingStatus_Values() []string {
+	return []string{
+		FindingStatusActive,
+		FindingStatusArchived,
+		FindingStatusResolved,
+	}
+}
+
 const (
 	// FindingStatusUpdateActive is a FindingStatusUpdate enum value
 	FindingStatusUpdateActive = "ACTIVE"
@@ -4696,6 +5108,14 @@ const (
 	// FindingStatusUpdateArchived is a FindingStatusUpdate enum value
 	FindingStatusUpdateArchived = "ARCHIVED"
 )
+
+// FindingStatusUpdate_Values returns all elements of the FindingStatusUpdate enum
+func FindingStatusUpdate_Values() []string {
+	return []string{
+		FindingStatusUpdateActive,
+		FindingStatusUpdateArchived,
+	}
+}
 
 const (
 	// OrderByAsc is a OrderBy enum value
@@ -4705,12 +5125,47 @@ const (
 	OrderByDesc = "DESC"
 )
 
+// OrderBy_Values returns all elements of the OrderBy enum
+func OrderBy_Values() []string {
+	return []string{
+		OrderByAsc,
+		OrderByDesc,
+	}
+}
+
 const (
+	// ReasonCodeAwsServiceAccessDisabled is a ReasonCode enum value
+	ReasonCodeAwsServiceAccessDisabled = "AWS_SERVICE_ACCESS_DISABLED"
+
+	// ReasonCodeDelegatedAdministratorDeregistered is a ReasonCode enum value
+	ReasonCodeDelegatedAdministratorDeregistered = "DELEGATED_ADMINISTRATOR_DEREGISTERED"
+
+	// ReasonCodeOrganizationDeleted is a ReasonCode enum value
+	ReasonCodeOrganizationDeleted = "ORGANIZATION_DELETED"
+
+	// ReasonCodeServiceLinkedRoleCreationFailed is a ReasonCode enum value
+	ReasonCodeServiceLinkedRoleCreationFailed = "SERVICE_LINKED_ROLE_CREATION_FAILED"
+)
+
+// ReasonCode_Values returns all elements of the ReasonCode enum
+func ReasonCode_Values() []string {
+	return []string{
+		ReasonCodeAwsServiceAccessDisabled,
+		ReasonCodeDelegatedAdministratorDeregistered,
+		ReasonCodeOrganizationDeleted,
+		ReasonCodeServiceLinkedRoleCreationFailed,
+	}
+}
+
+const (
+	// ResourceTypeAwsS3Bucket is a ResourceType enum value
+	ResourceTypeAwsS3Bucket = "AWS::S3::Bucket"
+
 	// ResourceTypeAwsIamRole is a ResourceType enum value
 	ResourceTypeAwsIamRole = "AWS::IAM::Role"
 
-	// ResourceTypeAwsKmsKey is a ResourceType enum value
-	ResourceTypeAwsKmsKey = "AWS::KMS::Key"
+	// ResourceTypeAwsSqsQueue is a ResourceType enum value
+	ResourceTypeAwsSqsQueue = "AWS::SQS::Queue"
 
 	// ResourceTypeAwsLambdaFunction is a ResourceType enum value
 	ResourceTypeAwsLambdaFunction = "AWS::Lambda::Function"
@@ -4718,19 +5173,42 @@ const (
 	// ResourceTypeAwsLambdaLayerVersion is a ResourceType enum value
 	ResourceTypeAwsLambdaLayerVersion = "AWS::Lambda::LayerVersion"
 
-	// ResourceTypeAwsS3Bucket is a ResourceType enum value
-	ResourceTypeAwsS3Bucket = "AWS::S3::Bucket"
-
-	// ResourceTypeAwsSqsQueue is a ResourceType enum value
-	ResourceTypeAwsSqsQueue = "AWS::SQS::Queue"
+	// ResourceTypeAwsKmsKey is a ResourceType enum value
+	ResourceTypeAwsKmsKey = "AWS::KMS::Key"
 )
+
+// ResourceType_Values returns all elements of the ResourceType enum
+func ResourceType_Values() []string {
+	return []string{
+		ResourceTypeAwsS3Bucket,
+		ResourceTypeAwsIamRole,
+		ResourceTypeAwsSqsQueue,
+		ResourceTypeAwsLambdaFunction,
+		ResourceTypeAwsLambdaLayerVersion,
+		ResourceTypeAwsKmsKey,
+	}
+}
 
 const (
 	// TypeAccount is a Type enum value
 	TypeAccount = "ACCOUNT"
+
+	// TypeOrganization is a Type enum value
+	TypeOrganization = "ORGANIZATION"
 )
 
+// Type_Values returns all elements of the Type enum
+func Type_Values() []string {
+	return []string{
+		TypeAccount,
+		TypeOrganization,
+	}
+}
+
 const (
+	// ValidationExceptionReasonUnknownOperation is a ValidationExceptionReason enum value
+	ValidationExceptionReasonUnknownOperation = "unknownOperation"
+
 	// ValidationExceptionReasonCannotParse is a ValidationExceptionReason enum value
 	ValidationExceptionReasonCannotParse = "cannotParse"
 
@@ -4739,7 +5217,14 @@ const (
 
 	// ValidationExceptionReasonOther is a ValidationExceptionReason enum value
 	ValidationExceptionReasonOther = "other"
-
-	// ValidationExceptionReasonUnknownOperation is a ValidationExceptionReason enum value
-	ValidationExceptionReasonUnknownOperation = "unknownOperation"
 )
+
+// ValidationExceptionReason_Values returns all elements of the ValidationExceptionReason enum
+func ValidationExceptionReason_Values() []string {
+	return []string{
+		ValidationExceptionReasonUnknownOperation,
+		ValidationExceptionReasonCannotParse,
+		ValidationExceptionReasonFieldValidationFailed,
+		ValidationExceptionReasonOther,
+	}
+}

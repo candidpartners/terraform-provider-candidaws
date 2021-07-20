@@ -5,7 +5,7 @@ import (
 	"runtime"
 	"strings"
 
-	svchost "github.com/hashicorp/terraform-svchost"
+	"github.com/hashicorp/terraform-svchost"
 )
 
 var (

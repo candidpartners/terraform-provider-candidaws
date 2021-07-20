@@ -4,17 +4,13 @@
 
 package pbtypes
 
-import (
-	fmt "fmt"
+import proto "github.com/gogo/protobuf/proto"
+import fmt "fmt"
+import math "math"
 
-	proto "github.com/gogo/protobuf/proto"
+// discarding unused import gogoproto "github.com/gogo/protobuf/gogoproto"
 
-	math "math"
-
-	// discarding unused import gogoproto "github.com/gogo/protobuf/gogoproto"
-
-	io "io"
-)
+import io "io"
 
 // Reference imports to suppress errors if they are not otherwise used.
 var _ = proto.Marshal

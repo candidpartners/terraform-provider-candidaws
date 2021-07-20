@@ -6,8 +6,9 @@ import (
 	"fmt"
 	"net/http"
 
-	svchost "github.com/hashicorp/terraform-svchost"
 	"github.com/zclconf/go-cty/cty"
+
+	"github.com/hashicorp/terraform-svchost"
 )
 
 // Credentials is a list of CredentialsSource objects that can be tried in

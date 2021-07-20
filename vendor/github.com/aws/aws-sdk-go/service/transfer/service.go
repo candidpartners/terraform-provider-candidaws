@@ -7,13 +7,13 @@ import (
 	"github.com/aws/aws-sdk-go/aws/client"
 	"github.com/aws/aws-sdk-go/aws/client/metadata"
 	"github.com/aws/aws-sdk-go/aws/request"
-	v4 "github.com/aws/aws-sdk-go/aws/signer/v4"
+	"github.com/aws/aws-sdk-go/aws/signer/v4"
 	"github.com/aws/aws-sdk-go/private/protocol"
 	"github.com/aws/aws-sdk-go/private/protocol/jsonrpc"
 )
 
 // Transfer provides the API operation methods for making requests to
-// AWS Transfer for SFTP. See this package's package overview docs
+// AWS Transfer Family. See this package's package overview docs
 // for details on the service.
 //
 // Transfer methods are safe to use concurrently. It is not safe to

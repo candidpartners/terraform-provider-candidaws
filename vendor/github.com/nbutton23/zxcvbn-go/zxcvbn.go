@@ -6,7 +6,7 @@ import (
 	"github.com/nbutton23/zxcvbn-go/match"
 	"github.com/nbutton23/zxcvbn-go/matching"
 	"github.com/nbutton23/zxcvbn-go/scoring"
-	zxcvbnmath "github.com/nbutton23/zxcvbn-go/utils/math"
+	"github.com/nbutton23/zxcvbn-go/utils/math"
 )
 
 // PasswordStrength takes a password, userInputs and optional filters and returns a MinEntropyMatch

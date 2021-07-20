@@ -15,19 +15,14 @@
 */
 package diff
 
-import (
-	fmt "fmt"
+import proto "github.com/gogo/protobuf/proto"
+import fmt "fmt"
+import math "math"
 
-	proto "github.com/gogo/protobuf/proto"
+// discarding unused import gogoproto "github.com/gogo/protobuf/gogoproto"
+import pbtypes "sourcegraph.com/sqs/pbtypes"
 
-	math "math"
-
-	// discarding unused import gogoproto "github.com/gogo/protobuf/gogoproto"
-
-	pbtypes "sourcegraph.com/sqs/pbtypes"
-
-	io "io"
-)
+import io "io"
 
 // Reference imports to suppress errors if they are not otherwise used.
 var _ = proto.Marshal

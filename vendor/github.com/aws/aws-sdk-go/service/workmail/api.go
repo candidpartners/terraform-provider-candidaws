@@ -84,8 +84,8 @@ func (c *WorkMail) AssociateDelegateToResourceRequest(input *AssociateDelegateTo
 //   belong or exist in the system.
 //
 //   * OrganizationStateException
-//   The organization must have a valid state (Active or Synchronizing) to perform
-//   certain operations on the organization or its members.
+//   The organization must have a valid state to perform certain operations on
+//   the organization or its members.
 //
 // See also, https://docs.aws.amazon.com/goto/WebAPI/workmail-2017-10-01/AssociateDelegateToResource
 func (c *WorkMail) AssociateDelegateToResource(input *AssociateDelegateToResourceInput) (*AssociateDelegateToResourceOutput, error) {
@@ -168,7 +168,7 @@ func (c *WorkMail) AssociateMemberToGroupRequest(input *AssociateMemberToGroupIn
 //   The directory service doesn't recognize the credentials supplied by WorkMail.
 //
 //   * DirectoryUnavailableException
-//   The directory on which you are trying to perform operations isn't available.
+//   The directory is unavailable. It might be located in another Region or deleted.
 //
 //   * EntityNotFoundException
 //   The identifier supplied for the user, group, or resource does not exist in
@@ -186,8 +186,8 @@ func (c *WorkMail) AssociateMemberToGroupRequest(input *AssociateMemberToGroupIn
 //   belong or exist in the system.
 //
 //   * OrganizationStateException
-//   The organization must have a valid state (Active or Synchronizing) to perform
-//   certain operations on the organization or its members.
+//   The organization must have a valid state to perform certain operations on
+//   the organization or its members.
 //
 //   * UnsupportedOperationException
 //   You can't perform a write operation against a read-only directory.
@@ -209,6 +209,101 @@ func (c *WorkMail) AssociateMemberToGroup(input *AssociateMemberToGroupInput) (*
 // for more information on using Contexts.
 func (c *WorkMail) AssociateMemberToGroupWithContext(ctx aws.Context, input *AssociateMemberToGroupInput, opts ...request.Option) (*AssociateMemberToGroupOutput, error) {
 	req, out := c.AssociateMemberToGroupRequest(input)
+	req.SetContext(ctx)
+	req.ApplyOptions(opts...)
+	return out, req.Send()
+}
+
+const opCancelMailboxExportJob = "CancelMailboxExportJob"
+
+// CancelMailboxExportJobRequest generates a "aws/request.Request" representing the
+// client's request for the CancelMailboxExportJob operation. The "output" return
+// value will be populated with the request's response once the request completes
+// successfully.
+//
+// Use "Send" method on the returned Request to send the API call to the service.
+// the "output" return value is not valid until after Send returns without error.
+//
+// See CancelMailboxExportJob for more information on using the CancelMailboxExportJob
+// API call, and error handling.
+//
+// This method is useful when you want to inject custom logic or configuration
+// into the SDK's request lifecycle. Such as custom headers, or retry logic.
+//
+//
+//    // Example sending a request using the CancelMailboxExportJobRequest method.
+//    req, resp := client.CancelMailboxExportJobRequest(params)
+//
+//    err := req.Send()
+//    if err == nil { // resp is now filled
+//        fmt.Println(resp)
+//    }
+//
+// See also, https://docs.aws.amazon.com/goto/WebAPI/workmail-2017-10-01/CancelMailboxExportJob
+func (c *WorkMail) CancelMailboxExportJobRequest(input *CancelMailboxExportJobInput) (req *request.Request, output *CancelMailboxExportJobOutput) {
+	op := &request.Operation{
+		Name:       opCancelMailboxExportJob,
+		HTTPMethod: "POST",
+		HTTPPath:   "/",
+	}
+
+	if input == nil {
+		input = &CancelMailboxExportJobInput{}
+	}
+
+	output = &CancelMailboxExportJobOutput{}
+	req = c.newRequest(op, input, output)
+	req.Handlers.Unmarshal.Swap(jsonrpc.UnmarshalHandler.Name, protocol.UnmarshalDiscardBodyHandler)
+	return
+}
+
+// CancelMailboxExportJob API operation for Amazon WorkMail.
+//
+// Cancels a mailbox export job.
+//
+// If the mailbox export job is near completion, it might not be possible to
+// cancel it.
+//
+// Returns awserr.Error for service API and SDK errors. Use runtime type assertions
+// with awserr.Error's Code and Message methods to get detailed information about
+// the error.
+//
+// See the AWS API reference guide for Amazon WorkMail's
+// API operation CancelMailboxExportJob for usage and error information.
+//
+// Returned Error Types:
+//   * InvalidParameterException
+//   One or more of the input parameters don't match the service's restrictions.
+//
+//   * OrganizationNotFoundException
+//   An operation received a valid organization identifier that either doesn't
+//   belong or exist in the system.
+//
+//   * OrganizationStateException
+//   The organization must have a valid state to perform certain operations on
+//   the organization or its members.
+//
+//   * EntityNotFoundException
+//   The identifier supplied for the user, group, or resource does not exist in
+//   your organization.
+//
+// See also, https://docs.aws.amazon.com/goto/WebAPI/workmail-2017-10-01/CancelMailboxExportJob
+func (c *WorkMail) CancelMailboxExportJob(input *CancelMailboxExportJobInput) (*CancelMailboxExportJobOutput, error) {
+	req, out := c.CancelMailboxExportJobRequest(input)
+	return out, req.Send()
+}
+
+// CancelMailboxExportJobWithContext is the same as CancelMailboxExportJob with the addition of
+// the ability to pass a context and additional request options.
+//
+// See CancelMailboxExportJob for details on how to use this API operation.
+//
+// The context must be non-nil and will be used for request cancellation. If
+// the context is nil a panic will occur. In the future the SDK may create
+// sub-contexts for http.Requests. See https://golang.org/pkg/context/
+// for more information on using Contexts.
+func (c *WorkMail) CancelMailboxExportJobWithContext(ctx aws.Context, input *CancelMailboxExportJobInput, opts ...request.Option) (*CancelMailboxExportJobOutput, error) {
+	req, out := c.CancelMailboxExportJobRequest(input)
 	req.SetContext(ctx)
 	req.ApplyOptions(opts...)
 	return out, req.Send()
@@ -297,8 +392,8 @@ func (c *WorkMail) CreateAliasRequest(input *CreateAliasInput) (req *request.Req
 //   belong or exist in the system.
 //
 //   * OrganizationStateException
-//   The organization must have a valid state (Active or Synchronizing) to perform
-//   certain operations on the organization or its members.
+//   The organization must have a valid state to perform certain operations on
+//   the organization or its members.
 //
 //   * LimitExceededException
 //   The request exceeds the limit of the resource.
@@ -384,7 +479,7 @@ func (c *WorkMail) CreateGroupRequest(input *CreateGroupInput) (req *request.Req
 //   The directory service doesn't recognize the credentials supplied by WorkMail.
 //
 //   * DirectoryUnavailableException
-//   The directory on which you are trying to perform operations isn't available.
+//   The directory is unavailable. It might be located in another Region or deleted.
 //
 //   * InvalidParameterException
 //   One or more of the input parameters don't match the service's restrictions.
@@ -397,8 +492,8 @@ func (c *WorkMail) CreateGroupRequest(input *CreateGroupInput) (req *request.Req
 //   belong or exist in the system.
 //
 //   * OrganizationStateException
-//   The organization must have a valid state (Active or Synchronizing) to perform
-//   certain operations on the organization or its members.
+//   The organization must have a valid state to perform certain operations on
+//   the organization or its members.
 //
 //   * ReservedNameException
 //   This user, group, or resource name is not allowed in Amazon WorkMail.
@@ -423,6 +518,116 @@ func (c *WorkMail) CreateGroup(input *CreateGroupInput) (*CreateGroupOutput, err
 // for more information on using Contexts.
 func (c *WorkMail) CreateGroupWithContext(ctx aws.Context, input *CreateGroupInput, opts ...request.Option) (*CreateGroupOutput, error) {
 	req, out := c.CreateGroupRequest(input)
+	req.SetContext(ctx)
+	req.ApplyOptions(opts...)
+	return out, req.Send()
+}
+
+const opCreateOrganization = "CreateOrganization"
+
+// CreateOrganizationRequest generates a "aws/request.Request" representing the
+// client's request for the CreateOrganization operation. The "output" return
+// value will be populated with the request's response once the request completes
+// successfully.
+//
+// Use "Send" method on the returned Request to send the API call to the service.
+// the "output" return value is not valid until after Send returns without error.
+//
+// See CreateOrganization for more information on using the CreateOrganization
+// API call, and error handling.
+//
+// This method is useful when you want to inject custom logic or configuration
+// into the SDK's request lifecycle. Such as custom headers, or retry logic.
+//
+//
+//    // Example sending a request using the CreateOrganizationRequest method.
+//    req, resp := client.CreateOrganizationRequest(params)
+//
+//    err := req.Send()
+//    if err == nil { // resp is now filled
+//        fmt.Println(resp)
+//    }
+//
+// See also, https://docs.aws.amazon.com/goto/WebAPI/workmail-2017-10-01/CreateOrganization
+func (c *WorkMail) CreateOrganizationRequest(input *CreateOrganizationInput) (req *request.Request, output *CreateOrganizationOutput) {
+	op := &request.Operation{
+		Name:       opCreateOrganization,
+		HTTPMethod: "POST",
+		HTTPPath:   "/",
+	}
+
+	if input == nil {
+		input = &CreateOrganizationInput{}
+	}
+
+	output = &CreateOrganizationOutput{}
+	req = c.newRequest(op, input, output)
+	return
+}
+
+// CreateOrganization API operation for Amazon WorkMail.
+//
+// Creates a new Amazon WorkMail organization. Optionally, you can choose to
+// associate an existing AWS Directory Service directory with your organization.
+// If an AWS Directory Service directory ID is specified, the organization alias
+// must match the directory alias. If you choose not to associate an existing
+// directory with your organization, then we create a new Amazon WorkMail directory
+// for you. For more information, see Adding an organization (https://docs.aws.amazon.com/workmail/latest/adminguide/add_new_organization.html)
+// in the Amazon WorkMail Administrator Guide.
+//
+// You can associate multiple email domains with an organization, then set your
+// default email domain from the Amazon WorkMail console. You can also associate
+// a domain that is managed in an Amazon Route 53 public hosted zone. For more
+// information, see Adding a domain (https://docs.aws.amazon.com/workmail/latest/adminguide/add_domain.html)
+// and Choosing the default domain (https://docs.aws.amazon.com/workmail/latest/adminguide/default_domain.html)
+// in the Amazon WorkMail Administrator Guide.
+//
+// Optionally, you can use a customer managed master key from AWS Key Management
+// Service (AWS KMS) to encrypt email for your organization. If you don't associate
+// an AWS KMS key, Amazon WorkMail creates a default AWS managed master key
+// for you.
+//
+// Returns awserr.Error for service API and SDK errors. Use runtime type assertions
+// with awserr.Error's Code and Message methods to get detailed information about
+// the error.
+//
+// See the AWS API reference guide for Amazon WorkMail's
+// API operation CreateOrganization for usage and error information.
+//
+// Returned Error Types:
+//   * InvalidParameterException
+//   One or more of the input parameters don't match the service's restrictions.
+//
+//   * DirectoryInUseException
+//   The directory is already in use by another WorkMail organization in the same
+//   account and Region.
+//
+//   * DirectoryUnavailableException
+//   The directory is unavailable. It might be located in another Region or deleted.
+//
+//   * LimitExceededException
+//   The request exceeds the limit of the resource.
+//
+//   * NameAvailabilityException
+//   The user, group, or resource name isn't unique in Amazon WorkMail.
+//
+// See also, https://docs.aws.amazon.com/goto/WebAPI/workmail-2017-10-01/CreateOrganization
+func (c *WorkMail) CreateOrganization(input *CreateOrganizationInput) (*CreateOrganizationOutput, error) {
+	req, out := c.CreateOrganizationRequest(input)
+	return out, req.Send()
+}
+
+// CreateOrganizationWithContext is the same as CreateOrganization with the addition of
+// the ability to pass a context and additional request options.
+//
+// See CreateOrganization for details on how to use this API operation.
+//
+// The context must be non-nil and will be used for request cancellation. If
+// the context is nil a panic will occur. In the future the SDK may create
+// sub-contexts for http.Requests. See https://golang.org/pkg/context/
+// for more information on using Contexts.
+func (c *WorkMail) CreateOrganizationWithContext(ctx aws.Context, input *CreateOrganizationInput, opts ...request.Option) (*CreateOrganizationOutput, error) {
+	req, out := c.CreateOrganizationRequest(input)
 	req.SetContext(ctx)
 	req.ApplyOptions(opts...)
 	return out, req.Send()
@@ -486,7 +691,7 @@ func (c *WorkMail) CreateResourceRequest(input *CreateResourceInput) (req *reque
 //   The directory service doesn't recognize the credentials supplied by WorkMail.
 //
 //   * DirectoryUnavailableException
-//   The directory on which you are trying to perform operations isn't available.
+//   The directory is unavailable. It might be located in another Region or deleted.
 //
 //   * InvalidParameterException
 //   One or more of the input parameters don't match the service's restrictions.
@@ -499,8 +704,8 @@ func (c *WorkMail) CreateResourceRequest(input *CreateResourceInput) (req *reque
 //   belong or exist in the system.
 //
 //   * OrganizationStateException
-//   The organization must have a valid state (Active or Synchronizing) to perform
-//   certain operations on the organization or its members.
+//   The organization must have a valid state to perform certain operations on
+//   the organization or its members.
 //
 //   * ReservedNameException
 //   This user, group, or resource name is not allowed in Amazon WorkMail.
@@ -586,7 +791,7 @@ func (c *WorkMail) CreateUserRequest(input *CreateUserInput) (req *request.Reque
 //   The directory service doesn't recognize the credentials supplied by WorkMail.
 //
 //   * DirectoryUnavailableException
-//   The directory on which you are trying to perform operations isn't available.
+//   The directory is unavailable. It might be located in another Region or deleted.
 //
 //   * InvalidParameterException
 //   One or more of the input parameters don't match the service's restrictions.
@@ -603,8 +808,8 @@ func (c *WorkMail) CreateUserRequest(input *CreateUserInput) (req *request.Reque
 //   belong or exist in the system.
 //
 //   * OrganizationStateException
-//   The organization must have a valid state (Active or Synchronizing) to perform
-//   certain operations on the organization or its members.
+//   The organization must have a valid state to perform certain operations on
+//   the organization or its members.
 //
 //   * ReservedNameException
 //   This user, group, or resource name is not allowed in Amazon WorkMail.
@@ -694,8 +899,8 @@ func (c *WorkMail) DeleteAccessControlRuleRequest(input *DeleteAccessControlRule
 //   belong or exist in the system.
 //
 //   * OrganizationStateException
-//   The organization must have a valid state (Active or Synchronizing) to perform
-//   certain operations on the organization or its members.
+//   The organization must have a valid state to perform certain operations on
+//   the organization or its members.
 //
 // See also, https://docs.aws.amazon.com/goto/WebAPI/workmail-2017-10-01/DeleteAccessControlRule
 func (c *WorkMail) DeleteAccessControlRule(input *DeleteAccessControlRuleInput) (*DeleteAccessControlRuleOutput, error) {
@@ -790,8 +995,8 @@ func (c *WorkMail) DeleteAliasRequest(input *DeleteAliasInput) (req *request.Req
 //   belong or exist in the system.
 //
 //   * OrganizationStateException
-//   The organization must have a valid state (Active or Synchronizing) to perform
-//   certain operations on the organization or its members.
+//   The organization must have a valid state to perform certain operations on
+//   the organization or its members.
 //
 // See also, https://docs.aws.amazon.com/goto/WebAPI/workmail-2017-10-01/DeleteAlias
 func (c *WorkMail) DeleteAlias(input *DeleteAliasInput) (*DeleteAliasOutput, error) {
@@ -874,7 +1079,7 @@ func (c *WorkMail) DeleteGroupRequest(input *DeleteGroupInput) (req *request.Req
 //   The directory service doesn't recognize the credentials supplied by WorkMail.
 //
 //   * DirectoryUnavailableException
-//   The directory on which you are trying to perform operations isn't available.
+//   The directory is unavailable. It might be located in another Region or deleted.
 //
 //   * EntityStateException
 //   You are performing an operation on a user, group, or resource that isn't
@@ -888,8 +1093,8 @@ func (c *WorkMail) DeleteGroupRequest(input *DeleteGroupInput) (req *request.Req
 //   belong or exist in the system.
 //
 //   * OrganizationStateException
-//   The organization must have a valid state (Active or Synchronizing) to perform
-//   certain operations on the organization or its members.
+//   The organization must have a valid state to perform certain operations on
+//   the organization or its members.
 //
 //   * UnsupportedOperationException
 //   You can't perform a write operation against a read-only directory.
@@ -987,8 +1192,8 @@ func (c *WorkMail) DeleteMailboxPermissionsRequest(input *DeleteMailboxPermissio
 //   belong or exist in the system.
 //
 //   * OrganizationStateException
-//   The organization must have a valid state (Active or Synchronizing) to perform
-//   certain operations on the organization or its members.
+//   The organization must have a valid state to perform certain operations on
+//   the organization or its members.
 //
 // See also, https://docs.aws.amazon.com/goto/WebAPI/workmail-2017-10-01/DeleteMailboxPermissions
 func (c *WorkMail) DeleteMailboxPermissions(input *DeleteMailboxPermissionsInput) (*DeleteMailboxPermissionsOutput, error) {
@@ -1007,6 +1212,97 @@ func (c *WorkMail) DeleteMailboxPermissions(input *DeleteMailboxPermissionsInput
 // for more information on using Contexts.
 func (c *WorkMail) DeleteMailboxPermissionsWithContext(ctx aws.Context, input *DeleteMailboxPermissionsInput, opts ...request.Option) (*DeleteMailboxPermissionsOutput, error) {
 	req, out := c.DeleteMailboxPermissionsRequest(input)
+	req.SetContext(ctx)
+	req.ApplyOptions(opts...)
+	return out, req.Send()
+}
+
+const opDeleteOrganization = "DeleteOrganization"
+
+// DeleteOrganizationRequest generates a "aws/request.Request" representing the
+// client's request for the DeleteOrganization operation. The "output" return
+// value will be populated with the request's response once the request completes
+// successfully.
+//
+// Use "Send" method on the returned Request to send the API call to the service.
+// the "output" return value is not valid until after Send returns without error.
+//
+// See DeleteOrganization for more information on using the DeleteOrganization
+// API call, and error handling.
+//
+// This method is useful when you want to inject custom logic or configuration
+// into the SDK's request lifecycle. Such as custom headers, or retry logic.
+//
+//
+//    // Example sending a request using the DeleteOrganizationRequest method.
+//    req, resp := client.DeleteOrganizationRequest(params)
+//
+//    err := req.Send()
+//    if err == nil { // resp is now filled
+//        fmt.Println(resp)
+//    }
+//
+// See also, https://docs.aws.amazon.com/goto/WebAPI/workmail-2017-10-01/DeleteOrganization
+func (c *WorkMail) DeleteOrganizationRequest(input *DeleteOrganizationInput) (req *request.Request, output *DeleteOrganizationOutput) {
+	op := &request.Operation{
+		Name:       opDeleteOrganization,
+		HTTPMethod: "POST",
+		HTTPPath:   "/",
+	}
+
+	if input == nil {
+		input = &DeleteOrganizationInput{}
+	}
+
+	output = &DeleteOrganizationOutput{}
+	req = c.newRequest(op, input, output)
+	return
+}
+
+// DeleteOrganization API operation for Amazon WorkMail.
+//
+// Deletes an Amazon WorkMail organization and all underlying AWS resources
+// managed by Amazon WorkMail as part of the organization. You can choose whether
+// to delete the associated directory. For more information, see Removing an
+// organization (https://docs.aws.amazon.com/workmail/latest/adminguide/remove_organization.html)
+// in the Amazon WorkMail Administrator Guide.
+//
+// Returns awserr.Error for service API and SDK errors. Use runtime type assertions
+// with awserr.Error's Code and Message methods to get detailed information about
+// the error.
+//
+// See the AWS API reference guide for Amazon WorkMail's
+// API operation DeleteOrganization for usage and error information.
+//
+// Returned Error Types:
+//   * InvalidParameterException
+//   One or more of the input parameters don't match the service's restrictions.
+//
+//   * OrganizationNotFoundException
+//   An operation received a valid organization identifier that either doesn't
+//   belong or exist in the system.
+//
+//   * OrganizationStateException
+//   The organization must have a valid state to perform certain operations on
+//   the organization or its members.
+//
+// See also, https://docs.aws.amazon.com/goto/WebAPI/workmail-2017-10-01/DeleteOrganization
+func (c *WorkMail) DeleteOrganization(input *DeleteOrganizationInput) (*DeleteOrganizationOutput, error) {
+	req, out := c.DeleteOrganizationRequest(input)
+	return out, req.Send()
+}
+
+// DeleteOrganizationWithContext is the same as DeleteOrganization with the addition of
+// the ability to pass a context and additional request options.
+//
+// See DeleteOrganization for details on how to use this API operation.
+//
+// The context must be non-nil and will be used for request cancellation. If
+// the context is nil a panic will occur. In the future the SDK may create
+// sub-contexts for http.Requests. See https://golang.org/pkg/context/
+// for more information on using Contexts.
+func (c *WorkMail) DeleteOrganizationWithContext(ctx aws.Context, input *DeleteOrganizationInput, opts ...request.Option) (*DeleteOrganizationOutput, error) {
+	req, out := c.DeleteOrganizationRequest(input)
 	req.SetContext(ctx)
 	req.ApplyOptions(opts...)
 	return out, req.Send()
@@ -1079,8 +1375,8 @@ func (c *WorkMail) DeleteResourceRequest(input *DeleteResourceInput) (req *reque
 //   belong or exist in the system.
 //
 //   * OrganizationStateException
-//   The organization must have a valid state (Active or Synchronizing) to perform
-//   certain operations on the organization or its members.
+//   The organization must have a valid state to perform certain operations on
+//   the organization or its members.
 //
 // See also, https://docs.aws.amazon.com/goto/WebAPI/workmail-2017-10-01/DeleteResource
 func (c *WorkMail) DeleteResource(input *DeleteResourceInput) (*DeleteResourceOutput, error) {
@@ -1099,6 +1395,94 @@ func (c *WorkMail) DeleteResource(input *DeleteResourceInput) (*DeleteResourceOu
 // for more information on using Contexts.
 func (c *WorkMail) DeleteResourceWithContext(ctx aws.Context, input *DeleteResourceInput, opts ...request.Option) (*DeleteResourceOutput, error) {
 	req, out := c.DeleteResourceRequest(input)
+	req.SetContext(ctx)
+	req.ApplyOptions(opts...)
+	return out, req.Send()
+}
+
+const opDeleteRetentionPolicy = "DeleteRetentionPolicy"
+
+// DeleteRetentionPolicyRequest generates a "aws/request.Request" representing the
+// client's request for the DeleteRetentionPolicy operation. The "output" return
+// value will be populated with the request's response once the request completes
+// successfully.
+//
+// Use "Send" method on the returned Request to send the API call to the service.
+// the "output" return value is not valid until after Send returns without error.
+//
+// See DeleteRetentionPolicy for more information on using the DeleteRetentionPolicy
+// API call, and error handling.
+//
+// This method is useful when you want to inject custom logic or configuration
+// into the SDK's request lifecycle. Such as custom headers, or retry logic.
+//
+//
+//    // Example sending a request using the DeleteRetentionPolicyRequest method.
+//    req, resp := client.DeleteRetentionPolicyRequest(params)
+//
+//    err := req.Send()
+//    if err == nil { // resp is now filled
+//        fmt.Println(resp)
+//    }
+//
+// See also, https://docs.aws.amazon.com/goto/WebAPI/workmail-2017-10-01/DeleteRetentionPolicy
+func (c *WorkMail) DeleteRetentionPolicyRequest(input *DeleteRetentionPolicyInput) (req *request.Request, output *DeleteRetentionPolicyOutput) {
+	op := &request.Operation{
+		Name:       opDeleteRetentionPolicy,
+		HTTPMethod: "POST",
+		HTTPPath:   "/",
+	}
+
+	if input == nil {
+		input = &DeleteRetentionPolicyInput{}
+	}
+
+	output = &DeleteRetentionPolicyOutput{}
+	req = c.newRequest(op, input, output)
+	req.Handlers.Unmarshal.Swap(jsonrpc.UnmarshalHandler.Name, protocol.UnmarshalDiscardBodyHandler)
+	return
+}
+
+// DeleteRetentionPolicy API operation for Amazon WorkMail.
+//
+// Deletes the specified retention policy from the specified organization.
+//
+// Returns awserr.Error for service API and SDK errors. Use runtime type assertions
+// with awserr.Error's Code and Message methods to get detailed information about
+// the error.
+//
+// See the AWS API reference guide for Amazon WorkMail's
+// API operation DeleteRetentionPolicy for usage and error information.
+//
+// Returned Error Types:
+//   * InvalidParameterException
+//   One or more of the input parameters don't match the service's restrictions.
+//
+//   * OrganizationNotFoundException
+//   An operation received a valid organization identifier that either doesn't
+//   belong or exist in the system.
+//
+//   * OrganizationStateException
+//   The organization must have a valid state to perform certain operations on
+//   the organization or its members.
+//
+// See also, https://docs.aws.amazon.com/goto/WebAPI/workmail-2017-10-01/DeleteRetentionPolicy
+func (c *WorkMail) DeleteRetentionPolicy(input *DeleteRetentionPolicyInput) (*DeleteRetentionPolicyOutput, error) {
+	req, out := c.DeleteRetentionPolicyRequest(input)
+	return out, req.Send()
+}
+
+// DeleteRetentionPolicyWithContext is the same as DeleteRetentionPolicy with the addition of
+// the ability to pass a context and additional request options.
+//
+// See DeleteRetentionPolicy for details on how to use this API operation.
+//
+// The context must be non-nil and will be used for request cancellation. If
+// the context is nil a panic will occur. In the future the SDK may create
+// sub-contexts for http.Requests. See https://golang.org/pkg/context/
+// for more information on using Contexts.
+func (c *WorkMail) DeleteRetentionPolicyWithContext(ctx aws.Context, input *DeleteRetentionPolicyInput, opts ...request.Option) (*DeleteRetentionPolicyOutput, error) {
+	req, out := c.DeleteRetentionPolicyRequest(input)
 	req.SetContext(ctx)
 	req.ApplyOptions(opts...)
 	return out, req.Send()
@@ -1168,7 +1552,7 @@ func (c *WorkMail) DeleteUserRequest(input *DeleteUserInput) (req *request.Reque
 //   The directory service doesn't recognize the credentials supplied by WorkMail.
 //
 //   * DirectoryUnavailableException
-//   The directory on which you are trying to perform operations isn't available.
+//   The directory is unavailable. It might be located in another Region or deleted.
 //
 //   * EntityStateException
 //   You are performing an operation on a user, group, or resource that isn't
@@ -1182,8 +1566,8 @@ func (c *WorkMail) DeleteUserRequest(input *DeleteUserInput) (req *request.Reque
 //   belong or exist in the system.
 //
 //   * OrganizationStateException
-//   The organization must have a valid state (Active or Synchronizing) to perform
-//   certain operations on the organization or its members.
+//   The organization must have a valid state to perform certain operations on
+//   the organization or its members.
 //
 //   * UnsupportedOperationException
 //   You can't perform a write operation against a read-only directory.
@@ -1284,8 +1668,8 @@ func (c *WorkMail) DeregisterFromWorkMailRequest(input *DeregisterFromWorkMailIn
 //   belong or exist in the system.
 //
 //   * OrganizationStateException
-//   The organization must have a valid state (Active or Synchronizing) to perform
-//   certain operations on the organization or its members.
+//   The organization must have a valid state to perform certain operations on
+//   the organization or its members.
 //
 // See also, https://docs.aws.amazon.com/goto/WebAPI/workmail-2017-10-01/DeregisterFromWorkMail
 func (c *WorkMail) DeregisterFromWorkMail(input *DeregisterFromWorkMailInput) (*DeregisterFromWorkMailOutput, error) {
@@ -1375,8 +1759,8 @@ func (c *WorkMail) DescribeGroupRequest(input *DescribeGroupInput) (req *request
 //   belong or exist in the system.
 //
 //   * OrganizationStateException
-//   The organization must have a valid state (Active or Synchronizing) to perform
-//   certain operations on the organization or its members.
+//   The organization must have a valid state to perform certain operations on
+//   the organization or its members.
 //
 // See also, https://docs.aws.amazon.com/goto/WebAPI/workmail-2017-10-01/DescribeGroup
 func (c *WorkMail) DescribeGroup(input *DescribeGroupInput) (*DescribeGroupOutput, error) {
@@ -1395,6 +1779,97 @@ func (c *WorkMail) DescribeGroup(input *DescribeGroupInput) (*DescribeGroupOutpu
 // for more information on using Contexts.
 func (c *WorkMail) DescribeGroupWithContext(ctx aws.Context, input *DescribeGroupInput, opts ...request.Option) (*DescribeGroupOutput, error) {
 	req, out := c.DescribeGroupRequest(input)
+	req.SetContext(ctx)
+	req.ApplyOptions(opts...)
+	return out, req.Send()
+}
+
+const opDescribeMailboxExportJob = "DescribeMailboxExportJob"
+
+// DescribeMailboxExportJobRequest generates a "aws/request.Request" representing the
+// client's request for the DescribeMailboxExportJob operation. The "output" return
+// value will be populated with the request's response once the request completes
+// successfully.
+//
+// Use "Send" method on the returned Request to send the API call to the service.
+// the "output" return value is not valid until after Send returns without error.
+//
+// See DescribeMailboxExportJob for more information on using the DescribeMailboxExportJob
+// API call, and error handling.
+//
+// This method is useful when you want to inject custom logic or configuration
+// into the SDK's request lifecycle. Such as custom headers, or retry logic.
+//
+//
+//    // Example sending a request using the DescribeMailboxExportJobRequest method.
+//    req, resp := client.DescribeMailboxExportJobRequest(params)
+//
+//    err := req.Send()
+//    if err == nil { // resp is now filled
+//        fmt.Println(resp)
+//    }
+//
+// See also, https://docs.aws.amazon.com/goto/WebAPI/workmail-2017-10-01/DescribeMailboxExportJob
+func (c *WorkMail) DescribeMailboxExportJobRequest(input *DescribeMailboxExportJobInput) (req *request.Request, output *DescribeMailboxExportJobOutput) {
+	op := &request.Operation{
+		Name:       opDescribeMailboxExportJob,
+		HTTPMethod: "POST",
+		HTTPPath:   "/",
+	}
+
+	if input == nil {
+		input = &DescribeMailboxExportJobInput{}
+	}
+
+	output = &DescribeMailboxExportJobOutput{}
+	req = c.newRequest(op, input, output)
+	return
+}
+
+// DescribeMailboxExportJob API operation for Amazon WorkMail.
+//
+// Describes the current status of a mailbox export job.
+//
+// Returns awserr.Error for service API and SDK errors. Use runtime type assertions
+// with awserr.Error's Code and Message methods to get detailed information about
+// the error.
+//
+// See the AWS API reference guide for Amazon WorkMail's
+// API operation DescribeMailboxExportJob for usage and error information.
+//
+// Returned Error Types:
+//   * InvalidParameterException
+//   One or more of the input parameters don't match the service's restrictions.
+//
+//   * OrganizationNotFoundException
+//   An operation received a valid organization identifier that either doesn't
+//   belong or exist in the system.
+//
+//   * OrganizationStateException
+//   The organization must have a valid state to perform certain operations on
+//   the organization or its members.
+//
+//   * EntityNotFoundException
+//   The identifier supplied for the user, group, or resource does not exist in
+//   your organization.
+//
+// See also, https://docs.aws.amazon.com/goto/WebAPI/workmail-2017-10-01/DescribeMailboxExportJob
+func (c *WorkMail) DescribeMailboxExportJob(input *DescribeMailboxExportJobInput) (*DescribeMailboxExportJobOutput, error) {
+	req, out := c.DescribeMailboxExportJobRequest(input)
+	return out, req.Send()
+}
+
+// DescribeMailboxExportJobWithContext is the same as DescribeMailboxExportJob with the addition of
+// the ability to pass a context and additional request options.
+//
+// See DescribeMailboxExportJob for details on how to use this API operation.
+//
+// The context must be non-nil and will be used for request cancellation. If
+// the context is nil a panic will occur. In the future the SDK may create
+// sub-contexts for http.Requests. See https://golang.org/pkg/context/
+// for more information on using Contexts.
+func (c *WorkMail) DescribeMailboxExportJobWithContext(ctx aws.Context, input *DescribeMailboxExportJobInput, opts ...request.Option) (*DescribeMailboxExportJobOutput, error) {
+	req, out := c.DescribeMailboxExportJobRequest(input)
 	req.SetContext(ctx)
 	req.ApplyOptions(opts...)
 	return out, req.Send()
@@ -1549,8 +2024,8 @@ func (c *WorkMail) DescribeResourceRequest(input *DescribeResourceInput) (req *r
 //   belong or exist in the system.
 //
 //   * OrganizationStateException
-//   The organization must have a valid state (Active or Synchronizing) to perform
-//   certain operations on the organization or its members.
+//   The organization must have a valid state to perform certain operations on
+//   the organization or its members.
 //
 // See also, https://docs.aws.amazon.com/goto/WebAPI/workmail-2017-10-01/DescribeResource
 func (c *WorkMail) DescribeResource(input *DescribeResourceInput) (*DescribeResourceOutput, error) {
@@ -1640,8 +2115,8 @@ func (c *WorkMail) DescribeUserRequest(input *DescribeUserInput) (req *request.R
 //   belong or exist in the system.
 //
 //   * OrganizationStateException
-//   The organization must have a valid state (Active or Synchronizing) to perform
-//   certain operations on the organization or its members.
+//   The organization must have a valid state to perform certain operations on
+//   the organization or its members.
 //
 // See also, https://docs.aws.amazon.com/goto/WebAPI/workmail-2017-10-01/DescribeUser
 func (c *WorkMail) DescribeUser(input *DescribeUserInput) (*DescribeUserOutput, error) {
@@ -1736,8 +2211,8 @@ func (c *WorkMail) DisassociateDelegateFromResourceRequest(input *DisassociateDe
 //   belong or exist in the system.
 //
 //   * OrganizationStateException
-//   The organization must have a valid state (Active or Synchronizing) to perform
-//   certain operations on the organization or its members.
+//   The organization must have a valid state to perform certain operations on
+//   the organization or its members.
 //
 // See also, https://docs.aws.amazon.com/goto/WebAPI/workmail-2017-10-01/DisassociateDelegateFromResource
 func (c *WorkMail) DisassociateDelegateFromResource(input *DisassociateDelegateFromResourceInput) (*DisassociateDelegateFromResourceOutput, error) {
@@ -1820,7 +2295,7 @@ func (c *WorkMail) DisassociateMemberFromGroupRequest(input *DisassociateMemberF
 //   The directory service doesn't recognize the credentials supplied by WorkMail.
 //
 //   * DirectoryUnavailableException
-//   The directory on which you are trying to perform operations isn't available.
+//   The directory is unavailable. It might be located in another Region or deleted.
 //
 //   * EntityNotFoundException
 //   The identifier supplied for the user, group, or resource does not exist in
@@ -1838,8 +2313,8 @@ func (c *WorkMail) DisassociateMemberFromGroupRequest(input *DisassociateMemberF
 //   belong or exist in the system.
 //
 //   * OrganizationStateException
-//   The organization must have a valid state (Active or Synchronizing) to perform
-//   certain operations on the organization or its members.
+//   The organization must have a valid state to perform certain operations on
+//   the organization or its members.
 //
 //   * UnsupportedOperationException
 //   You can't perform a write operation against a read-only directory.
@@ -1933,8 +2408,8 @@ func (c *WorkMail) GetAccessControlEffectRequest(input *GetAccessControlEffectIn
 //   belong or exist in the system.
 //
 //   * OrganizationStateException
-//   The organization must have a valid state (Active or Synchronizing) to perform
-//   certain operations on the organization or its members.
+//   The organization must have a valid state to perform certain operations on
+//   the organization or its members.
 //
 // See also, https://docs.aws.amazon.com/goto/WebAPI/workmail-2017-10-01/GetAccessControlEffect
 func (c *WorkMail) GetAccessControlEffect(input *GetAccessControlEffectInput) (*GetAccessControlEffectOutput, error) {
@@ -1953,6 +2428,97 @@ func (c *WorkMail) GetAccessControlEffect(input *GetAccessControlEffectInput) (*
 // for more information on using Contexts.
 func (c *WorkMail) GetAccessControlEffectWithContext(ctx aws.Context, input *GetAccessControlEffectInput, opts ...request.Option) (*GetAccessControlEffectOutput, error) {
 	req, out := c.GetAccessControlEffectRequest(input)
+	req.SetContext(ctx)
+	req.ApplyOptions(opts...)
+	return out, req.Send()
+}
+
+const opGetDefaultRetentionPolicy = "GetDefaultRetentionPolicy"
+
+// GetDefaultRetentionPolicyRequest generates a "aws/request.Request" representing the
+// client's request for the GetDefaultRetentionPolicy operation. The "output" return
+// value will be populated with the request's response once the request completes
+// successfully.
+//
+// Use "Send" method on the returned Request to send the API call to the service.
+// the "output" return value is not valid until after Send returns without error.
+//
+// See GetDefaultRetentionPolicy for more information on using the GetDefaultRetentionPolicy
+// API call, and error handling.
+//
+// This method is useful when you want to inject custom logic or configuration
+// into the SDK's request lifecycle. Such as custom headers, or retry logic.
+//
+//
+//    // Example sending a request using the GetDefaultRetentionPolicyRequest method.
+//    req, resp := client.GetDefaultRetentionPolicyRequest(params)
+//
+//    err := req.Send()
+//    if err == nil { // resp is now filled
+//        fmt.Println(resp)
+//    }
+//
+// See also, https://docs.aws.amazon.com/goto/WebAPI/workmail-2017-10-01/GetDefaultRetentionPolicy
+func (c *WorkMail) GetDefaultRetentionPolicyRequest(input *GetDefaultRetentionPolicyInput) (req *request.Request, output *GetDefaultRetentionPolicyOutput) {
+	op := &request.Operation{
+		Name:       opGetDefaultRetentionPolicy,
+		HTTPMethod: "POST",
+		HTTPPath:   "/",
+	}
+
+	if input == nil {
+		input = &GetDefaultRetentionPolicyInput{}
+	}
+
+	output = &GetDefaultRetentionPolicyOutput{}
+	req = c.newRequest(op, input, output)
+	return
+}
+
+// GetDefaultRetentionPolicy API operation for Amazon WorkMail.
+//
+// Gets the default retention policy details for the specified organization.
+//
+// Returns awserr.Error for service API and SDK errors. Use runtime type assertions
+// with awserr.Error's Code and Message methods to get detailed information about
+// the error.
+//
+// See the AWS API reference guide for Amazon WorkMail's
+// API operation GetDefaultRetentionPolicy for usage and error information.
+//
+// Returned Error Types:
+//   * InvalidParameterException
+//   One or more of the input parameters don't match the service's restrictions.
+//
+//   * OrganizationNotFoundException
+//   An operation received a valid organization identifier that either doesn't
+//   belong or exist in the system.
+//
+//   * OrganizationStateException
+//   The organization must have a valid state to perform certain operations on
+//   the organization or its members.
+//
+//   * EntityNotFoundException
+//   The identifier supplied for the user, group, or resource does not exist in
+//   your organization.
+//
+// See also, https://docs.aws.amazon.com/goto/WebAPI/workmail-2017-10-01/GetDefaultRetentionPolicy
+func (c *WorkMail) GetDefaultRetentionPolicy(input *GetDefaultRetentionPolicyInput) (*GetDefaultRetentionPolicyOutput, error) {
+	req, out := c.GetDefaultRetentionPolicyRequest(input)
+	return out, req.Send()
+}
+
+// GetDefaultRetentionPolicyWithContext is the same as GetDefaultRetentionPolicy with the addition of
+// the ability to pass a context and additional request options.
+//
+// See GetDefaultRetentionPolicy for details on how to use this API operation.
+//
+// The context must be non-nil and will be used for request cancellation. If
+// the context is nil a panic will occur. In the future the SDK may create
+// sub-contexts for http.Requests. See https://golang.org/pkg/context/
+// for more information on using Contexts.
+func (c *WorkMail) GetDefaultRetentionPolicyWithContext(ctx aws.Context, input *GetDefaultRetentionPolicyInput, opts ...request.Option) (*GetDefaultRetentionPolicyOutput, error) {
+	req, out := c.GetDefaultRetentionPolicyRequest(input)
 	req.SetContext(ctx)
 	req.ApplyOptions(opts...)
 	return out, req.Send()
@@ -2017,8 +2583,8 @@ func (c *WorkMail) GetMailboxDetailsRequest(input *GetMailboxDetailsInput) (req 
 //   belong or exist in the system.
 //
 //   * OrganizationStateException
-//   The organization must have a valid state (Active or Synchronizing) to perform
-//   certain operations on the organization or its members.
+//   The organization must have a valid state to perform certain operations on
+//   the organization or its members.
 //
 //   * EntityNotFoundException
 //   The identifier supplied for the user, group, or resource does not exist in
@@ -2105,8 +2671,8 @@ func (c *WorkMail) ListAccessControlRulesRequest(input *ListAccessControlRulesIn
 //   belong or exist in the system.
 //
 //   * OrganizationStateException
-//   The organization must have a valid state (Active or Synchronizing) to perform
-//   certain operations on the organization or its members.
+//   The organization must have a valid state to perform certain operations on
+//   the organization or its members.
 //
 // See also, https://docs.aws.amazon.com/goto/WebAPI/workmail-2017-10-01/ListAccessControlRules
 func (c *WorkMail) ListAccessControlRules(input *ListAccessControlRulesInput) (*ListAccessControlRulesOutput, error) {
@@ -2206,8 +2772,8 @@ func (c *WorkMail) ListAliasesRequest(input *ListAliasesInput) (req *request.Req
 //   belong or exist in the system.
 //
 //   * OrganizationStateException
-//   The organization must have a valid state (Active or Synchronizing) to perform
-//   certain operations on the organization or its members.
+//   The organization must have a valid state to perform certain operations on
+//   the organization or its members.
 //
 // See also, https://docs.aws.amazon.com/goto/WebAPI/workmail-2017-10-01/ListAliases
 func (c *WorkMail) ListAliases(input *ListAliasesInput) (*ListAliasesOutput, error) {
@@ -2360,8 +2926,8 @@ func (c *WorkMail) ListGroupMembersRequest(input *ListGroupMembersInput) (req *r
 //   belong or exist in the system.
 //
 //   * OrganizationStateException
-//   The organization must have a valid state (Active or Synchronizing) to perform
-//   certain operations on the organization or its members.
+//   The organization must have a valid state to perform certain operations on
+//   the organization or its members.
 //
 // See also, https://docs.aws.amazon.com/goto/WebAPI/workmail-2017-10-01/ListGroupMembers
 func (c *WorkMail) ListGroupMembers(input *ListGroupMembersInput) (*ListGroupMembersOutput, error) {
@@ -2509,8 +3075,8 @@ func (c *WorkMail) ListGroupsRequest(input *ListGroupsInput) (req *request.Reque
 //   belong or exist in the system.
 //
 //   * OrganizationStateException
-//   The organization must have a valid state (Active or Synchronizing) to perform
-//   certain operations on the organization or its members.
+//   The organization must have a valid state to perform certain operations on
+//   the organization or its members.
 //
 // See also, https://docs.aws.amazon.com/goto/WebAPI/workmail-2017-10-01/ListGroups
 func (c *WorkMail) ListGroups(input *ListGroupsInput) (*ListGroupsOutput, error) {
@@ -2579,6 +3145,152 @@ func (c *WorkMail) ListGroupsPagesWithContext(ctx aws.Context, input *ListGroups
 
 	for p.Next() {
 		if !fn(p.Page().(*ListGroupsOutput), !p.HasNextPage()) {
+			break
+		}
+	}
+
+	return p.Err()
+}
+
+const opListMailboxExportJobs = "ListMailboxExportJobs"
+
+// ListMailboxExportJobsRequest generates a "aws/request.Request" representing the
+// client's request for the ListMailboxExportJobs operation. The "output" return
+// value will be populated with the request's response once the request completes
+// successfully.
+//
+// Use "Send" method on the returned Request to send the API call to the service.
+// the "output" return value is not valid until after Send returns without error.
+//
+// See ListMailboxExportJobs for more information on using the ListMailboxExportJobs
+// API call, and error handling.
+//
+// This method is useful when you want to inject custom logic or configuration
+// into the SDK's request lifecycle. Such as custom headers, or retry logic.
+//
+//
+//    // Example sending a request using the ListMailboxExportJobsRequest method.
+//    req, resp := client.ListMailboxExportJobsRequest(params)
+//
+//    err := req.Send()
+//    if err == nil { // resp is now filled
+//        fmt.Println(resp)
+//    }
+//
+// See also, https://docs.aws.amazon.com/goto/WebAPI/workmail-2017-10-01/ListMailboxExportJobs
+func (c *WorkMail) ListMailboxExportJobsRequest(input *ListMailboxExportJobsInput) (req *request.Request, output *ListMailboxExportJobsOutput) {
+	op := &request.Operation{
+		Name:       opListMailboxExportJobs,
+		HTTPMethod: "POST",
+		HTTPPath:   "/",
+		Paginator: &request.Paginator{
+			InputTokens:     []string{"NextToken"},
+			OutputTokens:    []string{"NextToken"},
+			LimitToken:      "MaxResults",
+			TruncationToken: "",
+		},
+	}
+
+	if input == nil {
+		input = &ListMailboxExportJobsInput{}
+	}
+
+	output = &ListMailboxExportJobsOutput{}
+	req = c.newRequest(op, input, output)
+	return
+}
+
+// ListMailboxExportJobs API operation for Amazon WorkMail.
+//
+// Lists the mailbox export jobs started for the specified organization within
+// the last seven days.
+//
+// Returns awserr.Error for service API and SDK errors. Use runtime type assertions
+// with awserr.Error's Code and Message methods to get detailed information about
+// the error.
+//
+// See the AWS API reference guide for Amazon WorkMail's
+// API operation ListMailboxExportJobs for usage and error information.
+//
+// Returned Error Types:
+//   * InvalidParameterException
+//   One or more of the input parameters don't match the service's restrictions.
+//
+//   * OrganizationNotFoundException
+//   An operation received a valid organization identifier that either doesn't
+//   belong or exist in the system.
+//
+//   * OrganizationStateException
+//   The organization must have a valid state to perform certain operations on
+//   the organization or its members.
+//
+// See also, https://docs.aws.amazon.com/goto/WebAPI/workmail-2017-10-01/ListMailboxExportJobs
+func (c *WorkMail) ListMailboxExportJobs(input *ListMailboxExportJobsInput) (*ListMailboxExportJobsOutput, error) {
+	req, out := c.ListMailboxExportJobsRequest(input)
+	return out, req.Send()
+}
+
+// ListMailboxExportJobsWithContext is the same as ListMailboxExportJobs with the addition of
+// the ability to pass a context and additional request options.
+//
+// See ListMailboxExportJobs for details on how to use this API operation.
+//
+// The context must be non-nil and will be used for request cancellation. If
+// the context is nil a panic will occur. In the future the SDK may create
+// sub-contexts for http.Requests. See https://golang.org/pkg/context/
+// for more information on using Contexts.
+func (c *WorkMail) ListMailboxExportJobsWithContext(ctx aws.Context, input *ListMailboxExportJobsInput, opts ...request.Option) (*ListMailboxExportJobsOutput, error) {
+	req, out := c.ListMailboxExportJobsRequest(input)
+	req.SetContext(ctx)
+	req.ApplyOptions(opts...)
+	return out, req.Send()
+}
+
+// ListMailboxExportJobsPages iterates over the pages of a ListMailboxExportJobs operation,
+// calling the "fn" function with the response data for each page. To stop
+// iterating, return false from the fn function.
+//
+// See ListMailboxExportJobs method for more information on how to use this operation.
+//
+// Note: This operation can generate multiple requests to a service.
+//
+//    // Example iterating over at most 3 pages of a ListMailboxExportJobs operation.
+//    pageNum := 0
+//    err := client.ListMailboxExportJobsPages(params,
+//        func(page *workmail.ListMailboxExportJobsOutput, lastPage bool) bool {
+//            pageNum++
+//            fmt.Println(page)
+//            return pageNum <= 3
+//        })
+//
+func (c *WorkMail) ListMailboxExportJobsPages(input *ListMailboxExportJobsInput, fn func(*ListMailboxExportJobsOutput, bool) bool) error {
+	return c.ListMailboxExportJobsPagesWithContext(aws.BackgroundContext(), input, fn)
+}
+
+// ListMailboxExportJobsPagesWithContext same as ListMailboxExportJobsPages except
+// it takes a Context and allows setting request options on the pages.
+//
+// The context must be non-nil and will be used for request cancellation. If
+// the context is nil a panic will occur. In the future the SDK may create
+// sub-contexts for http.Requests. See https://golang.org/pkg/context/
+// for more information on using Contexts.
+func (c *WorkMail) ListMailboxExportJobsPagesWithContext(ctx aws.Context, input *ListMailboxExportJobsInput, fn func(*ListMailboxExportJobsOutput, bool) bool, opts ...request.Option) error {
+	p := request.Pagination{
+		NewRequest: func() (*request.Request, error) {
+			var inCpy *ListMailboxExportJobsInput
+			if input != nil {
+				tmp := *input
+				inCpy = &tmp
+			}
+			req, _ := c.ListMailboxExportJobsRequest(inCpy)
+			req.SetContext(ctx)
+			req.ApplyOptions(opts...)
+			return req, nil
+		},
+	}
+
+	for p.Next() {
+		if !fn(p.Page().(*ListMailboxExportJobsOutput), !p.HasNextPage()) {
 			break
 		}
 	}
@@ -2659,8 +3371,8 @@ func (c *WorkMail) ListMailboxPermissionsRequest(input *ListMailboxPermissionsIn
 //   belong or exist in the system.
 //
 //   * OrganizationStateException
-//   The organization must have a valid state (Active or Synchronizing) to perform
-//   certain operations on the organization or its members.
+//   The organization must have a valid state to perform certain operations on
+//   the organization or its members.
 //
 // See also, https://docs.aws.amazon.com/goto/WebAPI/workmail-2017-10-01/ListMailboxPermissions
 func (c *WorkMail) ListMailboxPermissions(input *ListMailboxPermissionsInput) (*ListMailboxPermissionsOutput, error) {
@@ -2786,7 +3498,7 @@ func (c *WorkMail) ListOrganizationsRequest(input *ListOrganizationsInput) (req 
 
 // ListOrganizations API operation for Amazon WorkMail.
 //
-// Returns summaries of the customer's non-deleted organizations.
+// Returns summaries of the customer's organizations.
 //
 // Returns awserr.Error for service API and SDK errors. Use runtime type assertions
 // with awserr.Error's Code and Message methods to get detailed information about
@@ -2950,8 +3662,8 @@ func (c *WorkMail) ListResourceDelegatesRequest(input *ListResourceDelegatesInpu
 //   belong or exist in the system.
 //
 //   * OrganizationStateException
-//   The organization must have a valid state (Active or Synchronizing) to perform
-//   certain operations on the organization or its members.
+//   The organization must have a valid state to perform certain operations on
+//   the organization or its members.
 //
 // See also, https://docs.aws.amazon.com/goto/WebAPI/workmail-2017-10-01/ListResourceDelegates
 func (c *WorkMail) ListResourceDelegates(input *ListResourceDelegatesInput) (*ListResourceDelegatesOutput, error) {
@@ -3095,8 +3807,8 @@ func (c *WorkMail) ListResourcesRequest(input *ListResourcesInput) (req *request
 //   belong or exist in the system.
 //
 //   * OrganizationStateException
-//   The organization must have a valid state (Active or Synchronizing) to perform
-//   certain operations on the organization or its members.
+//   The organization must have a valid state to perform certain operations on
+//   the organization or its members.
 //
 // See also, https://docs.aws.amazon.com/goto/WebAPI/workmail-2017-10-01/ListResources
 func (c *WorkMail) ListResources(input *ListResourcesInput) (*ListResourcesOutput, error) {
@@ -3319,8 +4031,8 @@ func (c *WorkMail) ListUsersRequest(input *ListUsersInput) (req *request.Request
 //   belong or exist in the system.
 //
 //   * OrganizationStateException
-//   The organization must have a valid state (Active or Synchronizing) to perform
-//   certain operations on the organization or its members.
+//   The organization must have a valid state to perform certain operations on
+//   the organization or its members.
 //
 // See also, https://docs.aws.amazon.com/goto/WebAPI/workmail-2017-10-01/ListUsers
 func (c *WorkMail) ListUsers(input *ListUsersInput) (*ListUsersOutput, error) {
@@ -3469,8 +4181,8 @@ func (c *WorkMail) PutAccessControlRuleRequest(input *PutAccessControlRuleInput)
 //   belong or exist in the system.
 //
 //   * OrganizationStateException
-//   The organization must have a valid state (Active or Synchronizing) to perform
-//   certain operations on the organization or its members.
+//   The organization must have a valid state to perform certain operations on
+//   the organization or its members.
 //
 // See also, https://docs.aws.amazon.com/goto/WebAPI/workmail-2017-10-01/PutAccessControlRule
 func (c *WorkMail) PutAccessControlRule(input *PutAccessControlRuleInput) (*PutAccessControlRuleOutput, error) {
@@ -3566,8 +4278,8 @@ func (c *WorkMail) PutMailboxPermissionsRequest(input *PutMailboxPermissionsInpu
 //   belong or exist in the system.
 //
 //   * OrganizationStateException
-//   The organization must have a valid state (Active or Synchronizing) to perform
-//   certain operations on the organization or its members.
+//   The organization must have a valid state to perform certain operations on
+//   the organization or its members.
 //
 // See also, https://docs.aws.amazon.com/goto/WebAPI/workmail-2017-10-01/PutMailboxPermissions
 func (c *WorkMail) PutMailboxPermissions(input *PutMailboxPermissionsInput) (*PutMailboxPermissionsOutput, error) {
@@ -3586,6 +4298,97 @@ func (c *WorkMail) PutMailboxPermissions(input *PutMailboxPermissionsInput) (*Pu
 // for more information on using Contexts.
 func (c *WorkMail) PutMailboxPermissionsWithContext(ctx aws.Context, input *PutMailboxPermissionsInput, opts ...request.Option) (*PutMailboxPermissionsOutput, error) {
 	req, out := c.PutMailboxPermissionsRequest(input)
+	req.SetContext(ctx)
+	req.ApplyOptions(opts...)
+	return out, req.Send()
+}
+
+const opPutRetentionPolicy = "PutRetentionPolicy"
+
+// PutRetentionPolicyRequest generates a "aws/request.Request" representing the
+// client's request for the PutRetentionPolicy operation. The "output" return
+// value will be populated with the request's response once the request completes
+// successfully.
+//
+// Use "Send" method on the returned Request to send the API call to the service.
+// the "output" return value is not valid until after Send returns without error.
+//
+// See PutRetentionPolicy for more information on using the PutRetentionPolicy
+// API call, and error handling.
+//
+// This method is useful when you want to inject custom logic or configuration
+// into the SDK's request lifecycle. Such as custom headers, or retry logic.
+//
+//
+//    // Example sending a request using the PutRetentionPolicyRequest method.
+//    req, resp := client.PutRetentionPolicyRequest(params)
+//
+//    err := req.Send()
+//    if err == nil { // resp is now filled
+//        fmt.Println(resp)
+//    }
+//
+// See also, https://docs.aws.amazon.com/goto/WebAPI/workmail-2017-10-01/PutRetentionPolicy
+func (c *WorkMail) PutRetentionPolicyRequest(input *PutRetentionPolicyInput) (req *request.Request, output *PutRetentionPolicyOutput) {
+	op := &request.Operation{
+		Name:       opPutRetentionPolicy,
+		HTTPMethod: "POST",
+		HTTPPath:   "/",
+	}
+
+	if input == nil {
+		input = &PutRetentionPolicyInput{}
+	}
+
+	output = &PutRetentionPolicyOutput{}
+	req = c.newRequest(op, input, output)
+	req.Handlers.Unmarshal.Swap(jsonrpc.UnmarshalHandler.Name, protocol.UnmarshalDiscardBodyHandler)
+	return
+}
+
+// PutRetentionPolicy API operation for Amazon WorkMail.
+//
+// Puts a retention policy to the specified organization.
+//
+// Returns awserr.Error for service API and SDK errors. Use runtime type assertions
+// with awserr.Error's Code and Message methods to get detailed information about
+// the error.
+//
+// See the AWS API reference guide for Amazon WorkMail's
+// API operation PutRetentionPolicy for usage and error information.
+//
+// Returned Error Types:
+//   * InvalidParameterException
+//   One or more of the input parameters don't match the service's restrictions.
+//
+//   * OrganizationNotFoundException
+//   An operation received a valid organization identifier that either doesn't
+//   belong or exist in the system.
+//
+//   * OrganizationStateException
+//   The organization must have a valid state to perform certain operations on
+//   the organization or its members.
+//
+//   * LimitExceededException
+//   The request exceeds the limit of the resource.
+//
+// See also, https://docs.aws.amazon.com/goto/WebAPI/workmail-2017-10-01/PutRetentionPolicy
+func (c *WorkMail) PutRetentionPolicy(input *PutRetentionPolicyInput) (*PutRetentionPolicyOutput, error) {
+	req, out := c.PutRetentionPolicyRequest(input)
+	return out, req.Send()
+}
+
+// PutRetentionPolicyWithContext is the same as PutRetentionPolicy with the addition of
+// the ability to pass a context and additional request options.
+//
+// See PutRetentionPolicy for details on how to use this API operation.
+//
+// The context must be non-nil and will be used for request cancellation. If
+// the context is nil a panic will occur. In the future the SDK may create
+// sub-contexts for http.Requests. See https://golang.org/pkg/context/
+// for more information on using Contexts.
+func (c *WorkMail) PutRetentionPolicyWithContext(ctx aws.Context, input *PutRetentionPolicyInput, opts ...request.Option) (*PutRetentionPolicyOutput, error) {
+	req, out := c.PutRetentionPolicyRequest(input)
 	req.SetContext(ctx)
 	req.ApplyOptions(opts...)
 	return out, req.Send()
@@ -3658,7 +4461,7 @@ func (c *WorkMail) RegisterToWorkMailRequest(input *RegisterToWorkMailInput) (re
 //   The directory service doesn't recognize the credentials supplied by WorkMail.
 //
 //   * DirectoryUnavailableException
-//   The directory on which you are trying to perform operations isn't available.
+//   The directory is unavailable. It might be located in another Region or deleted.
 //
 //   * EmailAddressInUseException
 //   The email address that you're trying to assign is already created for a different
@@ -3691,8 +4494,8 @@ func (c *WorkMail) RegisterToWorkMailRequest(input *RegisterToWorkMailInput) (re
 //   belong or exist in the system.
 //
 //   * OrganizationStateException
-//   The organization must have a valid state (Active or Synchronizing) to perform
-//   certain operations on the organization or its members.
+//   The organization must have a valid state to perform certain operations on
+//   the organization or its members.
 //
 // See also, https://docs.aws.amazon.com/goto/WebAPI/workmail-2017-10-01/RegisterToWorkMail
 func (c *WorkMail) RegisterToWorkMail(input *RegisterToWorkMailInput) (*RegisterToWorkMailOutput, error) {
@@ -3775,7 +4578,7 @@ func (c *WorkMail) ResetPasswordRequest(input *ResetPasswordInput) (req *request
 //   The directory service doesn't recognize the credentials supplied by WorkMail.
 //
 //   * DirectoryUnavailableException
-//   The directory on which you are trying to perform operations isn't available.
+//   The directory is unavailable. It might be located in another Region or deleted.
 //
 //   * EntityNotFoundException
 //   The identifier supplied for the user, group, or resource does not exist in
@@ -3797,8 +4600,8 @@ func (c *WorkMail) ResetPasswordRequest(input *ResetPasswordInput) (req *request
 //   belong or exist in the system.
 //
 //   * OrganizationStateException
-//   The organization must have a valid state (Active or Synchronizing) to perform
-//   certain operations on the organization or its members.
+//   The organization must have a valid state to perform certain operations on
+//   the organization or its members.
 //
 //   * UnsupportedOperationException
 //   You can't perform a write operation against a read-only directory.
@@ -3820,6 +4623,103 @@ func (c *WorkMail) ResetPassword(input *ResetPasswordInput) (*ResetPasswordOutpu
 // for more information on using Contexts.
 func (c *WorkMail) ResetPasswordWithContext(ctx aws.Context, input *ResetPasswordInput, opts ...request.Option) (*ResetPasswordOutput, error) {
 	req, out := c.ResetPasswordRequest(input)
+	req.SetContext(ctx)
+	req.ApplyOptions(opts...)
+	return out, req.Send()
+}
+
+const opStartMailboxExportJob = "StartMailboxExportJob"
+
+// StartMailboxExportJobRequest generates a "aws/request.Request" representing the
+// client's request for the StartMailboxExportJob operation. The "output" return
+// value will be populated with the request's response once the request completes
+// successfully.
+//
+// Use "Send" method on the returned Request to send the API call to the service.
+// the "output" return value is not valid until after Send returns without error.
+//
+// See StartMailboxExportJob for more information on using the StartMailboxExportJob
+// API call, and error handling.
+//
+// This method is useful when you want to inject custom logic or configuration
+// into the SDK's request lifecycle. Such as custom headers, or retry logic.
+//
+//
+//    // Example sending a request using the StartMailboxExportJobRequest method.
+//    req, resp := client.StartMailboxExportJobRequest(params)
+//
+//    err := req.Send()
+//    if err == nil { // resp is now filled
+//        fmt.Println(resp)
+//    }
+//
+// See also, https://docs.aws.amazon.com/goto/WebAPI/workmail-2017-10-01/StartMailboxExportJob
+func (c *WorkMail) StartMailboxExportJobRequest(input *StartMailboxExportJobInput) (req *request.Request, output *StartMailboxExportJobOutput) {
+	op := &request.Operation{
+		Name:       opStartMailboxExportJob,
+		HTTPMethod: "POST",
+		HTTPPath:   "/",
+	}
+
+	if input == nil {
+		input = &StartMailboxExportJobInput{}
+	}
+
+	output = &StartMailboxExportJobOutput{}
+	req = c.newRequest(op, input, output)
+	return
+}
+
+// StartMailboxExportJob API operation for Amazon WorkMail.
+//
+// Starts a mailbox export job to export MIME-format email messages and calendar
+// items from the specified mailbox to the specified Amazon Simple Storage Service
+// (Amazon S3) bucket. For more information, see Exporting mailbox content (https://docs.aws.amazon.com/workmail/latest/adminguide/mail-export.html)
+// in the Amazon WorkMail Administrator Guide.
+//
+// Returns awserr.Error for service API and SDK errors. Use runtime type assertions
+// with awserr.Error's Code and Message methods to get detailed information about
+// the error.
+//
+// See the AWS API reference guide for Amazon WorkMail's
+// API operation StartMailboxExportJob for usage and error information.
+//
+// Returned Error Types:
+//   * InvalidParameterException
+//   One or more of the input parameters don't match the service's restrictions.
+//
+//   * OrganizationNotFoundException
+//   An operation received a valid organization identifier that either doesn't
+//   belong or exist in the system.
+//
+//   * OrganizationStateException
+//   The organization must have a valid state to perform certain operations on
+//   the organization or its members.
+//
+//   * EntityNotFoundException
+//   The identifier supplied for the user, group, or resource does not exist in
+//   your organization.
+//
+//   * LimitExceededException
+//   The request exceeds the limit of the resource.
+//
+// See also, https://docs.aws.amazon.com/goto/WebAPI/workmail-2017-10-01/StartMailboxExportJob
+func (c *WorkMail) StartMailboxExportJob(input *StartMailboxExportJobInput) (*StartMailboxExportJobOutput, error) {
+	req, out := c.StartMailboxExportJobRequest(input)
+	return out, req.Send()
+}
+
+// StartMailboxExportJobWithContext is the same as StartMailboxExportJob with the addition of
+// the ability to pass a context and additional request options.
+//
+// See StartMailboxExportJob for details on how to use this API operation.
+//
+// The context must be non-nil and will be used for request cancellation. If
+// the context is nil a panic will occur. In the future the SDK may create
+// sub-contexts for http.Requests. See https://golang.org/pkg/context/
+// for more information on using Contexts.
+func (c *WorkMail) StartMailboxExportJobWithContext(ctx aws.Context, input *StartMailboxExportJobInput, opts ...request.Option) (*StartMailboxExportJobOutput, error) {
+	req, out := c.StartMailboxExportJobRequest(input)
 	req.SetContext(ctx)
 	req.ApplyOptions(opts...)
 	return out, req.Send()
@@ -3888,8 +4788,8 @@ func (c *WorkMail) TagResourceRequest(input *TagResourceInput) (req *request.Req
 //   The resource can have up to 50 user-applied tags.
 //
 //   * OrganizationStateException
-//   The organization must have a valid state (Active or Synchronizing) to perform
-//   certain operations on the organization or its members.
+//   The organization must have a valid state to perform certain operations on
+//   the organization or its members.
 //
 // See also, https://docs.aws.amazon.com/goto/WebAPI/workmail-2017-10-01/TagResource
 func (c *WorkMail) TagResource(input *TagResourceInput) (*TagResourceOutput, error) {
@@ -4057,8 +4957,8 @@ func (c *WorkMail) UpdateMailboxQuotaRequest(input *UpdateMailboxQuotaInput) (re
 //   belong or exist in the system.
 //
 //   * OrganizationStateException
-//   The organization must have a valid state (Active or Synchronizing) to perform
-//   certain operations on the organization or its members.
+//   The organization must have a valid state to perform certain operations on
+//   the organization or its members.
 //
 //   * EntityNotFoundException
 //   The identifier supplied for the user, group, or resource does not exist in
@@ -4152,7 +5052,7 @@ func (c *WorkMail) UpdatePrimaryEmailAddressRequest(input *UpdatePrimaryEmailAdd
 //   The directory service doesn't recognize the credentials supplied by WorkMail.
 //
 //   * DirectoryUnavailableException
-//   The directory on which you are trying to perform operations isn't available.
+//   The directory is unavailable. It might be located in another Region or deleted.
 //
 //   * EmailAddressInUseException
 //   The email address that you're trying to assign is already created for a different
@@ -4185,8 +5085,8 @@ func (c *WorkMail) UpdatePrimaryEmailAddressRequest(input *UpdatePrimaryEmailAdd
 //   belong or exist in the system.
 //
 //   * OrganizationStateException
-//   The organization must have a valid state (Active or Synchronizing) to perform
-//   certain operations on the organization or its members.
+//   The organization must have a valid state to perform certain operations on
+//   the organization or its members.
 //
 //   * UnsupportedOperationException
 //   You can't perform a write operation against a read-only directory.
@@ -4271,7 +5171,7 @@ func (c *WorkMail) UpdateResourceRequest(input *UpdateResourceInput) (req *reque
 //
 // Returned Error Types:
 //   * DirectoryUnavailableException
-//   The directory on which you are trying to perform operations isn't available.
+//   The directory is unavailable. It might be located in another Region or deleted.
 //
 //   * EntityNotFoundException
 //   The identifier supplied for the user, group, or resource does not exist in
@@ -4306,8 +5206,8 @@ func (c *WorkMail) UpdateResourceRequest(input *UpdateResourceInput) (req *reque
 //   belong or exist in the system.
 //
 //   * OrganizationStateException
-//   The organization must have a valid state (Active or Synchronizing) to perform
-//   certain operations on the organization or its members.
+//   The organization must have a valid state to perform certain operations on
+//   the organization or its members.
 //
 // See also, https://docs.aws.amazon.com/goto/WebAPI/workmail-2017-10-01/UpdateResource
 func (c *WorkMail) UpdateResource(input *UpdateResourceInput) (*UpdateResourceOutput, error) {
@@ -4458,12 +5358,12 @@ type AssociateDelegateToResourceInput struct {
 	// The organization under which the resource exists.
 	//
 	// OrganizationId is a required field
-	OrganizationId *string `type:"string" required:"true"`
+	OrganizationId *string `min:"34" type:"string" required:"true"`
 
 	// The resource for which members (users or groups) are associated.
 	//
 	// ResourceId is a required field
-	ResourceId *string `type:"string" required:"true"`
+	ResourceId *string `min:"34" type:"string" required:"true"`
 }
 
 // String returns the string representation
@@ -4488,8 +5388,14 @@ func (s *AssociateDelegateToResourceInput) Validate() error {
 	if s.OrganizationId == nil {
 		invalidParams.Add(request.NewErrParamRequired("OrganizationId"))
 	}
+	if s.OrganizationId != nil && len(*s.OrganizationId) < 34 {
+		invalidParams.Add(request.NewErrParamMinLen("OrganizationId", 34))
+	}
 	if s.ResourceId == nil {
 		invalidParams.Add(request.NewErrParamRequired("ResourceId"))
+	}
+	if s.ResourceId != nil && len(*s.ResourceId) < 34 {
+		invalidParams.Add(request.NewErrParamMinLen("ResourceId", 34))
 	}
 
 	if invalidParams.Len() > 0 {
@@ -4546,7 +5452,7 @@ type AssociateMemberToGroupInput struct {
 	// The organization under which the group exists.
 	//
 	// OrganizationId is a required field
-	OrganizationId *string `type:"string" required:"true"`
+	OrganizationId *string `min:"34" type:"string" required:"true"`
 }
 
 // String returns the string representation
@@ -4576,6 +5482,9 @@ func (s *AssociateMemberToGroupInput) Validate() error {
 	}
 	if s.OrganizationId == nil {
 		invalidParams.Add(request.NewErrParamRequired("OrganizationId"))
+	}
+	if s.OrganizationId != nil && len(*s.OrganizationId) < 34 {
+		invalidParams.Add(request.NewErrParamMinLen("OrganizationId", 34))
 	}
 
 	if invalidParams.Len() > 0 {
@@ -4660,6 +5569,90 @@ func (s *BookingOptions) SetAutoDeclineRecurringRequests(v bool) *BookingOptions
 	return s
 }
 
+type CancelMailboxExportJobInput struct {
+	_ struct{} `type:"structure"`
+
+	// The idempotency token for the client request.
+	ClientToken *string `min:"1" type:"string" idempotencyToken:"true"`
+
+	// The job ID.
+	//
+	// JobId is a required field
+	JobId *string `min:"1" type:"string" required:"true"`
+
+	// The organization ID.
+	//
+	// OrganizationId is a required field
+	OrganizationId *string `min:"34" type:"string" required:"true"`
+}
+
+// String returns the string representation
+func (s CancelMailboxExportJobInput) String() string {
+	return awsutil.Prettify(s)
+}
+
+// GoString returns the string representation
+func (s CancelMailboxExportJobInput) GoString() string {
+	return s.String()
+}
+
+// Validate inspects the fields of the type to determine if they are valid.
+func (s *CancelMailboxExportJobInput) Validate() error {
+	invalidParams := request.ErrInvalidParams{Context: "CancelMailboxExportJobInput"}
+	if s.ClientToken != nil && len(*s.ClientToken) < 1 {
+		invalidParams.Add(request.NewErrParamMinLen("ClientToken", 1))
+	}
+	if s.JobId == nil {
+		invalidParams.Add(request.NewErrParamRequired("JobId"))
+	}
+	if s.JobId != nil && len(*s.JobId) < 1 {
+		invalidParams.Add(request.NewErrParamMinLen("JobId", 1))
+	}
+	if s.OrganizationId == nil {
+		invalidParams.Add(request.NewErrParamRequired("OrganizationId"))
+	}
+	if s.OrganizationId != nil && len(*s.OrganizationId) < 34 {
+		invalidParams.Add(request.NewErrParamMinLen("OrganizationId", 34))
+	}
+
+	if invalidParams.Len() > 0 {
+		return invalidParams
+	}
+	return nil
+}
+
+// SetClientToken sets the ClientToken field's value.
+func (s *CancelMailboxExportJobInput) SetClientToken(v string) *CancelMailboxExportJobInput {
+	s.ClientToken = &v
+	return s
+}
+
+// SetJobId sets the JobId field's value.
+func (s *CancelMailboxExportJobInput) SetJobId(v string) *CancelMailboxExportJobInput {
+	s.JobId = &v
+	return s
+}
+
+// SetOrganizationId sets the OrganizationId field's value.
+func (s *CancelMailboxExportJobInput) SetOrganizationId(v string) *CancelMailboxExportJobInput {
+	s.OrganizationId = &v
+	return s
+}
+
+type CancelMailboxExportJobOutput struct {
+	_ struct{} `type:"structure"`
+}
+
+// String returns the string representation
+func (s CancelMailboxExportJobOutput) String() string {
+	return awsutil.Prettify(s)
+}
+
+// GoString returns the string representation
+func (s CancelMailboxExportJobOutput) GoString() string {
+	return s.String()
+}
+
 type CreateAliasInput struct {
 	_ struct{} `type:"structure"`
 
@@ -4676,7 +5669,7 @@ type CreateAliasInput struct {
 	// The organization under which the member (user or group) exists.
 	//
 	// OrganizationId is a required field
-	OrganizationId *string `type:"string" required:"true"`
+	OrganizationId *string `min:"34" type:"string" required:"true"`
 }
 
 // String returns the string representation
@@ -4706,6 +5699,9 @@ func (s *CreateAliasInput) Validate() error {
 	}
 	if s.OrganizationId == nil {
 		invalidParams.Add(request.NewErrParamRequired("OrganizationId"))
+	}
+	if s.OrganizationId != nil && len(*s.OrganizationId) < 34 {
+		invalidParams.Add(request.NewErrParamMinLen("OrganizationId", 34))
 	}
 
 	if invalidParams.Len() > 0 {
@@ -4757,7 +5753,7 @@ type CreateGroupInput struct {
 	// The organization under which the group is to be created.
 	//
 	// OrganizationId is a required field
-	OrganizationId *string `type:"string" required:"true"`
+	OrganizationId *string `min:"34" type:"string" required:"true"`
 }
 
 // String returns the string representation
@@ -4781,6 +5777,9 @@ func (s *CreateGroupInput) Validate() error {
 	}
 	if s.OrganizationId == nil {
 		invalidParams.Add(request.NewErrParamRequired("OrganizationId"))
+	}
+	if s.OrganizationId != nil && len(*s.OrganizationId) < 34 {
+		invalidParams.Add(request.NewErrParamMinLen("OrganizationId", 34))
 	}
 
 	if invalidParams.Len() > 0 {
@@ -4824,6 +5823,137 @@ func (s *CreateGroupOutput) SetGroupId(v string) *CreateGroupOutput {
 	return s
 }
 
+type CreateOrganizationInput struct {
+	_ struct{} `type:"structure"`
+
+	// The organization alias.
+	//
+	// Alias is a required field
+	Alias *string `min:"1" type:"string" required:"true"`
+
+	// The idempotency token associated with the request.
+	ClientToken *string `min:"1" type:"string" idempotencyToken:"true"`
+
+	// The AWS Directory Service directory ID.
+	DirectoryId *string `min:"12" type:"string"`
+
+	// The email domains to associate with the organization.
+	Domains []*Domain `type:"list"`
+
+	// When true, allows organization interoperability between Amazon WorkMail and
+	// Microsoft Exchange. Can only be set to true if an AD Connector directory
+	// ID is included in the request.
+	EnableInteroperability *bool `type:"boolean"`
+
+	// The Amazon Resource Name (ARN) of a customer managed master key from AWS
+	// KMS.
+	KmsKeyArn *string `min:"20" type:"string"`
+}
+
+// String returns the string representation
+func (s CreateOrganizationInput) String() string {
+	return awsutil.Prettify(s)
+}
+
+// GoString returns the string representation
+func (s CreateOrganizationInput) GoString() string {
+	return s.String()
+}
+
+// Validate inspects the fields of the type to determine if they are valid.
+func (s *CreateOrganizationInput) Validate() error {
+	invalidParams := request.ErrInvalidParams{Context: "CreateOrganizationInput"}
+	if s.Alias == nil {
+		invalidParams.Add(request.NewErrParamRequired("Alias"))
+	}
+	if s.Alias != nil && len(*s.Alias) < 1 {
+		invalidParams.Add(request.NewErrParamMinLen("Alias", 1))
+	}
+	if s.ClientToken != nil && len(*s.ClientToken) < 1 {
+		invalidParams.Add(request.NewErrParamMinLen("ClientToken", 1))
+	}
+	if s.DirectoryId != nil && len(*s.DirectoryId) < 12 {
+		invalidParams.Add(request.NewErrParamMinLen("DirectoryId", 12))
+	}
+	if s.KmsKeyArn != nil && len(*s.KmsKeyArn) < 20 {
+		invalidParams.Add(request.NewErrParamMinLen("KmsKeyArn", 20))
+	}
+	if s.Domains != nil {
+		for i, v := range s.Domains {
+			if v == nil {
+				continue
+			}
+			if err := v.Validate(); err != nil {
+				invalidParams.AddNested(fmt.Sprintf("%s[%v]", "Domains", i), err.(request.ErrInvalidParams))
+			}
+		}
+	}
+
+	if invalidParams.Len() > 0 {
+		return invalidParams
+	}
+	return nil
+}
+
+// SetAlias sets the Alias field's value.
+func (s *CreateOrganizationInput) SetAlias(v string) *CreateOrganizationInput {
+	s.Alias = &v
+	return s
+}
+
+// SetClientToken sets the ClientToken field's value.
+func (s *CreateOrganizationInput) SetClientToken(v string) *CreateOrganizationInput {
+	s.ClientToken = &v
+	return s
+}
+
+// SetDirectoryId sets the DirectoryId field's value.
+func (s *CreateOrganizationInput) SetDirectoryId(v string) *CreateOrganizationInput {
+	s.DirectoryId = &v
+	return s
+}
+
+// SetDomains sets the Domains field's value.
+func (s *CreateOrganizationInput) SetDomains(v []*Domain) *CreateOrganizationInput {
+	s.Domains = v
+	return s
+}
+
+// SetEnableInteroperability sets the EnableInteroperability field's value.
+func (s *CreateOrganizationInput) SetEnableInteroperability(v bool) *CreateOrganizationInput {
+	s.EnableInteroperability = &v
+	return s
+}
+
+// SetKmsKeyArn sets the KmsKeyArn field's value.
+func (s *CreateOrganizationInput) SetKmsKeyArn(v string) *CreateOrganizationInput {
+	s.KmsKeyArn = &v
+	return s
+}
+
+type CreateOrganizationOutput struct {
+	_ struct{} `type:"structure"`
+
+	// The organization ID.
+	OrganizationId *string `min:"34" type:"string"`
+}
+
+// String returns the string representation
+func (s CreateOrganizationOutput) String() string {
+	return awsutil.Prettify(s)
+}
+
+// GoString returns the string representation
+func (s CreateOrganizationOutput) GoString() string {
+	return s.String()
+}
+
+// SetOrganizationId sets the OrganizationId field's value.
+func (s *CreateOrganizationOutput) SetOrganizationId(v string) *CreateOrganizationOutput {
+	s.OrganizationId = &v
+	return s
+}
+
 type CreateResourceInput struct {
 	_ struct{} `type:"structure"`
 
@@ -4836,7 +5966,7 @@ type CreateResourceInput struct {
 	// created.
 	//
 	// OrganizationId is a required field
-	OrganizationId *string `type:"string" required:"true"`
+	OrganizationId *string `min:"34" type:"string" required:"true"`
 
 	// The type of the new resource. The available types are equipment and room.
 	//
@@ -4865,6 +5995,9 @@ func (s *CreateResourceInput) Validate() error {
 	}
 	if s.OrganizationId == nil {
 		invalidParams.Add(request.NewErrParamRequired("OrganizationId"))
+	}
+	if s.OrganizationId != nil && len(*s.OrganizationId) < 34 {
+		invalidParams.Add(request.NewErrParamMinLen("OrganizationId", 34))
 	}
 	if s.Type == nil {
 		invalidParams.Add(request.NewErrParamRequired("Type"))
@@ -4898,7 +6031,7 @@ type CreateResourceOutput struct {
 	_ struct{} `type:"structure"`
 
 	// The identifier of the new resource.
-	ResourceId *string `type:"string"`
+	ResourceId *string `min:"34" type:"string"`
 }
 
 // String returns the string representation
@@ -4934,7 +6067,7 @@ type CreateUserInput struct {
 	// The identifier of the organization for which the user is created.
 	//
 	// OrganizationId is a required field
-	OrganizationId *string `type:"string" required:"true"`
+	OrganizationId *string `min:"34" type:"string" required:"true"`
 
 	// The password for the new user.
 	//
@@ -4966,6 +6099,9 @@ func (s *CreateUserInput) Validate() error {
 	}
 	if s.OrganizationId == nil {
 		invalidParams.Add(request.NewErrParamRequired("OrganizationId"))
+	}
+	if s.OrganizationId != nil && len(*s.OrganizationId) < 34 {
+		invalidParams.Add(request.NewErrParamMinLen("OrganizationId", 34))
 	}
 	if s.Password == nil {
 		invalidParams.Add(request.NewErrParamRequired("Password"))
@@ -5071,7 +6207,9 @@ type DeleteAccessControlRuleInput struct {
 	Name *string `min:"1" type:"string" required:"true"`
 
 	// The identifier for the organization.
-	OrganizationId *string `type:"string"`
+	//
+	// OrganizationId is a required field
+	OrganizationId *string `min:"34" type:"string" required:"true"`
 }
 
 // String returns the string representation
@@ -5092,6 +6230,12 @@ func (s *DeleteAccessControlRuleInput) Validate() error {
 	}
 	if s.Name != nil && len(*s.Name) < 1 {
 		invalidParams.Add(request.NewErrParamMinLen("Name", 1))
+	}
+	if s.OrganizationId == nil {
+		invalidParams.Add(request.NewErrParamRequired("OrganizationId"))
+	}
+	if s.OrganizationId != nil && len(*s.OrganizationId) < 34 {
+		invalidParams.Add(request.NewErrParamMinLen("OrganizationId", 34))
 	}
 
 	if invalidParams.Len() > 0 {
@@ -5145,7 +6289,7 @@ type DeleteAliasInput struct {
 	// The identifier for the organization under which the user exists.
 	//
 	// OrganizationId is a required field
-	OrganizationId *string `type:"string" required:"true"`
+	OrganizationId *string `min:"34" type:"string" required:"true"`
 }
 
 // String returns the string representation
@@ -5175,6 +6319,9 @@ func (s *DeleteAliasInput) Validate() error {
 	}
 	if s.OrganizationId == nil {
 		invalidParams.Add(request.NewErrParamRequired("OrganizationId"))
+	}
+	if s.OrganizationId != nil && len(*s.OrganizationId) < 34 {
+		invalidParams.Add(request.NewErrParamMinLen("OrganizationId", 34))
 	}
 
 	if invalidParams.Len() > 0 {
@@ -5226,7 +6373,7 @@ type DeleteGroupInput struct {
 	// The organization that contains the group.
 	//
 	// OrganizationId is a required field
-	OrganizationId *string `type:"string" required:"true"`
+	OrganizationId *string `min:"34" type:"string" required:"true"`
 }
 
 // String returns the string representation
@@ -5250,6 +6397,9 @@ func (s *DeleteGroupInput) Validate() error {
 	}
 	if s.OrganizationId == nil {
 		invalidParams.Add(request.NewErrParamRequired("OrganizationId"))
+	}
+	if s.OrganizationId != nil && len(*s.OrganizationId) < 34 {
+		invalidParams.Add(request.NewErrParamMinLen("OrganizationId", 34))
 	}
 
 	if invalidParams.Len() > 0 {
@@ -5287,7 +6437,7 @@ func (s DeleteGroupOutput) GoString() string {
 type DeleteMailboxPermissionsInput struct {
 	_ struct{} `type:"structure"`
 
-	// The identifier of the member (user or group)that owns the mailbox.
+	// The identifier of the member (user or group) that owns the mailbox.
 	//
 	// EntityId is a required field
 	EntityId *string `min:"12" type:"string" required:"true"`
@@ -5302,7 +6452,7 @@ type DeleteMailboxPermissionsInput struct {
 	// exists.
 	//
 	// OrganizationId is a required field
-	OrganizationId *string `type:"string" required:"true"`
+	OrganizationId *string `min:"34" type:"string" required:"true"`
 }
 
 // String returns the string representation
@@ -5332,6 +6482,9 @@ func (s *DeleteMailboxPermissionsInput) Validate() error {
 	}
 	if s.OrganizationId == nil {
 		invalidParams.Add(request.NewErrParamRequired("OrganizationId"))
+	}
+	if s.OrganizationId != nil && len(*s.OrganizationId) < 34 {
+		invalidParams.Add(request.NewErrParamMinLen("OrganizationId", 34))
 	}
 
 	if invalidParams.Len() > 0 {
@@ -5372,6 +6525,106 @@ func (s DeleteMailboxPermissionsOutput) GoString() string {
 	return s.String()
 }
 
+type DeleteOrganizationInput struct {
+	_ struct{} `type:"structure"`
+
+	// The idempotency token associated with the request.
+	ClientToken *string `min:"1" type:"string" idempotencyToken:"true"`
+
+	// If true, deletes the AWS Directory Service directory associated with the
+	// organization.
+	//
+	// DeleteDirectory is a required field
+	DeleteDirectory *bool `type:"boolean" required:"true"`
+
+	// The organization ID.
+	//
+	// OrganizationId is a required field
+	OrganizationId *string `min:"34" type:"string" required:"true"`
+}
+
+// String returns the string representation
+func (s DeleteOrganizationInput) String() string {
+	return awsutil.Prettify(s)
+}
+
+// GoString returns the string representation
+func (s DeleteOrganizationInput) GoString() string {
+	return s.String()
+}
+
+// Validate inspects the fields of the type to determine if they are valid.
+func (s *DeleteOrganizationInput) Validate() error {
+	invalidParams := request.ErrInvalidParams{Context: "DeleteOrganizationInput"}
+	if s.ClientToken != nil && len(*s.ClientToken) < 1 {
+		invalidParams.Add(request.NewErrParamMinLen("ClientToken", 1))
+	}
+	if s.DeleteDirectory == nil {
+		invalidParams.Add(request.NewErrParamRequired("DeleteDirectory"))
+	}
+	if s.OrganizationId == nil {
+		invalidParams.Add(request.NewErrParamRequired("OrganizationId"))
+	}
+	if s.OrganizationId != nil && len(*s.OrganizationId) < 34 {
+		invalidParams.Add(request.NewErrParamMinLen("OrganizationId", 34))
+	}
+
+	if invalidParams.Len() > 0 {
+		return invalidParams
+	}
+	return nil
+}
+
+// SetClientToken sets the ClientToken field's value.
+func (s *DeleteOrganizationInput) SetClientToken(v string) *DeleteOrganizationInput {
+	s.ClientToken = &v
+	return s
+}
+
+// SetDeleteDirectory sets the DeleteDirectory field's value.
+func (s *DeleteOrganizationInput) SetDeleteDirectory(v bool) *DeleteOrganizationInput {
+	s.DeleteDirectory = &v
+	return s
+}
+
+// SetOrganizationId sets the OrganizationId field's value.
+func (s *DeleteOrganizationInput) SetOrganizationId(v string) *DeleteOrganizationInput {
+	s.OrganizationId = &v
+	return s
+}
+
+type DeleteOrganizationOutput struct {
+	_ struct{} `type:"structure"`
+
+	// The organization ID.
+	OrganizationId *string `min:"34" type:"string"`
+
+	// The state of the organization.
+	State *string `type:"string"`
+}
+
+// String returns the string representation
+func (s DeleteOrganizationOutput) String() string {
+	return awsutil.Prettify(s)
+}
+
+// GoString returns the string representation
+func (s DeleteOrganizationOutput) GoString() string {
+	return s.String()
+}
+
+// SetOrganizationId sets the OrganizationId field's value.
+func (s *DeleteOrganizationOutput) SetOrganizationId(v string) *DeleteOrganizationOutput {
+	s.OrganizationId = &v
+	return s
+}
+
+// SetState sets the State field's value.
+func (s *DeleteOrganizationOutput) SetState(v string) *DeleteOrganizationOutput {
+	s.State = &v
+	return s
+}
+
 type DeleteResourceInput struct {
 	_ struct{} `type:"structure"`
 
@@ -5379,12 +6632,12 @@ type DeleteResourceInput struct {
 	// deleted.
 	//
 	// OrganizationId is a required field
-	OrganizationId *string `type:"string" required:"true"`
+	OrganizationId *string `min:"34" type:"string" required:"true"`
 
 	// The identifier of the resource to be deleted.
 	//
 	// ResourceId is a required field
-	ResourceId *string `type:"string" required:"true"`
+	ResourceId *string `min:"34" type:"string" required:"true"`
 }
 
 // String returns the string representation
@@ -5403,8 +6656,14 @@ func (s *DeleteResourceInput) Validate() error {
 	if s.OrganizationId == nil {
 		invalidParams.Add(request.NewErrParamRequired("OrganizationId"))
 	}
+	if s.OrganizationId != nil && len(*s.OrganizationId) < 34 {
+		invalidParams.Add(request.NewErrParamMinLen("OrganizationId", 34))
+	}
 	if s.ResourceId == nil {
 		invalidParams.Add(request.NewErrParamRequired("ResourceId"))
+	}
+	if s.ResourceId != nil && len(*s.ResourceId) < 34 {
+		invalidParams.Add(request.NewErrParamMinLen("ResourceId", 34))
 	}
 
 	if invalidParams.Len() > 0 {
@@ -5439,13 +6698,85 @@ func (s DeleteResourceOutput) GoString() string {
 	return s.String()
 }
 
+type DeleteRetentionPolicyInput struct {
+	_ struct{} `type:"structure"`
+
+	// The retention policy ID.
+	//
+	// Id is a required field
+	Id *string `min:"1" type:"string" required:"true"`
+
+	// The organization ID.
+	//
+	// OrganizationId is a required field
+	OrganizationId *string `min:"34" type:"string" required:"true"`
+}
+
+// String returns the string representation
+func (s DeleteRetentionPolicyInput) String() string {
+	return awsutil.Prettify(s)
+}
+
+// GoString returns the string representation
+func (s DeleteRetentionPolicyInput) GoString() string {
+	return s.String()
+}
+
+// Validate inspects the fields of the type to determine if they are valid.
+func (s *DeleteRetentionPolicyInput) Validate() error {
+	invalidParams := request.ErrInvalidParams{Context: "DeleteRetentionPolicyInput"}
+	if s.Id == nil {
+		invalidParams.Add(request.NewErrParamRequired("Id"))
+	}
+	if s.Id != nil && len(*s.Id) < 1 {
+		invalidParams.Add(request.NewErrParamMinLen("Id", 1))
+	}
+	if s.OrganizationId == nil {
+		invalidParams.Add(request.NewErrParamRequired("OrganizationId"))
+	}
+	if s.OrganizationId != nil && len(*s.OrganizationId) < 34 {
+		invalidParams.Add(request.NewErrParamMinLen("OrganizationId", 34))
+	}
+
+	if invalidParams.Len() > 0 {
+		return invalidParams
+	}
+	return nil
+}
+
+// SetId sets the Id field's value.
+func (s *DeleteRetentionPolicyInput) SetId(v string) *DeleteRetentionPolicyInput {
+	s.Id = &v
+	return s
+}
+
+// SetOrganizationId sets the OrganizationId field's value.
+func (s *DeleteRetentionPolicyInput) SetOrganizationId(v string) *DeleteRetentionPolicyInput {
+	s.OrganizationId = &v
+	return s
+}
+
+type DeleteRetentionPolicyOutput struct {
+	_ struct{} `type:"structure"`
+}
+
+// String returns the string representation
+func (s DeleteRetentionPolicyOutput) String() string {
+	return awsutil.Prettify(s)
+}
+
+// GoString returns the string representation
+func (s DeleteRetentionPolicyOutput) GoString() string {
+	return s.String()
+}
+
 type DeleteUserInput struct {
 	_ struct{} `type:"structure"`
 
 	// The organization that contains the user to be deleted.
 	//
 	// OrganizationId is a required field
-	OrganizationId *string `type:"string" required:"true"`
+	OrganizationId *string `min:"34" type:"string" required:"true"`
 
 	// The identifier of the user to be deleted.
 	//
@@ -5468,6 +6799,9 @@ func (s *DeleteUserInput) Validate() error {
 	invalidParams := request.ErrInvalidParams{Context: "DeleteUserInput"}
 	if s.OrganizationId == nil {
 		invalidParams.Add(request.NewErrParamRequired("OrganizationId"))
+	}
+	if s.OrganizationId != nil && len(*s.OrganizationId) < 34 {
+		invalidParams.Add(request.NewErrParamMinLen("OrganizationId", 34))
 	}
 	if s.UserId == nil {
 		invalidParams.Add(request.NewErrParamRequired("UserId"))
@@ -5520,7 +6854,7 @@ type DeregisterFromWorkMailInput struct {
 	// exists.
 	//
 	// OrganizationId is a required field
-	OrganizationId *string `type:"string" required:"true"`
+	OrganizationId *string `min:"34" type:"string" required:"true"`
 }
 
 // String returns the string representation
@@ -5544,6 +6878,9 @@ func (s *DeregisterFromWorkMailInput) Validate() error {
 	}
 	if s.OrganizationId == nil {
 		invalidParams.Add(request.NewErrParamRequired("OrganizationId"))
+	}
+	if s.OrganizationId != nil && len(*s.OrganizationId) < 34 {
+		invalidParams.Add(request.NewErrParamMinLen("OrganizationId", 34))
 	}
 
 	if invalidParams.Len() > 0 {
@@ -5589,7 +6926,7 @@ type DescribeGroupInput struct {
 	// The identifier for the organization under which the group exists.
 	//
 	// OrganizationId is a required field
-	OrganizationId *string `type:"string" required:"true"`
+	OrganizationId *string `min:"34" type:"string" required:"true"`
 }
 
 // String returns the string representation
@@ -5613,6 +6950,9 @@ func (s *DescribeGroupInput) Validate() error {
 	}
 	if s.OrganizationId == nil {
 		invalidParams.Add(request.NewErrParamRequired("OrganizationId"))
+	}
+	if s.OrganizationId != nil && len(*s.OrganizationId) < 34 {
+		invalidParams.Add(request.NewErrParamMinLen("OrganizationId", 34))
 	}
 
 	if invalidParams.Len() > 0 {
@@ -5704,13 +7044,196 @@ func (s *DescribeGroupOutput) SetState(v string) *DescribeGroupOutput {
 	return s
 }
 
+type DescribeMailboxExportJobInput struct {
+	_ struct{} `type:"structure"`
+
+	// The mailbox export job ID.
+	//
+	// JobId is a required field
+	JobId *string `min:"1" type:"string" required:"true"`
+
+	// The organization ID.
+	//
+	// OrganizationId is a required field
+	OrganizationId *string `min:"34" type:"string" required:"true"`
+}
+
+// String returns the string representation
+func (s DescribeMailboxExportJobInput) String() string {
+	return awsutil.Prettify(s)
+}
+
+// GoString returns the string representation
+func (s DescribeMailboxExportJobInput) GoString() string {
+	return s.String()
+}
+
+// Validate inspects the fields of the type to determine if they are valid.
+func (s *DescribeMailboxExportJobInput) Validate() error {
+	invalidParams := request.ErrInvalidParams{Context: "DescribeMailboxExportJobInput"}
+	if s.JobId == nil {
+		invalidParams.Add(request.NewErrParamRequired("JobId"))
+	}
+	if s.JobId != nil && len(*s.JobId) < 1 {
+		invalidParams.Add(request.NewErrParamMinLen("JobId", 1))
+	}
+	if s.OrganizationId == nil {
+		invalidParams.Add(request.NewErrParamRequired("OrganizationId"))
+	}
+	if s.OrganizationId != nil && len(*s.OrganizationId) < 34 {
+		invalidParams.Add(request.NewErrParamMinLen("OrganizationId", 34))
+	}
+
+	if invalidParams.Len() > 0 {
+		return invalidParams
+	}
+	return nil
+}
+
+// SetJobId sets the JobId field's value.
+func (s *DescribeMailboxExportJobInput) SetJobId(v string) *DescribeMailboxExportJobInput {
+	s.JobId = &v
+	return s
+}
+
+// SetOrganizationId sets the OrganizationId field's value.
+func (s *DescribeMailboxExportJobInput) SetOrganizationId(v string) *DescribeMailboxExportJobInput {
+	s.OrganizationId = &v
+	return s
+}
+
+type DescribeMailboxExportJobOutput struct {
+	_ struct{} `type:"structure"`
+
+	// The mailbox export job description.
+	Description *string `type:"string"`
+
+	// The mailbox export job end timestamp.
+	EndTime *time.Time `type:"timestamp"`
+
+	// The identifier of the user or resource associated with the mailbox.
+	EntityId *string `min:"12" type:"string"`
+
+	// Error information for failed mailbox export jobs.
+	ErrorInfo *string `min:"1" type:"string"`
+
+	// The estimated progress of the mailbox export job, in percentage points.
+	EstimatedProgress *int64 `type:"integer"`
+
+	// The Amazon Resource Name (ARN) of the symmetric AWS Key Management Service
+	// (AWS KMS) key that encrypts the exported mailbox content.
+	KmsKeyArn *string `min:"20" type:"string"`
+
+	// The ARN of the AWS Identity and Access Management (IAM) role that grants
+	// write permission to the Amazon Simple Storage Service (Amazon S3) bucket.
+	RoleArn *string `min:"20" type:"string"`
+
+	// The name of the S3 bucket.
+	S3BucketName *string `min:"1" type:"string"`
+
+	// The path to the S3 bucket and file that the mailbox export job is exporting
+	// to.
+	S3Path *string `min:"1" type:"string"`
+
+	// The S3 bucket prefix.
+	S3Prefix *string `min:"1" type:"string"`
+
+	// The mailbox export job start timestamp.
+	StartTime *time.Time `type:"timestamp"`
+
+	// The state of the mailbox export job.
+	State *string `type:"string" enum:"MailboxExportJobState"`
+}
+
+// String returns the string representation
+func (s DescribeMailboxExportJobOutput) String() string {
+	return awsutil.Prettify(s)
+}
+
+// GoString returns the string representation
+func (s DescribeMailboxExportJobOutput) GoString() string {
+	return s.String()
+}
+
+// SetDescription sets the Description field's value.
+func (s *DescribeMailboxExportJobOutput) SetDescription(v string) *DescribeMailboxExportJobOutput {
+	s.Description = &v
+	return s
+}
+
+// SetEndTime sets the EndTime field's value.
+func (s *DescribeMailboxExportJobOutput) SetEndTime(v time.Time) *DescribeMailboxExportJobOutput {
+	s.EndTime = &v
+	return s
+}
+
+// SetEntityId sets the EntityId field's value.
+func (s *DescribeMailboxExportJobOutput) SetEntityId(v string) *DescribeMailboxExportJobOutput {
+	s.EntityId = &v
+	return s
+}
+
+// SetErrorInfo sets the ErrorInfo field's value.
+func (s *DescribeMailboxExportJobOutput) SetErrorInfo(v string) *DescribeMailboxExportJobOutput {
+	s.ErrorInfo = &v
+	return s
+}
+
+// SetEstimatedProgress sets the EstimatedProgress field's value.
+func (s *DescribeMailboxExportJobOutput) SetEstimatedProgress(v int64) *DescribeMailboxExportJobOutput {
+	s.EstimatedProgress = &v
+	return s
+}
+
+// SetKmsKeyArn sets the KmsKeyArn field's value.
+func (s *DescribeMailboxExportJobOutput) SetKmsKeyArn(v string) *DescribeMailboxExportJobOutput {
+	s.KmsKeyArn = &v
+	return s
+}
+
+// SetRoleArn sets the RoleArn field's value.
+func (s *DescribeMailboxExportJobOutput) SetRoleArn(v string) *DescribeMailboxExportJobOutput {
+	s.RoleArn = &v
+	return s
+}
+
+// SetS3BucketName sets the S3BucketName field's value.
+func (s *DescribeMailboxExportJobOutput) SetS3BucketName(v string) *DescribeMailboxExportJobOutput {
+	s.S3BucketName = &v
+	return s
+}
+
+// SetS3Path sets the S3Path field's value.
+func (s *DescribeMailboxExportJobOutput) SetS3Path(v string) *DescribeMailboxExportJobOutput {
+	s.S3Path = &v
+	return s
+}
+
+// SetS3Prefix sets the S3Prefix field's value.
+func (s *DescribeMailboxExportJobOutput) SetS3Prefix(v string) *DescribeMailboxExportJobOutput {
+	s.S3Prefix = &v
+	return s
+}
+
+// SetStartTime sets the StartTime field's value.
+func (s *DescribeMailboxExportJobOutput) SetStartTime(v time.Time) *DescribeMailboxExportJobOutput {
+	s.StartTime = &v
+	return s
+}
+
+// SetState sets the State field's value.
+func (s *DescribeMailboxExportJobOutput) SetState(v string) *DescribeMailboxExportJobOutput {
+	s.State = &v
+	return s
+}
+
 type DescribeOrganizationInput struct {
 	_ struct{} `type:"structure"`
 
 	// The identifier for the organization to be described.
 	//
 	// OrganizationId is a required field
-	OrganizationId *string `type:"string" required:"true"`
+	OrganizationId *string `min:"34" type:"string" required:"true"`
 }
 
 // String returns the string representation
@@ -5728,6 +7251,9 @@ func (s *DescribeOrganizationInput) Validate() error {
 	invalidParams := request.ErrInvalidParams{Context: "DescribeOrganizationInput"}
 	if s.OrganizationId == nil {
 		invalidParams.Add(request.NewErrParamRequired("OrganizationId"))
+	}
+	if s.OrganizationId != nil && len(*s.OrganizationId) < 34 {
+		invalidParams.Add(request.NewErrParamMinLen("OrganizationId", 34))
 	}
 
 	if invalidParams.Len() > 0 {
@@ -5769,7 +7295,7 @@ type DescribeOrganizationOutput struct {
 	ErrorMessage *string `type:"string"`
 
 	// The identifier of an organization.
-	OrganizationId *string `type:"string"`
+	OrganizationId *string `min:"34" type:"string"`
 
 	// The state of an organization.
 	State *string `type:"string"`
@@ -5846,12 +7372,12 @@ type DescribeResourceInput struct {
 	// described.
 	//
 	// OrganizationId is a required field
-	OrganizationId *string `type:"string" required:"true"`
+	OrganizationId *string `min:"34" type:"string" required:"true"`
 
 	// The identifier of the resource to be described.
 	//
 	// ResourceId is a required field
-	ResourceId *string `type:"string" required:"true"`
+	ResourceId *string `min:"34" type:"string" required:"true"`
 }
 
 // String returns the string representation
@@ -5870,8 +7396,14 @@ func (s *DescribeResourceInput) Validate() error {
 	if s.OrganizationId == nil {
 		invalidParams.Add(request.NewErrParamRequired("OrganizationId"))
 	}
+	if s.OrganizationId != nil && len(*s.OrganizationId) < 34 {
+		invalidParams.Add(request.NewErrParamMinLen("OrganizationId", 34))
+	}
 	if s.ResourceId == nil {
 		invalidParams.Add(request.NewErrParamRequired("ResourceId"))
+	}
+	if s.ResourceId != nil && len(*s.ResourceId) < 34 {
+		invalidParams.Add(request.NewErrParamMinLen("ResourceId", 34))
 	}
 
 	if invalidParams.Len() > 0 {
@@ -5913,7 +7445,7 @@ type DescribeResourceOutput struct {
 	Name *string `min:"1" type:"string"`
 
 	// The identifier of the described resource.
-	ResourceId *string `type:"string"`
+	ResourceId *string `min:"34" type:"string"`
 
 	// The state of the resource: enabled (registered to Amazon WorkMail), disabled
 	// (deregistered or never registered to WorkMail), or deleted.
@@ -5987,7 +7519,7 @@ type DescribeUserInput struct {
 	// The identifier for the organization under which the user exists.
 	//
 	// OrganizationId is a required field
-	OrganizationId *string `type:"string" required:"true"`
+	OrganizationId *string `min:"34" type:"string" required:"true"`
 
 	// The identifier for the user to be described.
 	//
@@ -6010,6 +7542,9 @@ func (s *DescribeUserInput) Validate() error {
 	invalidParams := request.ErrInvalidParams{Context: "DescribeUserInput"}
 	if s.OrganizationId == nil {
 		invalidParams.Add(request.NewErrParamRequired("OrganizationId"))
+	}
+	if s.OrganizationId != nil && len(*s.OrganizationId) < 34 {
+		invalidParams.Add(request.NewErrParamMinLen("OrganizationId", 34))
 	}
 	if s.UserId == nil {
 		invalidParams.Add(request.NewErrParamRequired("UserId"))
@@ -6130,10 +7665,67 @@ func (s *DescribeUserOutput) SetUserRole(v string) *DescribeUserOutput {
 	return s
 }
 
+// The directory is already in use by another WorkMail organization in the same
+// account and Region.
+type DirectoryInUseException struct {
+	_            struct{}                  `type:"structure"`
+	RespMetadata protocol.ResponseMetadata `json:"-" xml:"-"`
+
+	Message_ *string `locationName:"Message" type:"string"`
+}
+
+// String returns the string representation
+func (s DirectoryInUseException) String() string {
+	return awsutil.Prettify(s)
+}
+
+// GoString returns the string representation
+func (s DirectoryInUseException) GoString() string {
+	return s.String()
+}
+
+func newErrorDirectoryInUseException(v protocol.ResponseMetadata) error {
+	return &DirectoryInUseException{
+		RespMetadata: v,
+	}
+}
+
+// Code returns the exception type name.
+func (s *DirectoryInUseException) Code() string {
+	return "DirectoryInUseException"
+}
+
+// Message returns the exception's message.
+func (s *DirectoryInUseException) Message() string {
+	if s.Message_ != nil {
+		return *s.Message_
+	}
+	return ""
+}
+
+// OrigErr always returns nil, satisfies awserr.Error interface.
+func (s *DirectoryInUseException) OrigErr() error {
+	return nil
+}
+
+func (s *DirectoryInUseException) Error() string {
+	return fmt.Sprintf("%s: %s", s.Code(), s.Message())
+}
+
+// Status code returns the HTTP status code for the request's response error.
+func (s *DirectoryInUseException) StatusCode() int {
+	return s.RespMetadata.StatusCode
+}
+
+// RequestID returns the service's response RequestID for request.
+func (s *DirectoryInUseException) RequestID() string {
+	return s.RespMetadata.RequestID
+}
+
 // The directory service doesn't recognize the credentials supplied by WorkMail.
 type DirectoryServiceAuthenticationFailedException struct {
-	_            struct{} `type:"structure"`
-	respMetadata protocol.ResponseMetadata
+	_            struct{}                  `type:"structure"`
+	RespMetadata protocol.ResponseMetadata `json:"-" xml:"-"`
 
 	Message_ *string `locationName:"Message" type:"string"`
 }
@@ -6150,17 +7742,17 @@ func (s DirectoryServiceAuthenticationFailedException) GoString() string {
 
 func newErrorDirectoryServiceAuthenticationFailedException(v protocol.ResponseMetadata) error {
 	return &DirectoryServiceAuthenticationFailedException{
-		respMetadata: v,
+		RespMetadata: v,
 	}
 }
 
 // Code returns the exception type name.
-func (s DirectoryServiceAuthenticationFailedException) Code() string {
+func (s *DirectoryServiceAuthenticationFailedException) Code() string {
 	return "DirectoryServiceAuthenticationFailedException"
 }
 
 // Message returns the exception's message.
-func (s DirectoryServiceAuthenticationFailedException) Message() string {
+func (s *DirectoryServiceAuthenticationFailedException) Message() string {
 	if s.Message_ != nil {
 		return *s.Message_
 	}
@@ -6168,28 +7760,28 @@ func (s DirectoryServiceAuthenticationFailedException) Message() string {
 }
 
 // OrigErr always returns nil, satisfies awserr.Error interface.
-func (s DirectoryServiceAuthenticationFailedException) OrigErr() error {
+func (s *DirectoryServiceAuthenticationFailedException) OrigErr() error {
 	return nil
 }
 
-func (s DirectoryServiceAuthenticationFailedException) Error() string {
+func (s *DirectoryServiceAuthenticationFailedException) Error() string {
 	return fmt.Sprintf("%s: %s", s.Code(), s.Message())
 }
 
 // Status code returns the HTTP status code for the request's response error.
-func (s DirectoryServiceAuthenticationFailedException) StatusCode() int {
-	return s.respMetadata.StatusCode
+func (s *DirectoryServiceAuthenticationFailedException) StatusCode() int {
+	return s.RespMetadata.StatusCode
 }
 
 // RequestID returns the service's response RequestID for request.
-func (s DirectoryServiceAuthenticationFailedException) RequestID() string {
-	return s.respMetadata.RequestID
+func (s *DirectoryServiceAuthenticationFailedException) RequestID() string {
+	return s.RespMetadata.RequestID
 }
 
-// The directory on which you are trying to perform operations isn't available.
+// The directory is unavailable. It might be located in another Region or deleted.
 type DirectoryUnavailableException struct {
-	_            struct{} `type:"structure"`
-	respMetadata protocol.ResponseMetadata
+	_            struct{}                  `type:"structure"`
+	RespMetadata protocol.ResponseMetadata `json:"-" xml:"-"`
 
 	Message_ *string `locationName:"Message" type:"string"`
 }
@@ -6206,17 +7798,17 @@ func (s DirectoryUnavailableException) GoString() string {
 
 func newErrorDirectoryUnavailableException(v protocol.ResponseMetadata) error {
 	return &DirectoryUnavailableException{
-		respMetadata: v,
+		RespMetadata: v,
 	}
 }
 
 // Code returns the exception type name.
-func (s DirectoryUnavailableException) Code() string {
+func (s *DirectoryUnavailableException) Code() string {
 	return "DirectoryUnavailableException"
 }
 
 // Message returns the exception's message.
-func (s DirectoryUnavailableException) Message() string {
+func (s *DirectoryUnavailableException) Message() string {
 	if s.Message_ != nil {
 		return *s.Message_
 	}
@@ -6224,22 +7816,22 @@ func (s DirectoryUnavailableException) Message() string {
 }
 
 // OrigErr always returns nil, satisfies awserr.Error interface.
-func (s DirectoryUnavailableException) OrigErr() error {
+func (s *DirectoryUnavailableException) OrigErr() error {
 	return nil
 }
 
-func (s DirectoryUnavailableException) Error() string {
+func (s *DirectoryUnavailableException) Error() string {
 	return fmt.Sprintf("%s: %s", s.Code(), s.Message())
 }
 
 // Status code returns the HTTP status code for the request's response error.
-func (s DirectoryUnavailableException) StatusCode() int {
-	return s.respMetadata.StatusCode
+func (s *DirectoryUnavailableException) StatusCode() int {
+	return s.RespMetadata.StatusCode
 }
 
 // RequestID returns the service's response RequestID for request.
-func (s DirectoryUnavailableException) RequestID() string {
-	return s.respMetadata.RequestID
+func (s *DirectoryUnavailableException) RequestID() string {
+	return s.RespMetadata.RequestID
 }
 
 type DisassociateDelegateFromResourceInput struct {
@@ -6254,12 +7846,12 @@ type DisassociateDelegateFromResourceInput struct {
 	// The identifier for the organization under which the resource exists.
 	//
 	// OrganizationId is a required field
-	OrganizationId *string `type:"string" required:"true"`
+	OrganizationId *string `min:"34" type:"string" required:"true"`
 
 	// The identifier of the resource from which delegates' set members are removed.
 	//
 	// ResourceId is a required field
-	ResourceId *string `type:"string" required:"true"`
+	ResourceId *string `min:"34" type:"string" required:"true"`
 }
 
 // String returns the string representation
@@ -6284,8 +7876,14 @@ func (s *DisassociateDelegateFromResourceInput) Validate() error {
 	if s.OrganizationId == nil {
 		invalidParams.Add(request.NewErrParamRequired("OrganizationId"))
 	}
+	if s.OrganizationId != nil && len(*s.OrganizationId) < 34 {
+		invalidParams.Add(request.NewErrParamMinLen("OrganizationId", 34))
+	}
 	if s.ResourceId == nil {
 		invalidParams.Add(request.NewErrParamRequired("ResourceId"))
+	}
+	if s.ResourceId != nil && len(*s.ResourceId) < 34 {
+		invalidParams.Add(request.NewErrParamMinLen("ResourceId", 34))
 	}
 
 	if invalidParams.Len() > 0 {
@@ -6342,7 +7940,7 @@ type DisassociateMemberFromGroupInput struct {
 	// The identifier for the organization under which the group exists.
 	//
 	// OrganizationId is a required field
-	OrganizationId *string `type:"string" required:"true"`
+	OrganizationId *string `min:"34" type:"string" required:"true"`
 }
 
 // String returns the string representation
@@ -6372,6 +7970,9 @@ func (s *DisassociateMemberFromGroupInput) Validate() error {
 	}
 	if s.OrganizationId == nil {
 		invalidParams.Add(request.NewErrParamRequired("OrganizationId"))
+	}
+	if s.OrganizationId != nil && len(*s.OrganizationId) < 34 {
+		invalidParams.Add(request.NewErrParamMinLen("OrganizationId", 34))
 	}
 
 	if invalidParams.Len() > 0 {
@@ -6412,11 +8013,66 @@ func (s DisassociateMemberFromGroupOutput) GoString() string {
 	return s.String()
 }
 
+// The domain to associate with an Amazon WorkMail organization.
+//
+// When you configure a domain hosted in Amazon Route 53 (Route 53), all recommended
+// DNS records are added to the organization when you create it. For more information,
+// see Adding a domain (https://docs.aws.amazon.com/workmail/latest/adminguide/add_domain.html)
+// in the Amazon WorkMail Administrator Guide.
+type Domain struct {
+	_ struct{} `type:"structure"`
+
+	// The fully qualified domain name.
+	DomainName *string `min:"3" type:"string"`
+
+	// The hosted zone ID for a domain hosted in Route 53. Required when configuring
+	// a domain hosted in Route 53.
+	HostedZoneId *string `min:"1" type:"string"`
+}
+
+// String returns the string representation
+func (s Domain) String() string {
+	return awsutil.Prettify(s)
+}
+
+// GoString returns the string representation
+func (s Domain) GoString() string {
+	return s.String()
+}
+
+// Validate inspects the fields of the type to determine if they are valid.
+func (s *Domain) Validate() error {
+	invalidParams := request.ErrInvalidParams{Context: "Domain"}
+	if s.DomainName != nil && len(*s.DomainName) < 3 {
+		invalidParams.Add(request.NewErrParamMinLen("DomainName", 3))
+	}
+	if s.HostedZoneId != nil && len(*s.HostedZoneId) < 1 {
+		invalidParams.Add(request.NewErrParamMinLen("HostedZoneId", 1))
+	}
+
+	if invalidParams.Len() > 0 {
+		return invalidParams
+	}
+	return nil
+}
+
+// SetDomainName sets the DomainName field's value.
+func (s *Domain) SetDomainName(v string) *Domain {
+	s.DomainName = &v
+	return s
+}
+
+// SetHostedZoneId sets the HostedZoneId field's value.
+func (s *Domain) SetHostedZoneId(v string) *Domain {
+	s.HostedZoneId = &v
+	return s
+}
+
 // The email address that you're trying to assign is already created for a different
 // user, group, or resource.
 type EmailAddressInUseException struct {
-	_            struct{} `type:"structure"`
-	respMetadata protocol.ResponseMetadata
+	_            struct{}                  `type:"structure"`
+	RespMetadata protocol.ResponseMetadata `json:"-" xml:"-"`
 
 	Message_ *string `locationName:"Message" type:"string"`
 }
@@ -6433,17 +8089,17 @@ func (s EmailAddressInUseException) GoString() string {
 
 func newErrorEmailAddressInUseException(v protocol.ResponseMetadata) error {
 	return &EmailAddressInUseException{
-		respMetadata: v,
+		RespMetadata: v,
 	}
 }
 
 // Code returns the exception type name.
-func (s EmailAddressInUseException) Code() string {
+func (s *EmailAddressInUseException) Code() string {
 	return "EmailAddressInUseException"
 }
 
 // Message returns the exception's message.
-func (s EmailAddressInUseException) Message() string {
+func (s *EmailAddressInUseException) Message() string {
 	if s.Message_ != nil {
 		return *s.Message_
 	}
@@ -6451,28 +8107,28 @@ func (s EmailAddressInUseException) Message() string {
 }
 
 // OrigErr always returns nil, satisfies awserr.Error interface.
-func (s EmailAddressInUseException) OrigErr() error {
+func (s *EmailAddressInUseException) OrigErr() error {
 	return nil
 }
 
-func (s EmailAddressInUseException) Error() string {
+func (s *EmailAddressInUseException) Error() string {
 	return fmt.Sprintf("%s: %s", s.Code(), s.Message())
 }
 
 // Status code returns the HTTP status code for the request's response error.
-func (s EmailAddressInUseException) StatusCode() int {
-	return s.respMetadata.StatusCode
+func (s *EmailAddressInUseException) StatusCode() int {
+	return s.RespMetadata.StatusCode
 }
 
 // RequestID returns the service's response RequestID for request.
-func (s EmailAddressInUseException) RequestID() string {
-	return s.respMetadata.RequestID
+func (s *EmailAddressInUseException) RequestID() string {
+	return s.RespMetadata.RequestID
 }
 
 // The user, group, or resource that you're trying to register is already registered.
 type EntityAlreadyRegisteredException struct {
-	_            struct{} `type:"structure"`
-	respMetadata protocol.ResponseMetadata
+	_            struct{}                  `type:"structure"`
+	RespMetadata protocol.ResponseMetadata `json:"-" xml:"-"`
 
 	Message_ *string `locationName:"Message" type:"string"`
 }
@@ -6489,17 +8145,17 @@ func (s EntityAlreadyRegisteredException) GoString() string {
 
 func newErrorEntityAlreadyRegisteredException(v protocol.ResponseMetadata) error {
 	return &EntityAlreadyRegisteredException{
-		respMetadata: v,
+		RespMetadata: v,
 	}
 }
 
 // Code returns the exception type name.
-func (s EntityAlreadyRegisteredException) Code() string {
+func (s *EntityAlreadyRegisteredException) Code() string {
 	return "EntityAlreadyRegisteredException"
 }
 
 // Message returns the exception's message.
-func (s EntityAlreadyRegisteredException) Message() string {
+func (s *EntityAlreadyRegisteredException) Message() string {
 	if s.Message_ != nil {
 		return *s.Message_
 	}
@@ -6507,29 +8163,29 @@ func (s EntityAlreadyRegisteredException) Message() string {
 }
 
 // OrigErr always returns nil, satisfies awserr.Error interface.
-func (s EntityAlreadyRegisteredException) OrigErr() error {
+func (s *EntityAlreadyRegisteredException) OrigErr() error {
 	return nil
 }
 
-func (s EntityAlreadyRegisteredException) Error() string {
+func (s *EntityAlreadyRegisteredException) Error() string {
 	return fmt.Sprintf("%s: %s", s.Code(), s.Message())
 }
 
 // Status code returns the HTTP status code for the request's response error.
-func (s EntityAlreadyRegisteredException) StatusCode() int {
-	return s.respMetadata.StatusCode
+func (s *EntityAlreadyRegisteredException) StatusCode() int {
+	return s.RespMetadata.StatusCode
 }
 
 // RequestID returns the service's response RequestID for request.
-func (s EntityAlreadyRegisteredException) RequestID() string {
-	return s.respMetadata.RequestID
+func (s *EntityAlreadyRegisteredException) RequestID() string {
+	return s.RespMetadata.RequestID
 }
 
 // The identifier supplied for the user, group, or resource does not exist in
 // your organization.
 type EntityNotFoundException struct {
-	_            struct{} `type:"structure"`
-	respMetadata protocol.ResponseMetadata
+	_            struct{}                  `type:"structure"`
+	RespMetadata protocol.ResponseMetadata `json:"-" xml:"-"`
 
 	Message_ *string `locationName:"Message" type:"string"`
 }
@@ -6546,17 +8202,17 @@ func (s EntityNotFoundException) GoString() string {
 
 func newErrorEntityNotFoundException(v protocol.ResponseMetadata) error {
 	return &EntityNotFoundException{
-		respMetadata: v,
+		RespMetadata: v,
 	}
 }
 
 // Code returns the exception type name.
-func (s EntityNotFoundException) Code() string {
+func (s *EntityNotFoundException) Code() string {
 	return "EntityNotFoundException"
 }
 
 // Message returns the exception's message.
-func (s EntityNotFoundException) Message() string {
+func (s *EntityNotFoundException) Message() string {
 	if s.Message_ != nil {
 		return *s.Message_
 	}
@@ -6564,29 +8220,29 @@ func (s EntityNotFoundException) Message() string {
 }
 
 // OrigErr always returns nil, satisfies awserr.Error interface.
-func (s EntityNotFoundException) OrigErr() error {
+func (s *EntityNotFoundException) OrigErr() error {
 	return nil
 }
 
-func (s EntityNotFoundException) Error() string {
+func (s *EntityNotFoundException) Error() string {
 	return fmt.Sprintf("%s: %s", s.Code(), s.Message())
 }
 
 // Status code returns the HTTP status code for the request's response error.
-func (s EntityNotFoundException) StatusCode() int {
-	return s.respMetadata.StatusCode
+func (s *EntityNotFoundException) StatusCode() int {
+	return s.RespMetadata.StatusCode
 }
 
 // RequestID returns the service's response RequestID for request.
-func (s EntityNotFoundException) RequestID() string {
-	return s.respMetadata.RequestID
+func (s *EntityNotFoundException) RequestID() string {
+	return s.RespMetadata.RequestID
 }
 
 // You are performing an operation on a user, group, or resource that isn't
 // in the expected state, such as trying to delete an active user.
 type EntityStateException struct {
-	_            struct{} `type:"structure"`
-	respMetadata protocol.ResponseMetadata
+	_            struct{}                  `type:"structure"`
+	RespMetadata protocol.ResponseMetadata `json:"-" xml:"-"`
 
 	Message_ *string `locationName:"Message" type:"string"`
 }
@@ -6603,17 +8259,17 @@ func (s EntityStateException) GoString() string {
 
 func newErrorEntityStateException(v protocol.ResponseMetadata) error {
 	return &EntityStateException{
-		respMetadata: v,
+		RespMetadata: v,
 	}
 }
 
 // Code returns the exception type name.
-func (s EntityStateException) Code() string {
+func (s *EntityStateException) Code() string {
 	return "EntityStateException"
 }
 
 // Message returns the exception's message.
-func (s EntityStateException) Message() string {
+func (s *EntityStateException) Message() string {
 	if s.Message_ != nil {
 		return *s.Message_
 	}
@@ -6621,22 +8277,88 @@ func (s EntityStateException) Message() string {
 }
 
 // OrigErr always returns nil, satisfies awserr.Error interface.
-func (s EntityStateException) OrigErr() error {
+func (s *EntityStateException) OrigErr() error {
 	return nil
 }
 
-func (s EntityStateException) Error() string {
+func (s *EntityStateException) Error() string {
 	return fmt.Sprintf("%s: %s", s.Code(), s.Message())
 }
 
 // Status code returns the HTTP status code for the request's response error.
-func (s EntityStateException) StatusCode() int {
-	return s.respMetadata.StatusCode
+func (s *EntityStateException) StatusCode() int {
+	return s.RespMetadata.StatusCode
 }
 
 // RequestID returns the service's response RequestID for request.
-func (s EntityStateException) RequestID() string {
-	return s.respMetadata.RequestID
+func (s *EntityStateException) RequestID() string {
+	return s.RespMetadata.RequestID
+}
+
+// The configuration applied to an organization's folders by its retention policy.
+type FolderConfiguration struct {
+	_ struct{} `type:"structure"`
+
+	// The action to take on the folder contents at the end of the folder configuration
+	// period.
+	//
+	// Action is a required field
+	Action *string `type:"string" required:"true" enum:"RetentionAction"`
+
+	// The folder name.
+	//
+	// Name is a required field
+	Name *string `type:"string" required:"true" enum:"FolderName"`
+
+	// The period of time at which the folder configuration action is applied.
+	Period *int64 `min:"1" type:"integer"`
+}
+
+// String returns the string representation
+func (s FolderConfiguration) String() string {
+	return awsutil.Prettify(s)
+}
+
+// GoString returns the string representation
+func (s FolderConfiguration) GoString() string {
+	return s.String()
+}
+
+// Validate inspects the fields of the type to determine if they are valid.
+func (s *FolderConfiguration) Validate() error {
+	invalidParams := request.ErrInvalidParams{Context: "FolderConfiguration"}
+	if s.Action == nil {
+		invalidParams.Add(request.NewErrParamRequired("Action"))
+	}
+	if s.Name == nil {
+		invalidParams.Add(request.NewErrParamRequired("Name"))
+	}
+	if s.Period != nil && *s.Period < 1 {
+		invalidParams.Add(request.NewErrParamMinValue("Period", 1))
+	}
+
+	if invalidParams.Len() > 0 {
+		return invalidParams
+	}
+	return nil
+}
+
+// SetAction sets the Action field's value.
+func (s *FolderConfiguration) SetAction(v string) *FolderConfiguration {
+	s.Action = &v
+	return s
+}
+
+// SetName sets the Name field's value.
+func (s *FolderConfiguration) SetName(v string) *FolderConfiguration {
+	s.Name = &v
+	return s
+}
+
+// SetPeriod sets the Period field's value.
+func (s *FolderConfiguration) SetPeriod(v int64) *FolderConfiguration {
+	s.Period = &v
+	return s
 }
 
 type GetAccessControlEffectInput struct {
@@ -6656,7 +8378,7 @@ type GetAccessControlEffectInput struct {
 	// The identifier for the organization.
 	//
 	// OrganizationId is a required field
-	OrganizationId *string `type:"string" required:"true"`
+	OrganizationId *string `min:"34" type:"string" required:"true"`
 
 	// The user ID.
 	//
@@ -6691,6 +8413,9 @@ func (s *GetAccessControlEffectInput) Validate() error {
 	}
 	if s.OrganizationId == nil {
 		invalidParams.Add(request.NewErrParamRequired("OrganizationId"))
+	}
+	if s.OrganizationId != nil && len(*s.OrganizationId) < 34 {
+		invalidParams.Add(request.NewErrParamMinLen("OrganizationId", 34))
 	}
 	if s.UserId == nil {
 		invalidParams.Add(request.NewErrParamRequired("UserId"))
@@ -6761,6 +8486,97 @@ func (s *GetAccessControlEffectOutput) SetMatchedRules(v []*string) *GetAccessCo
 	return s
 }
 
+type GetDefaultRetentionPolicyInput struct {
+	_ struct{} `type:"structure"`
+
+	// The organization ID.
+	//
+	// OrganizationId is a required field
+	OrganizationId *string `min:"34" type:"string" required:"true"`
+}
+
+// String returns the string representation
+func (s GetDefaultRetentionPolicyInput) String() string {
+	return awsutil.Prettify(s)
+}
+
+// GoString returns the string representation
+func (s GetDefaultRetentionPolicyInput) GoString() string {
+	return s.String()
+}
+
+// Validate inspects the fields of the type to determine if they are valid.
+func (s *GetDefaultRetentionPolicyInput) Validate() error {
+	invalidParams := request.ErrInvalidParams{Context: "GetDefaultRetentionPolicyInput"}
+	if s.OrganizationId == nil {
+		invalidParams.Add(request.NewErrParamRequired("OrganizationId"))
+	}
+	if s.OrganizationId != nil && len(*s.OrganizationId) < 34 {
+		invalidParams.Add(request.NewErrParamMinLen("OrganizationId", 34))
+	}
+
+	if invalidParams.Len() > 0 {
+		return invalidParams
+	}
+	return nil
+}
+
+// SetOrganizationId sets the OrganizationId field's value.
+func (s *GetDefaultRetentionPolicyInput) SetOrganizationId(v string) *GetDefaultRetentionPolicyInput {
+	s.OrganizationId = &v
+	return s
+}
+
+type GetDefaultRetentionPolicyOutput struct {
+	_ struct{} `type:"structure"`
+
+	// The retention policy description.
+	Description *string `type:"string"`
+
+	// The retention policy folder configurations.
+	FolderConfigurations []*FolderConfiguration `type:"list"`
+
+	// The retention policy ID.
+	Id *string `min:"1" type:"string"`
+
+	// The retention policy name.
+	Name *string `min:"1" type:"string"`
+}
+
+// String returns the string representation
+func (s GetDefaultRetentionPolicyOutput) String() string {
+	return awsutil.Prettify(s)
+}
+
+// GoString returns the string representation
+func (s GetDefaultRetentionPolicyOutput) GoString() string {
+	return s.String()
+}
+
+// SetDescription sets the Description field's value.
+func (s *GetDefaultRetentionPolicyOutput) SetDescription(v string) *GetDefaultRetentionPolicyOutput {
+	s.Description = &v
+	return s
+}
+
+// SetFolderConfigurations sets the FolderConfigurations field's value.
+func (s *GetDefaultRetentionPolicyOutput) SetFolderConfigurations(v []*FolderConfiguration) *GetDefaultRetentionPolicyOutput {
+	s.FolderConfigurations = v
+	return s
+}
+
+// SetId sets the Id field's value.
+func (s *GetDefaultRetentionPolicyOutput) SetId(v string) *GetDefaultRetentionPolicyOutput {
+	s.Id = &v
+	return s
+}
+
+// SetName sets the Name field's value.
+func (s *GetDefaultRetentionPolicyOutput) SetName(v string) *GetDefaultRetentionPolicyOutput {
+	s.Name = &v
+	return s
+}
+
 type GetMailboxDetailsInput struct {
 	_ struct{} `type:"structure"`
 
@@ -6768,7 +8584,7 @@ type GetMailboxDetailsInput struct {
 	// details are being requested.
 	//
 	// OrganizationId is a required field
-	OrganizationId *string `type:"string" required:"true"`
+	OrganizationId *string `min:"34" type:"string" required:"true"`
 
 	// The identifier for the user whose mailbox details are being requested.
 	//
@@ -6791,6 +8607,9 @@ func (s *GetMailboxDetailsInput) Validate() error {
 	invalidParams := request.ErrInvalidParams{Context: "GetMailboxDetailsInput"}
 	if s.OrganizationId == nil {
 		invalidParams.Add(request.NewErrParamRequired("OrganizationId"))
+	}
+	if s.OrganizationId != nil && len(*s.OrganizationId) < 34 {
+		invalidParams.Add(request.NewErrParamMinLen("OrganizationId", 34))
 	}
 	if s.UserId == nil {
 		invalidParams.Add(request.NewErrParamRequired("UserId"))
@@ -6922,8 +8741,8 @@ func (s *Group) SetState(v string) *Group {
 // to auto-respond to requests or have at least one delegate associated that
 // can do so on its behalf.
 type InvalidConfigurationException struct {
-	_            struct{} `type:"structure"`
-	respMetadata protocol.ResponseMetadata
+	_            struct{}                  `type:"structure"`
+	RespMetadata protocol.ResponseMetadata `json:"-" xml:"-"`
 
 	Message_ *string `locationName:"Message" type:"string"`
 }
@@ -6940,17 +8759,17 @@ func (s InvalidConfigurationException) GoString() string {
 
 func newErrorInvalidConfigurationException(v protocol.ResponseMetadata) error {
 	return &InvalidConfigurationException{
-		respMetadata: v,
+		RespMetadata: v,
 	}
 }
 
 // Code returns the exception type name.
-func (s InvalidConfigurationException) Code() string {
+func (s *InvalidConfigurationException) Code() string {
 	return "InvalidConfigurationException"
 }
 
 // Message returns the exception's message.
-func (s InvalidConfigurationException) Message() string {
+func (s *InvalidConfigurationException) Message() string {
 	if s.Message_ != nil {
 		return *s.Message_
 	}
@@ -6958,28 +8777,28 @@ func (s InvalidConfigurationException) Message() string {
 }
 
 // OrigErr always returns nil, satisfies awserr.Error interface.
-func (s InvalidConfigurationException) OrigErr() error {
+func (s *InvalidConfigurationException) OrigErr() error {
 	return nil
 }
 
-func (s InvalidConfigurationException) Error() string {
+func (s *InvalidConfigurationException) Error() string {
 	return fmt.Sprintf("%s: %s", s.Code(), s.Message())
 }
 
 // Status code returns the HTTP status code for the request's response error.
-func (s InvalidConfigurationException) StatusCode() int {
-	return s.respMetadata.StatusCode
+func (s *InvalidConfigurationException) StatusCode() int {
+	return s.RespMetadata.StatusCode
 }
 
 // RequestID returns the service's response RequestID for request.
-func (s InvalidConfigurationException) RequestID() string {
-	return s.respMetadata.RequestID
+func (s *InvalidConfigurationException) RequestID() string {
+	return s.RespMetadata.RequestID
 }
 
 // One or more of the input parameters don't match the service's restrictions.
 type InvalidParameterException struct {
-	_            struct{} `type:"structure"`
-	respMetadata protocol.ResponseMetadata
+	_            struct{}                  `type:"structure"`
+	RespMetadata protocol.ResponseMetadata `json:"-" xml:"-"`
 
 	Message_ *string `locationName:"Message" type:"string"`
 }
@@ -6996,17 +8815,17 @@ func (s InvalidParameterException) GoString() string {
 
 func newErrorInvalidParameterException(v protocol.ResponseMetadata) error {
 	return &InvalidParameterException{
-		respMetadata: v,
+		RespMetadata: v,
 	}
 }
 
 // Code returns the exception type name.
-func (s InvalidParameterException) Code() string {
+func (s *InvalidParameterException) Code() string {
 	return "InvalidParameterException"
 }
 
 // Message returns the exception's message.
-func (s InvalidParameterException) Message() string {
+func (s *InvalidParameterException) Message() string {
 	if s.Message_ != nil {
 		return *s.Message_
 	}
@@ -7014,29 +8833,29 @@ func (s InvalidParameterException) Message() string {
 }
 
 // OrigErr always returns nil, satisfies awserr.Error interface.
-func (s InvalidParameterException) OrigErr() error {
+func (s *InvalidParameterException) OrigErr() error {
 	return nil
 }
 
-func (s InvalidParameterException) Error() string {
+func (s *InvalidParameterException) Error() string {
 	return fmt.Sprintf("%s: %s", s.Code(), s.Message())
 }
 
 // Status code returns the HTTP status code for the request's response error.
-func (s InvalidParameterException) StatusCode() int {
-	return s.respMetadata.StatusCode
+func (s *InvalidParameterException) StatusCode() int {
+	return s.RespMetadata.StatusCode
 }
 
 // RequestID returns the service's response RequestID for request.
-func (s InvalidParameterException) RequestID() string {
-	return s.respMetadata.RequestID
+func (s *InvalidParameterException) RequestID() string {
+	return s.RespMetadata.RequestID
 }
 
 // The supplied password doesn't match the minimum security constraints, such
 // as length or use of special characters.
 type InvalidPasswordException struct {
-	_            struct{} `type:"structure"`
-	respMetadata protocol.ResponseMetadata
+	_            struct{}                  `type:"structure"`
+	RespMetadata protocol.ResponseMetadata `json:"-" xml:"-"`
 
 	Message_ *string `locationName:"Message" type:"string"`
 }
@@ -7053,17 +8872,17 @@ func (s InvalidPasswordException) GoString() string {
 
 func newErrorInvalidPasswordException(v protocol.ResponseMetadata) error {
 	return &InvalidPasswordException{
-		respMetadata: v,
+		RespMetadata: v,
 	}
 }
 
 // Code returns the exception type name.
-func (s InvalidPasswordException) Code() string {
+func (s *InvalidPasswordException) Code() string {
 	return "InvalidPasswordException"
 }
 
 // Message returns the exception's message.
-func (s InvalidPasswordException) Message() string {
+func (s *InvalidPasswordException) Message() string {
 	if s.Message_ != nil {
 		return *s.Message_
 	}
@@ -7071,28 +8890,28 @@ func (s InvalidPasswordException) Message() string {
 }
 
 // OrigErr always returns nil, satisfies awserr.Error interface.
-func (s InvalidPasswordException) OrigErr() error {
+func (s *InvalidPasswordException) OrigErr() error {
 	return nil
 }
 
-func (s InvalidPasswordException) Error() string {
+func (s *InvalidPasswordException) Error() string {
 	return fmt.Sprintf("%s: %s", s.Code(), s.Message())
 }
 
 // Status code returns the HTTP status code for the request's response error.
-func (s InvalidPasswordException) StatusCode() int {
-	return s.respMetadata.StatusCode
+func (s *InvalidPasswordException) StatusCode() int {
+	return s.RespMetadata.StatusCode
 }
 
 // RequestID returns the service's response RequestID for request.
-func (s InvalidPasswordException) RequestID() string {
-	return s.respMetadata.RequestID
+func (s *InvalidPasswordException) RequestID() string {
+	return s.RespMetadata.RequestID
 }
 
 // The request exceeds the limit of the resource.
 type LimitExceededException struct {
-	_            struct{} `type:"structure"`
-	respMetadata protocol.ResponseMetadata
+	_            struct{}                  `type:"structure"`
+	RespMetadata protocol.ResponseMetadata `json:"-" xml:"-"`
 
 	Message_ *string `locationName:"Message" type:"string"`
 }
@@ -7109,17 +8928,17 @@ func (s LimitExceededException) GoString() string {
 
 func newErrorLimitExceededException(v protocol.ResponseMetadata) error {
 	return &LimitExceededException{
-		respMetadata: v,
+		RespMetadata: v,
 	}
 }
 
 // Code returns the exception type name.
-func (s LimitExceededException) Code() string {
+func (s *LimitExceededException) Code() string {
 	return "LimitExceededException"
 }
 
 // Message returns the exception's message.
-func (s LimitExceededException) Message() string {
+func (s *LimitExceededException) Message() string {
 	if s.Message_ != nil {
 		return *s.Message_
 	}
@@ -7127,22 +8946,22 @@ func (s LimitExceededException) Message() string {
 }
 
 // OrigErr always returns nil, satisfies awserr.Error interface.
-func (s LimitExceededException) OrigErr() error {
+func (s *LimitExceededException) OrigErr() error {
 	return nil
 }
 
-func (s LimitExceededException) Error() string {
+func (s *LimitExceededException) Error() string {
 	return fmt.Sprintf("%s: %s", s.Code(), s.Message())
 }
 
 // Status code returns the HTTP status code for the request's response error.
-func (s LimitExceededException) StatusCode() int {
-	return s.respMetadata.StatusCode
+func (s *LimitExceededException) StatusCode() int {
+	return s.RespMetadata.StatusCode
 }
 
 // RequestID returns the service's response RequestID for request.
-func (s LimitExceededException) RequestID() string {
-	return s.respMetadata.RequestID
+func (s *LimitExceededException) RequestID() string {
+	return s.RespMetadata.RequestID
 }
 
 type ListAccessControlRulesInput struct {
@@ -7151,7 +8970,7 @@ type ListAccessControlRulesInput struct {
 	// The identifier for the organization.
 	//
 	// OrganizationId is a required field
-	OrganizationId *string `type:"string" required:"true"`
+	OrganizationId *string `min:"34" type:"string" required:"true"`
 }
 
 // String returns the string representation
@@ -7169,6 +8988,9 @@ func (s *ListAccessControlRulesInput) Validate() error {
 	invalidParams := request.ErrInvalidParams{Context: "ListAccessControlRulesInput"}
 	if s.OrganizationId == nil {
 		invalidParams.Add(request.NewErrParamRequired("OrganizationId"))
+	}
+	if s.OrganizationId != nil && len(*s.OrganizationId) < 34 {
+		invalidParams.Add(request.NewErrParamMinLen("OrganizationId", 34))
 	}
 
 	if invalidParams.Len() > 0 {
@@ -7224,7 +9046,7 @@ type ListAliasesInput struct {
 	// The identifier for the organization under which the entity exists.
 	//
 	// OrganizationId is a required field
-	OrganizationId *string `type:"string" required:"true"`
+	OrganizationId *string `min:"34" type:"string" required:"true"`
 }
 
 // String returns the string representation
@@ -7254,6 +9076,9 @@ func (s *ListAliasesInput) Validate() error {
 	}
 	if s.OrganizationId == nil {
 		invalidParams.Add(request.NewErrParamRequired("OrganizationId"))
+	}
+	if s.OrganizationId != nil && len(*s.OrganizationId) < 34 {
+		invalidParams.Add(request.NewErrParamMinLen("OrganizationId", 34))
 	}
 
 	if invalidParams.Len() > 0 {
@@ -7337,7 +9162,7 @@ type ListGroupMembersInput struct {
 	// The identifier for the organization under which the group exists.
 	//
 	// OrganizationId is a required field
-	OrganizationId *string `type:"string" required:"true"`
+	OrganizationId *string `min:"34" type:"string" required:"true"`
 }
 
 // String returns the string representation
@@ -7367,6 +9192,9 @@ func (s *ListGroupMembersInput) Validate() error {
 	}
 	if s.OrganizationId == nil {
 		invalidParams.Add(request.NewErrParamRequired("OrganizationId"))
+	}
+	if s.OrganizationId != nil && len(*s.OrganizationId) < 34 {
+		invalidParams.Add(request.NewErrParamMinLen("OrganizationId", 34))
 	}
 
 	if invalidParams.Len() > 0 {
@@ -7445,7 +9273,7 @@ type ListGroupsInput struct {
 	// The identifier for the organization under which the groups exist.
 	//
 	// OrganizationId is a required field
-	OrganizationId *string `type:"string" required:"true"`
+	OrganizationId *string `min:"34" type:"string" required:"true"`
 }
 
 // String returns the string representation
@@ -7469,6 +9297,9 @@ func (s *ListGroupsInput) Validate() error {
 	}
 	if s.OrganizationId == nil {
 		invalidParams.Add(request.NewErrParamRequired("OrganizationId"))
+	}
+	if s.OrganizationId != nil && len(*s.OrganizationId) < 34 {
+		invalidParams.Add(request.NewErrParamMinLen("OrganizationId", 34))
 	}
 
 	if invalidParams.Len() > 0 {
@@ -7528,6 +9359,103 @@ func (s *ListGroupsOutput) SetNextToken(v string) *ListGroupsOutput {
 	return s
 }
 
+type ListMailboxExportJobsInput struct {
+	_ struct{} `type:"structure"`
+
+	// The maximum number of results to return in a single call.
+	MaxResults *int64 `min:"1" type:"integer"`
+
+	// The token to use to retrieve the next page of results.
+	NextToken *string `min:"1" type:"string"`
+
+	// The organization ID.
+	//
+	// OrganizationId is a required field
+	OrganizationId *string `min:"34" type:"string" required:"true"`
+}
+
+// String returns the string representation
+func (s ListMailboxExportJobsInput) String() string {
+	return awsutil.Prettify(s)
+}
+
+// GoString returns the string representation
+func (s ListMailboxExportJobsInput) GoString() string {
+	return s.String()
+}
+
+// Validate inspects the fields of the type to determine if they are valid.
+func (s *ListMailboxExportJobsInput) Validate() error {
+	invalidParams := request.ErrInvalidParams{Context: "ListMailboxExportJobsInput"}
+	if s.MaxResults != nil && *s.MaxResults < 1 {
+		invalidParams.Add(request.NewErrParamMinValue("MaxResults", 1))
+	}
+	if s.NextToken != nil && len(*s.NextToken) < 1 {
+		invalidParams.Add(request.NewErrParamMinLen("NextToken", 1))
+	}
+	if s.OrganizationId == nil {
+		invalidParams.Add(request.NewErrParamRequired("OrganizationId"))
+	}
+	if s.OrganizationId != nil && len(*s.OrganizationId) < 34 {
+		invalidParams.Add(request.NewErrParamMinLen("OrganizationId", 34))
+	}
+
+	if invalidParams.Len() > 0 {
+		return invalidParams
+	}
+	return nil
+}
+
+// SetMaxResults sets the MaxResults field's value.
+func (s *ListMailboxExportJobsInput) SetMaxResults(v int64) *ListMailboxExportJobsInput {
+	s.MaxResults = &v
+	return s
+}
+
+// SetNextToken sets the NextToken field's value.
+func (s *ListMailboxExportJobsInput) SetNextToken(v string) *ListMailboxExportJobsInput {
+	s.NextToken = &v
+	return s
+}
+
+// SetOrganizationId sets the OrganizationId field's value.
+func (s *ListMailboxExportJobsInput) SetOrganizationId(v string) *ListMailboxExportJobsInput {
+	s.OrganizationId = &v
+	return s
+}
+
+type ListMailboxExportJobsOutput struct {
+	_ struct{} `type:"structure"`
+
+	// The mailbox export job details.
+	Jobs []*MailboxExportJob `type:"list"`
+
+	// The token to use to retrieve the next page of results.
+	NextToken *string `min:"1" type:"string"`
+}
+
+// String returns the string representation
+func (s ListMailboxExportJobsOutput) String() string {
+	return awsutil.Prettify(s)
+}
+
+// GoString returns the string representation
+func (s ListMailboxExportJobsOutput) GoString() string {
+	return s.String()
+}
+
+// SetJobs sets the Jobs field's value.
+func (s *ListMailboxExportJobsOutput) SetJobs(v []*MailboxExportJob) *ListMailboxExportJobsOutput {
+	s.Jobs = v
+	return s
+}
+
+// SetNextToken sets the NextToken field's value.
+func (s *ListMailboxExportJobsOutput) SetNextToken(v string) *ListMailboxExportJobsOutput {
+	s.NextToken = &v
+	return s
+}
+
 type ListMailboxPermissionsInput struct {
 	_ struct{} `type:"structure"`
 
@@ -7548,7 +9476,7 @@ type ListMailboxPermissionsInput struct {
 	// exists.
 	//
 	// OrganizationId is a required field
-	OrganizationId *string `type:"string" required:"true"`
+	OrganizationId *string `min:"34" type:"string" required:"true"`
 }
 
 // String returns the string representation
@@ -7578,6 +9506,9 @@ func (s *ListMailboxPermissionsInput) Validate() error {
 	}
 	if s.OrganizationId == nil {
 		invalidParams.Add(request.NewErrParamRequired("OrganizationId"))
+	}
+	if s.OrganizationId != nil && len(*s.OrganizationId) < 34 {
+		invalidParams.Add(request.NewErrParamMinLen("OrganizationId", 34))
 	}
 
 	if invalidParams.Len() > 0 {
@@ -7738,7 +9669,7 @@ type ListResourceDelegatesInput struct {
 	// delegates are listed.
 	//
 	// OrganizationId is a required field
-	OrganizationId *string `type:"string" required:"true"`
+	OrganizationId *string `min:"34" type:"string" required:"true"`
 
 	// The identifier for the resource whose delegates are listed.
 	//
@@ -7767,6 +9698,9 @@ func (s *ListResourceDelegatesInput) Validate() error {
 	}
 	if s.OrganizationId == nil {
 		invalidParams.Add(request.NewErrParamRequired("OrganizationId"))
+	}
+	if s.OrganizationId != nil && len(*s.OrganizationId) < 34 {
+		invalidParams.Add(request.NewErrParamMinLen("OrganizationId", 34))
 	}
 	if s.ResourceId == nil {
 		invalidParams.Add(request.NewErrParamRequired("ResourceId"))
@@ -7852,7 +9786,7 @@ type ListResourcesInput struct {
 	// The identifier for the organization under which the resources exist.
 	//
 	// OrganizationId is a required field
-	OrganizationId *string `type:"string" required:"true"`
+	OrganizationId *string `min:"34" type:"string" required:"true"`
 }
 
 // String returns the string representation
@@ -7876,6 +9810,9 @@ func (s *ListResourcesInput) Validate() error {
 	}
 	if s.OrganizationId == nil {
 		invalidParams.Add(request.NewErrParamRequired("OrganizationId"))
+	}
+	if s.OrganizationId != nil && len(*s.OrganizationId) < 34 {
+		invalidParams.Add(request.NewErrParamMinLen("OrganizationId", 34))
 	}
 
 	if invalidParams.Len() > 0 {
@@ -8013,7 +9950,7 @@ type ListUsersInput struct {
 	// The identifier for the organization under which the users exist.
 	//
 	// OrganizationId is a required field
-	OrganizationId *string `type:"string" required:"true"`
+	OrganizationId *string `min:"34" type:"string" required:"true"`
 }
 
 // String returns the string representation
@@ -8037,6 +9974,9 @@ func (s *ListUsersInput) Validate() error {
 	}
 	if s.OrganizationId == nil {
 		invalidParams.Add(request.NewErrParamRequired("OrganizationId"))
+	}
+	if s.OrganizationId != nil && len(*s.OrganizationId) < 34 {
+		invalidParams.Add(request.NewErrParamMinLen("OrganizationId", 34))
 	}
 
 	if invalidParams.Len() > 0 {
@@ -8099,8 +10039,8 @@ func (s *ListUsersOutput) SetUsers(v []*User) *ListUsersOutput {
 // For an email or alias to be created in Amazon WorkMail, the included domain
 // must be defined in the organization.
 type MailDomainNotFoundException struct {
-	_            struct{} `type:"structure"`
-	respMetadata protocol.ResponseMetadata
+	_            struct{}                  `type:"structure"`
+	RespMetadata protocol.ResponseMetadata `json:"-" xml:"-"`
 
 	Message_ *string `locationName:"Message" type:"string"`
 }
@@ -8117,17 +10057,17 @@ func (s MailDomainNotFoundException) GoString() string {
 
 func newErrorMailDomainNotFoundException(v protocol.ResponseMetadata) error {
 	return &MailDomainNotFoundException{
-		respMetadata: v,
+		RespMetadata: v,
 	}
 }
 
 // Code returns the exception type name.
-func (s MailDomainNotFoundException) Code() string {
+func (s *MailDomainNotFoundException) Code() string {
 	return "MailDomainNotFoundException"
 }
 
 // Message returns the exception's message.
-func (s MailDomainNotFoundException) Message() string {
+func (s *MailDomainNotFoundException) Message() string {
 	if s.Message_ != nil {
 		return *s.Message_
 	}
@@ -8135,29 +10075,29 @@ func (s MailDomainNotFoundException) Message() string {
 }
 
 // OrigErr always returns nil, satisfies awserr.Error interface.
-func (s MailDomainNotFoundException) OrigErr() error {
+func (s *MailDomainNotFoundException) OrigErr() error {
 	return nil
 }
 
-func (s MailDomainNotFoundException) Error() string {
+func (s *MailDomainNotFoundException) Error() string {
 	return fmt.Sprintf("%s: %s", s.Code(), s.Message())
 }
 
 // Status code returns the HTTP status code for the request's response error.
-func (s MailDomainNotFoundException) StatusCode() int {
-	return s.respMetadata.StatusCode
+func (s *MailDomainNotFoundException) StatusCode() int {
+	return s.RespMetadata.StatusCode
 }
 
 // RequestID returns the service's response RequestID for request.
-func (s MailDomainNotFoundException) RequestID() string {
-	return s.respMetadata.RequestID
+func (s *MailDomainNotFoundException) RequestID() string {
+	return s.RespMetadata.RequestID
 }
 
 // After a domain has been added to the organization, it must be verified. The
 // domain is not yet verified.
 type MailDomainStateException struct {
-	_            struct{} `type:"structure"`
-	respMetadata protocol.ResponseMetadata
+	_            struct{}                  `type:"structure"`
+	RespMetadata protocol.ResponseMetadata `json:"-" xml:"-"`
 
 	Message_ *string `locationName:"Message" type:"string"`
 }
@@ -8174,17 +10114,17 @@ func (s MailDomainStateException) GoString() string {
 
 func newErrorMailDomainStateException(v protocol.ResponseMetadata) error {
 	return &MailDomainStateException{
-		respMetadata: v,
+		RespMetadata: v,
 	}
 }
 
 // Code returns the exception type name.
-func (s MailDomainStateException) Code() string {
+func (s *MailDomainStateException) Code() string {
 	return "MailDomainStateException"
 }
 
 // Message returns the exception's message.
-func (s MailDomainStateException) Message() string {
+func (s *MailDomainStateException) Message() string {
 	if s.Message_ != nil {
 		return *s.Message_
 	}
@@ -8192,22 +10132,120 @@ func (s MailDomainStateException) Message() string {
 }
 
 // OrigErr always returns nil, satisfies awserr.Error interface.
-func (s MailDomainStateException) OrigErr() error {
+func (s *MailDomainStateException) OrigErr() error {
 	return nil
 }
 
-func (s MailDomainStateException) Error() string {
+func (s *MailDomainStateException) Error() string {
 	return fmt.Sprintf("%s: %s", s.Code(), s.Message())
 }
 
 // Status code returns the HTTP status code for the request's response error.
-func (s MailDomainStateException) StatusCode() int {
-	return s.respMetadata.StatusCode
+func (s *MailDomainStateException) StatusCode() int {
+	return s.RespMetadata.StatusCode
 }
 
 // RequestID returns the service's response RequestID for request.
-func (s MailDomainStateException) RequestID() string {
-	return s.respMetadata.RequestID
+func (s *MailDomainStateException) RequestID() string {
+	return s.RespMetadata.RequestID
+}
+
+// The details of a mailbox export job, including the user or resource ID associated
+// with the mailbox and the S3 bucket that the mailbox contents are exported
+// to.
+type MailboxExportJob struct {
+	_ struct{} `type:"structure"`
+
+	// The mailbox export job description.
+	Description *string `type:"string"`
+
+	// The mailbox export job end timestamp.
+	EndTime *time.Time `type:"timestamp"`
+
+	// The identifier of the user or resource associated with the mailbox.
+	EntityId *string `min:"12" type:"string"`
+
+	// The estimated progress of the mailbox export job, in percentage points.
+	EstimatedProgress *int64 `type:"integer"`
+
+	// The identifier of the mailbox export job.
+	JobId *string `min:"1" type:"string"`
+
+	// The name of the S3 bucket.
+	S3BucketName *string `min:"1" type:"string"`
+
+	// The path to the S3 bucket and file that the mailbox export job exports to.
+	S3Path *string `min:"1" type:"string"`
+
+	// The mailbox export job start timestamp.
+	StartTime *time.Time `type:"timestamp"`
+
+	// The state of the mailbox export job.
+	State *string `type:"string" enum:"MailboxExportJobState"`
+}
+
+// String returns the string representation
+func (s MailboxExportJob) String() string {
+	return awsutil.Prettify(s)
+}
+
+// GoString returns the string representation
+func (s MailboxExportJob) GoString() string {
+	return s.String()
+}
+
+// SetDescription sets the Description field's value.
+func (s *MailboxExportJob) SetDescription(v string) *MailboxExportJob {
+	s.Description = &v
+	return s
+}
+
+// SetEndTime sets the EndTime field's value.
+func (s *MailboxExportJob) SetEndTime(v time.Time) *MailboxExportJob {
+	s.EndTime = &v
+	return s
+}
+
+// SetEntityId sets the EntityId field's value.
+func (s *MailboxExportJob) SetEntityId(v string) *MailboxExportJob {
+	s.EntityId = &v
+	return s
+}
+
+// SetEstimatedProgress sets the EstimatedProgress field's value.
+func (s *MailboxExportJob) SetEstimatedProgress(v int64) *MailboxExportJob {
+	s.EstimatedProgress = &v
+	return s
+}
+
+// SetJobId sets the JobId field's value.
+func (s *MailboxExportJob) SetJobId(v string) *MailboxExportJob {
+	s.JobId = &v
+	return s
+}
+
+// SetS3BucketName sets the S3BucketName field's value.
+func (s *MailboxExportJob) SetS3BucketName(v string) *MailboxExportJob {
+	s.S3BucketName = &v
+	return s
+}
+
+// SetS3Path sets the S3Path field's value.
+func (s *MailboxExportJob) SetS3Path(v string) *MailboxExportJob {
+	s.S3Path = &v
+	return s
+}
+
+// SetStartTime sets the StartTime field's value.
+func (s *MailboxExportJob) SetStartTime(v time.Time) *MailboxExportJob {
+	s.StartTime = &v
+	return s
+}
+
+// SetState sets the State field's value.
+func (s *MailboxExportJob) SetState(v string) *MailboxExportJob {
+	s.State = &v
+	return s
 }
 
 // The representation of a user or group.
@@ -8281,8 +10319,8 @@ func (s *Member) SetType(v string) *Member {
 
 // The user, group, or resource name isn't unique in Amazon WorkMail.
 type NameAvailabilityException struct {
-	_            struct{} `type:"structure"`
-	respMetadata protocol.ResponseMetadata
+	_            struct{}                  `type:"structure"`
+	RespMetadata protocol.ResponseMetadata `json:"-" xml:"-"`
 
 	Message_ *string `locationName:"Message" type:"string"`
 }
@@ -8299,17 +10337,17 @@ func (s NameAvailabilityException) GoString() string {
 
 func newErrorNameAvailabilityException(v protocol.ResponseMetadata) error {
 	return &NameAvailabilityException{
-		respMetadata: v,
+		RespMetadata: v,
 	}
 }
 
 // Code returns the exception type name.
-func (s NameAvailabilityException) Code() string {
+func (s *NameAvailabilityException) Code() string {
 	return "NameAvailabilityException"
 }
 
 // Message returns the exception's message.
-func (s NameAvailabilityException) Message() string {
+func (s *NameAvailabilityException) Message() string {
 	if s.Message_ != nil {
 		return *s.Message_
 	}
@@ -8317,29 +10355,29 @@ func (s NameAvailabilityException) Message() string {
 }
 
 // OrigErr always returns nil, satisfies awserr.Error interface.
-func (s NameAvailabilityException) OrigErr() error {
+func (s *NameAvailabilityException) OrigErr() error {
 	return nil
 }
 
-func (s NameAvailabilityException) Error() string {
+func (s *NameAvailabilityException) Error() string {
 	return fmt.Sprintf("%s: %s", s.Code(), s.Message())
 }
 
 // Status code returns the HTTP status code for the request's response error.
-func (s NameAvailabilityException) StatusCode() int {
-	return s.respMetadata.StatusCode
+func (s *NameAvailabilityException) StatusCode() int {
+	return s.RespMetadata.StatusCode
 }
 
 // RequestID returns the service's response RequestID for request.
-func (s NameAvailabilityException) RequestID() string {
-	return s.respMetadata.RequestID
+func (s *NameAvailabilityException) RequestID() string {
+	return s.RespMetadata.RequestID
 }
 
 // An operation received a valid organization identifier that either doesn't
 // belong or exist in the system.
 type OrganizationNotFoundException struct {
-	_            struct{} `type:"structure"`
-	respMetadata protocol.ResponseMetadata
+	_            struct{}                  `type:"structure"`
+	RespMetadata protocol.ResponseMetadata `json:"-" xml:"-"`
 
 	Message_ *string `locationName:"Message" type:"string"`
 }
@@ -8356,17 +10394,17 @@ func (s OrganizationNotFoundException) GoString() string {
 
 func newErrorOrganizationNotFoundException(v protocol.ResponseMetadata) error {
 	return &OrganizationNotFoundException{
-		respMetadata: v,
+		RespMetadata: v,
 	}
 }
 
 // Code returns the exception type name.
-func (s OrganizationNotFoundException) Code() string {
+func (s *OrganizationNotFoundException) Code() string {
 	return "OrganizationNotFoundException"
 }
 
 // Message returns the exception's message.
-func (s OrganizationNotFoundException) Message() string {
+func (s *OrganizationNotFoundException) Message() string {
 	if s.Message_ != nil {
 		return *s.Message_
 	}
@@ -8374,29 +10412,29 @@ func (s OrganizationNotFoundException) Message() string {
 }
 
 // OrigErr always returns nil, satisfies awserr.Error interface.
-func (s OrganizationNotFoundException) OrigErr() error {
+func (s *OrganizationNotFoundException) OrigErr() error {
 	return nil
 }
 
-func (s OrganizationNotFoundException) Error() string {
+func (s *OrganizationNotFoundException) Error() string {
 	return fmt.Sprintf("%s: %s", s.Code(), s.Message())
 }
 
 // Status code returns the HTTP status code for the request's response error.
-func (s OrganizationNotFoundException) StatusCode() int {
-	return s.respMetadata.StatusCode
+func (s *OrganizationNotFoundException) StatusCode() int {
+	return s.RespMetadata.StatusCode
 }
 
 // RequestID returns the service's response RequestID for request.
-func (s OrganizationNotFoundException) RequestID() string {
-	return s.respMetadata.RequestID
+func (s *OrganizationNotFoundException) RequestID() string {
+	return s.RespMetadata.RequestID
 }
 
-// The organization must have a valid state (Active or Synchronizing) to perform
-// certain operations on the organization or its members.
+// The organization must have a valid state to perform certain operations on
+// the organization or its members.
 type OrganizationStateException struct {
-	_            struct{} `type:"structure"`
-	respMetadata protocol.ResponseMetadata
+	_            struct{}                  `type:"structure"`
+	RespMetadata protocol.ResponseMetadata `json:"-" xml:"-"`
 
 	Message_ *string `locationName:"Message" type:"string"`
 }
@@ -8413,17 +10451,17 @@ func (s OrganizationStateException) GoString() string {
 
 func newErrorOrganizationStateException(v protocol.ResponseMetadata) error {
 	return &OrganizationStateException{
-		respMetadata: v,
+		RespMetadata: v,
 	}
 }
 
 // Code returns the exception type name.
-func (s OrganizationStateException) Code() string {
+func (s *OrganizationStateException) Code() string {
 	return "OrganizationStateException"
 }
 
 // Message returns the exception's message.
-func (s OrganizationStateException) Message() string {
+func (s *OrganizationStateException) Message() string {
 	if s.Message_ != nil {
 		return *s.Message_
 	}
@@ -8431,22 +10469,22 @@ func (s OrganizationStateException) Message() string {
 }
 
 // OrigErr always returns nil, satisfies awserr.Error interface.
-func (s OrganizationStateException) OrigErr() error {
+func (s *OrganizationStateException) OrigErr() error {
 	return nil
 }
 
-func (s OrganizationStateException) Error() string {
+func (s *OrganizationStateException) Error() string {
 	return fmt.Sprintf("%s: %s", s.Code(), s.Message())
 }
 
 // Status code returns the HTTP status code for the request's response error.
-func (s OrganizationStateException) StatusCode() int {
-	return s.respMetadata.StatusCode
+func (s *OrganizationStateException) StatusCode() int {
+	return s.RespMetadata.StatusCode
 }
 
 // RequestID returns the service's response RequestID for request.
-func (s OrganizationStateException) RequestID() string {
-	return s.respMetadata.RequestID
+func (s *OrganizationStateException) RequestID() string {
+	return s.RespMetadata.RequestID
 }
 
 // The representation of an organization.
@@ -8456,13 +10494,16 @@ type OrganizationSummary struct {
 	// The alias associated with the organization.
 	Alias *string `min:"1" type:"string"`
 
+	// The default email domain associated with the organization.
+	DefaultMailDomain *string `min:"3" type:"string"`
+
 	// The error message associated with the organization. It is only present if
 	// unexpected behavior has occurred with regards to the organization. It provides
 	// insight or solutions regarding unexpected behavior.
 	ErrorMessage *string `type:"string"`
 
 	// The identifier associated with the organization.
-	OrganizationId *string `type:"string"`
+	OrganizationId *string `min:"34" type:"string"`
 
 	// The state associated with the organization.
 	State *string `type:"string"`
@@ -8481,6 +10522,12 @@ func (s OrganizationSummary) GoString() string {
 // SetAlias sets the Alias field's value.
 func (s *OrganizationSummary) SetAlias(v string) *OrganizationSummary {
 	s.Alias = &v
+	return s
+}
+
+// SetDefaultMailDomain sets the DefaultMailDomain field's value.
+func (s *OrganizationSummary) SetDefaultMailDomain(v string) *OrganizationSummary {
+	s.DefaultMailDomain = &v
 	return s
 }
 
@@ -8595,7 +10642,7 @@ type PutAccessControlRuleInput struct {
 	// The identifier of the organization.
 	//
 	// OrganizationId is a required field
-	OrganizationId *string `type:"string" required:"true"`
+	OrganizationId *string `min:"34" type:"string" required:"true"`
 
 	// User IDs to include in the rule.
 	UserIds []*string `type:"list"`
@@ -8628,6 +10675,9 @@ func (s *PutAccessControlRuleInput) Validate() error {
 	}
 	if s.OrganizationId == nil {
 		invalidParams.Add(request.NewErrParamRequired("OrganizationId"))
+	}
+	if s.OrganizationId != nil && len(*s.OrganizationId) < 34 {
+		invalidParams.Add(request.NewErrParamMinLen("OrganizationId", 34))
 	}
 
 	if invalidParams.Len() > 0 {
@@ -8728,7 +10778,7 @@ type PutMailboxPermissionsInput struct {
 	// exists.
 	//
 	// OrganizationId is a required field
-	OrganizationId *string `type:"string" required:"true"`
+	OrganizationId *string `min:"34" type:"string" required:"true"`
 
 	// The permissions granted to the grantee. SEND_AS allows the grantee to send
 	// email as the owner of the mailbox (the grantee is not mentioned on these
@@ -8768,6 +10818,9 @@ func (s *PutMailboxPermissionsInput) Validate() error {
 	}
 	if s.OrganizationId == nil {
 		invalidParams.Add(request.NewErrParamRequired("OrganizationId"))
+	}
+	if s.OrganizationId != nil && len(*s.OrganizationId) < 34 {
+		invalidParams.Add(request.NewErrParamMinLen("OrganizationId", 34))
 	}
 	if s.PermissionValues == nil {
 		invalidParams.Add(request.NewErrParamRequired("PermissionValues"))
@@ -8817,6 +10870,123 @@ func (s PutMailboxPermissionsOutput) GoString() string {
 	return s.String()
 }
 
+type PutRetentionPolicyInput struct {
+	_ struct{} `type:"structure"`
+
+	// The retention policy description.
+	Description *string `type:"string" sensitive:"true"`
+
+	// The retention policy folder configurations.
+	//
+	// FolderConfigurations is a required field
+	FolderConfigurations []*FolderConfiguration `type:"list" required:"true"`
+
+	// The retention policy ID.
+	Id *string `min:"1" type:"string"`
+
+	// The retention policy name.
+	//
+	// Name is a required field
+	Name *string `min:"1" type:"string" required:"true"`
+
+	// The organization ID.
+	//
+	// OrganizationId is a required field
+	OrganizationId *string `min:"34" type:"string" required:"true"`
+}
+
+// String returns the string representation
+func (s PutRetentionPolicyInput) String() string {
+	return awsutil.Prettify(s)
+}
+
+// GoString returns the string representation
+func (s PutRetentionPolicyInput) GoString() string {
+	return s.String()
+}
+
+// Validate inspects the fields of the type to determine if they are valid.
+func (s *PutRetentionPolicyInput) Validate() error {
+	invalidParams := request.ErrInvalidParams{Context: "PutRetentionPolicyInput"}
+	if s.FolderConfigurations == nil {
+		invalidParams.Add(request.NewErrParamRequired("FolderConfigurations"))
+	}
+	if s.Id != nil && len(*s.Id) < 1 {
+		invalidParams.Add(request.NewErrParamMinLen("Id", 1))
+	}
+	if s.Name == nil {
+		invalidParams.Add(request.NewErrParamRequired("Name"))
+	}
+	if s.Name != nil && len(*s.Name) < 1 {
+		invalidParams.Add(request.NewErrParamMinLen("Name", 1))
+	}
+	if s.OrganizationId == nil {
+		invalidParams.Add(request.NewErrParamRequired("OrganizationId"))
+	}
+	if s.OrganizationId != nil && len(*s.OrganizationId) < 34 {
+		invalidParams.Add(request.NewErrParamMinLen("OrganizationId", 34))
+	}
+	if s.FolderConfigurations != nil {
+		for i, v := range s.FolderConfigurations {
+			if v == nil {
+				continue
+			}
+			if err := v.Validate(); err != nil {
+				invalidParams.AddNested(fmt.Sprintf("%s[%v]", "FolderConfigurations", i), err.(request.ErrInvalidParams))
+			}
+		}
+	}
+
+	if invalidParams.Len() > 0 {
+		return invalidParams
+	}
+	return nil
+}
+
+// SetDescription sets the Description field's value.
+func (s *PutRetentionPolicyInput) SetDescription(v string) *PutRetentionPolicyInput {
+	s.Description = &v
+	return s
+}
+
+// SetFolderConfigurations sets the FolderConfigurations field's value.
+func (s *PutRetentionPolicyInput) SetFolderConfigurations(v []*FolderConfiguration) *PutRetentionPolicyInput {
+	s.FolderConfigurations = v
+	return s
+}
+
+// SetId sets the Id field's value.
+func (s *PutRetentionPolicyInput) SetId(v string) *PutRetentionPolicyInput {
+	s.Id = &v
+	return s
+}
+
+// SetName sets the Name field's value.
+func (s *PutRetentionPolicyInput) SetName(v string) *PutRetentionPolicyInput {
+	s.Name = &v
+	return s
+}
+
+// SetOrganizationId sets the OrganizationId field's value.
+func (s *PutRetentionPolicyInput) SetOrganizationId(v string) *PutRetentionPolicyInput {
+	s.OrganizationId = &v
+	return s
+}
+
+type PutRetentionPolicyOutput struct {
+	_ struct{} `type:"structure"`
+}
+
+// String returns the string representation
+func (s PutRetentionPolicyOutput) String() string {
+	return awsutil.Prettify(s)
+}
+
+// GoString returns the string representation
+func (s PutRetentionPolicyOutput) GoString() string {
+	return s.String()
+}
+
 type RegisterToWorkMailInput struct {
 	_ struct{} `type:"structure"`
 
@@ -8834,7 +11004,7 @@ type RegisterToWorkMailInput struct {
 	// exists.
 	//
 	// OrganizationId is a required field
-	OrganizationId *string `type:"string" required:"true"`
+	OrganizationId *string `min:"34" type:"string" required:"true"`
 }
 
 // String returns the string representation
@@ -8864,6 +11034,9 @@ func (s *RegisterToWorkMailInput) Validate() error {
 	}
 	if s.OrganizationId == nil {
 		invalidParams.Add(request.NewErrParamRequired("OrganizationId"))
+	}
+	if s.OrganizationId != nil && len(*s.OrganizationId) < 34 {
+		invalidParams.Add(request.NewErrParamMinLen("OrganizationId", 34))
 	}
 
 	if invalidParams.Len() > 0 {
@@ -8906,8 +11079,8 @@ func (s RegisterToWorkMailOutput) GoString() string {
 
 // This user, group, or resource name is not allowed in Amazon WorkMail.
 type ReservedNameException struct {
-	_            struct{} `type:"structure"`
-	respMetadata protocol.ResponseMetadata
+	_            struct{}                  `type:"structure"`
+	RespMetadata protocol.ResponseMetadata `json:"-" xml:"-"`
 
 	Message_ *string `locationName:"Message" type:"string"`
 }
@@ -8924,17 +11097,17 @@ func (s ReservedNameException) GoString() string {
 
 func newErrorReservedNameException(v protocol.ResponseMetadata) error {
 	return &ReservedNameException{
-		respMetadata: v,
+		RespMetadata: v,
 	}
 }
 
 // Code returns the exception type name.
-func (s ReservedNameException) Code() string {
+func (s *ReservedNameException) Code() string {
 	return "ReservedNameException"
 }
 
 // Message returns the exception's message.
-func (s ReservedNameException) Message() string {
+func (s *ReservedNameException) Message() string {
 	if s.Message_ != nil {
 		return *s.Message_
 	}
@@ -8942,22 +11115,22 @@ func (s ReservedNameException) Message() string {
 }
 
 // OrigErr always returns nil, satisfies awserr.Error interface.
-func (s ReservedNameException) OrigErr() error {
+func (s *ReservedNameException) OrigErr() error {
 	return nil
 }
 
-func (s ReservedNameException) Error() string {
+func (s *ReservedNameException) Error() string {
 	return fmt.Sprintf("%s: %s", s.Code(), s.Message())
 }
 
 // Status code returns the HTTP status code for the request's response error.
-func (s ReservedNameException) StatusCode() int {
-	return s.respMetadata.StatusCode
+func (s *ReservedNameException) StatusCode() int {
+	return s.RespMetadata.StatusCode
 }
 
 // RequestID returns the service's response RequestID for request.
-func (s ReservedNameException) RequestID() string {
-	return s.respMetadata.RequestID
+func (s *ReservedNameException) RequestID() string {
+	return s.RespMetadata.RequestID
 }
 
 type ResetPasswordInput struct {
@@ -8967,7 +11140,7 @@ type ResetPasswordInput struct {
 	// is reset.
 	//
 	// OrganizationId is a required field
-	OrganizationId *string `type:"string" required:"true"`
+	OrganizationId *string `min:"34" type:"string" required:"true"`
 
 	// The new password for the user.
 	//
@@ -8995,6 +11168,9 @@ func (s *ResetPasswordInput) Validate() error {
 	invalidParams := request.ErrInvalidParams{Context: "ResetPasswordInput"}
 	if s.OrganizationId == nil {
 		invalidParams.Add(request.NewErrParamRequired("OrganizationId"))
+	}
+	if s.OrganizationId != nil && len(*s.OrganizationId) < 34 {
+		invalidParams.Add(request.NewErrParamMinLen("OrganizationId", 34))
 	}
 	if s.Password == nil {
 		invalidParams.Add(request.NewErrParamRequired("Password"))
@@ -9124,8 +11300,8 @@ func (s *Resource) SetType(v string) *Resource {
 
 // The resource cannot be found.
 type ResourceNotFoundException struct {
-	_            struct{} `type:"structure"`
-	respMetadata protocol.ResponseMetadata
+	_            struct{}                  `type:"structure"`
+	RespMetadata protocol.ResponseMetadata `json:"-" xml:"-"`
 
 	Message_ *string `locationName:"Message" type:"string"`
 }
@@ -9142,17 +11318,17 @@ func (s ResourceNotFoundException) GoString() string {
 
 func newErrorResourceNotFoundException(v protocol.ResponseMetadata) error {
 	return &ResourceNotFoundException{
-		respMetadata: v,
+		RespMetadata: v,
 	}
 }
 
 // Code returns the exception type name.
-func (s ResourceNotFoundException) Code() string {
+func (s *ResourceNotFoundException) Code() string {
 	return "ResourceNotFoundException"
 }
 
 // Message returns the exception's message.
-func (s ResourceNotFoundException) Message() string {
+func (s *ResourceNotFoundException) Message() string {
 	if s.Message_ != nil {
 		return *s.Message_
 	}
@@ -9160,22 +11336,194 @@ func (s ResourceNotFoundException) Message() string {
 }
 
 // OrigErr always returns nil, satisfies awserr.Error interface.
-func (s ResourceNotFoundException) OrigErr() error {
+func (s *ResourceNotFoundException) OrigErr() error {
 	return nil
 }
 
-func (s ResourceNotFoundException) Error() string {
+func (s *ResourceNotFoundException) Error() string {
 	return fmt.Sprintf("%s: %s", s.Code(), s.Message())
 }
 
 // Status code returns the HTTP status code for the request's response error.
-func (s ResourceNotFoundException) StatusCode() int {
-	return s.respMetadata.StatusCode
+func (s *ResourceNotFoundException) StatusCode() int {
+	return s.RespMetadata.StatusCode
 }
 
 // RequestID returns the service's response RequestID for request.
-func (s ResourceNotFoundException) RequestID() string {
-	return s.respMetadata.RequestID
+func (s *ResourceNotFoundException) RequestID() string {
+	return s.RespMetadata.RequestID
+}
+
+type StartMailboxExportJobInput struct {
+	_ struct{} `type:"structure"`
+
+	// The idempotency token for the client request.
+	ClientToken *string `min:"1" type:"string" idempotencyToken:"true"`
+
+	// The mailbox export job description.
+	Description *string `type:"string"`
+
+	// The identifier of the user or resource associated with the mailbox.
+	//
+	// EntityId is a required field
+	EntityId *string `min:"12" type:"string" required:"true"`
+
+	// The Amazon Resource Name (ARN) of the symmetric AWS Key Management Service
+	// (AWS KMS) key that encrypts the exported mailbox content.
+	//
+	// KmsKeyArn is a required field
+	KmsKeyArn *string `min:"20" type:"string" required:"true"`
+
+	// The identifier associated with the organization.
+	//
+	// OrganizationId is a required field
+	OrganizationId *string `min:"34" type:"string" required:"true"`
+
+	// The ARN of the AWS Identity and Access Management (IAM) role that grants
+	// write permission to the S3 bucket.
+	//
+	// RoleArn is a required field
+	RoleArn *string `min:"20" type:"string" required:"true"`
+
+	// The name of the S3 bucket.
+	//
+	// S3BucketName is a required field
+	S3BucketName *string `min:"1" type:"string" required:"true"`
+
+	// The S3 bucket prefix.
+	//
+	// S3Prefix is a required field
+	S3Prefix *string `min:"1" type:"string" required:"true"`
+}
+
+// String returns the string representation
+func (s StartMailboxExportJobInput) String() string {
+	return awsutil.Prettify(s)
+}
+
+// GoString returns the string representation
+func (s StartMailboxExportJobInput) GoString() string {
+	return s.String()
+}
+
+// Validate inspects the fields of the type to determine if they are valid.
+func (s *StartMailboxExportJobInput) Validate() error {
+	invalidParams := request.ErrInvalidParams{Context: "StartMailboxExportJobInput"}
+	if s.ClientToken != nil && len(*s.ClientToken) < 1 {
+		invalidParams.Add(request.NewErrParamMinLen("ClientToken", 1))
+	}
+	if s.EntityId == nil {
+		invalidParams.Add(request.NewErrParamRequired("EntityId"))
+	}
+	if s.EntityId != nil && len(*s.EntityId) < 12 {
+		invalidParams.Add(request.NewErrParamMinLen("EntityId", 12))
+	}
+	if s.KmsKeyArn == nil {
+		invalidParams.Add(request.NewErrParamRequired("KmsKeyArn"))
+	}
+	if s.KmsKeyArn != nil && len(*s.KmsKeyArn) < 20 {
+		invalidParams.Add(request.NewErrParamMinLen("KmsKeyArn", 20))
+	}
+	if s.OrganizationId == nil {
+		invalidParams.Add(request.NewErrParamRequired("OrganizationId"))
+	}
+	if s.OrganizationId != nil && len(*s.OrganizationId) < 34 {
+		invalidParams.Add(request.NewErrParamMinLen("OrganizationId", 34))
+	}
+	if s.RoleArn == nil {
+		invalidParams.Add(request.NewErrParamRequired("RoleArn"))
+	}
+	if s.RoleArn != nil && len(*s.RoleArn) < 20 {
+		invalidParams.Add(request.NewErrParamMinLen("RoleArn", 20))
+	}
+	if s.S3BucketName == nil {
+		invalidParams.Add(request.NewErrParamRequired("S3BucketName"))
+	}
+	if s.S3BucketName != nil && len(*s.S3BucketName) < 1 {
+		invalidParams.Add(request.NewErrParamMinLen("S3BucketName", 1))
+	}
+	if s.S3Prefix == nil {
+		invalidParams.Add(request.NewErrParamRequired("S3Prefix"))
+	}
+	if s.S3Prefix != nil && len(*s.S3Prefix) < 1 {
+		invalidParams.Add(request.NewErrParamMinLen("S3Prefix", 1))
+	}
+
+	if invalidParams.Len() > 0 {
+		return invalidParams
+	}
+	return nil
+}
+
+// SetClientToken sets the ClientToken field's value.
+func (s *StartMailboxExportJobInput) SetClientToken(v string) *StartMailboxExportJobInput {
+	s.ClientToken = &v
+	return s
+}
+
+// SetDescription sets the Description field's value.
+func (s *StartMailboxExportJobInput) SetDescription(v string) *StartMailboxExportJobInput {
+	s.Description = &v
+	return s
+}
+
+// SetEntityId sets the EntityId field's value.
+func (s *StartMailboxExportJobInput) SetEntityId(v string) *StartMailboxExportJobInput {
+	s.EntityId = &v
+	return s
+}
+
+// SetKmsKeyArn sets the KmsKeyArn field's value.
+func (s *StartMailboxExportJobInput) SetKmsKeyArn(v string) *StartMailboxExportJobInput {
+	s.KmsKeyArn = &v
+	return s
+}
+
+// SetOrganizationId sets the OrganizationId field's value.
+func (s *StartMailboxExportJobInput) SetOrganizationId(v string) *StartMailboxExportJobInput {
+	s.OrganizationId = &v
+	return s
+}
+
+// SetRoleArn sets the RoleArn field's value.
+func (s *StartMailboxExportJobInput) SetRoleArn(v string) *StartMailboxExportJobInput {
+	s.RoleArn = &v
+	return s
+}
+
+// SetS3BucketName sets the S3BucketName field's value.
+func (s *StartMailboxExportJobInput) SetS3BucketName(v string) *StartMailboxExportJobInput {
+	s.S3BucketName = &v
+	return s
+}
+
+// SetS3Prefix sets the S3Prefix field's value.
+func (s *StartMailboxExportJobInput) SetS3Prefix(v string) *StartMailboxExportJobInput {
+	s.S3Prefix = &v
+	return s
+}
+
+type StartMailboxExportJobOutput struct {
+	_ struct{} `type:"structure"`
+
+	// The job ID.
+	JobId *string `min:"1" type:"string"`
+}
+
+// String returns the string representation
+func (s StartMailboxExportJobOutput) String() string {
+	return awsutil.Prettify(s)
+}
+
+// GoString returns the string representation
+func (s StartMailboxExportJobOutput) GoString() string {
+	return s.String()
+}
+
+// SetJobId sets the JobId field's value.
+func (s *StartMailboxExportJobOutput) SetJobId(v string) *StartMailboxExportJobOutput {
+	s.JobId = &v
+	return s
 }
 
 // Describes a tag applied to a resource.
@@ -9315,8 +11663,8 @@ func (s TagResourceOutput) GoString() string {
 
 // The resource can have up to 50 user-applied tags.
 type TooManyTagsException struct {
-	_            struct{} `type:"structure"`
-	respMetadata protocol.ResponseMetadata
+	_            struct{}                  `type:"structure"`
+	RespMetadata protocol.ResponseMetadata `json:"-" xml:"-"`
 
 	Message_ *string `locationName:"Message" type:"string"`
 }
@@ -9333,17 +11681,17 @@ func (s TooManyTagsException) GoString() string {
 
 func newErrorTooManyTagsException(v protocol.ResponseMetadata) error {
 	return &TooManyTagsException{
-		respMetadata: v,
+		RespMetadata: v,
 	}
 }
 
 // Code returns the exception type name.
-func (s TooManyTagsException) Code() string {
+func (s *TooManyTagsException) Code() string {
 	return "TooManyTagsException"
 }
 
 // Message returns the exception's message.
-func (s TooManyTagsException) Message() string {
+func (s *TooManyTagsException) Message() string {
 	if s.Message_ != nil {
 		return *s.Message_
 	}
@@ -9351,28 +11699,28 @@ func (s TooManyTagsException) Message() string {
 }
 
 // OrigErr always returns nil, satisfies awserr.Error interface.
-func (s TooManyTagsException) OrigErr() error {
+func (s *TooManyTagsException) OrigErr() error {
 	return nil
 }
 
-func (s TooManyTagsException) Error() string {
+func (s *TooManyTagsException) Error() string {
 	return fmt.Sprintf("%s: %s", s.Code(), s.Message())
 }
 
 // Status code returns the HTTP status code for the request's response error.
-func (s TooManyTagsException) StatusCode() int {
-	return s.respMetadata.StatusCode
+func (s *TooManyTagsException) StatusCode() int {
+	return s.RespMetadata.StatusCode
 }
 
 // RequestID returns the service's response RequestID for request.
-func (s TooManyTagsException) RequestID() string {
-	return s.respMetadata.RequestID
+func (s *TooManyTagsException) RequestID() string {
+	return s.RespMetadata.RequestID
 }
 
 // You can't perform a write operation against a read-only directory.
 type UnsupportedOperationException struct {
-	_            struct{} `type:"structure"`
-	respMetadata protocol.ResponseMetadata
+	_            struct{}                  `type:"structure"`
+	RespMetadata protocol.ResponseMetadata `json:"-" xml:"-"`
 
 	Message_ *string `locationName:"Message" type:"string"`
 }
@@ -9389,17 +11737,17 @@ func (s UnsupportedOperationException) GoString() string {
 
 func newErrorUnsupportedOperationException(v protocol.ResponseMetadata) error {
 	return &UnsupportedOperationException{
-		respMetadata: v,
+		RespMetadata: v,
 	}
 }
 
 // Code returns the exception type name.
-func (s UnsupportedOperationException) Code() string {
+func (s *UnsupportedOperationException) Code() string {
 	return "UnsupportedOperationException"
 }
 
 // Message returns the exception's message.
-func (s UnsupportedOperationException) Message() string {
+func (s *UnsupportedOperationException) Message() string {
 	if s.Message_ != nil {
 		return *s.Message_
 	}
@@ -9407,22 +11755,22 @@ func (s UnsupportedOperationException) Message() string {
 }
 
 // OrigErr always returns nil, satisfies awserr.Error interface.
-func (s UnsupportedOperationException) OrigErr() error {
+func (s *UnsupportedOperationException) OrigErr() error {
 	return nil
 }
 
-func (s UnsupportedOperationException) Error() string {
+func (s *UnsupportedOperationException) Error() string {
 	return fmt.Sprintf("%s: %s", s.Code(), s.Message())
 }
 
 // Status code returns the HTTP status code for the request's response error.
-func (s UnsupportedOperationException) StatusCode() int {
-	return s.respMetadata.StatusCode
+func (s *UnsupportedOperationException) StatusCode() int {
+	return s.RespMetadata.StatusCode
 }
 
 // RequestID returns the service's response RequestID for request.
-func (s UnsupportedOperationException) RequestID() string {
-	return s.respMetadata.RequestID
+func (s *UnsupportedOperationException) RequestID() string {
+	return s.RespMetadata.RequestID
 }
 
 type UntagResourceInput struct {
@@ -9506,7 +11854,7 @@ type UpdateMailboxQuotaInput struct {
 	// the mailbox quota.
 	//
 	// OrganizationId is a required field
-	OrganizationId *string `type:"string" required:"true"`
+	OrganizationId *string `min:"34" type:"string" required:"true"`
 
 	// The identifer for the user for whom to update the mailbox quota.
 	//
@@ -9535,6 +11883,9 @@ func (s *UpdateMailboxQuotaInput) Validate() error {
 	}
 	if s.OrganizationId == nil {
 		invalidParams.Add(request.NewErrParamRequired("OrganizationId"))
+	}
+	if s.OrganizationId != nil && len(*s.OrganizationId) < 34 {
+		invalidParams.Add(request.NewErrParamMinLen("OrganizationId", 34))
 	}
 	if s.UserId == nil {
 		invalidParams.Add(request.NewErrParamRequired("UserId"))
@@ -9597,7 +11948,7 @@ type UpdatePrimaryEmailAddressInput struct {
 	// The organization that contains the user, group, or resource to update.
 	//
 	// OrganizationId is a required field
-	OrganizationId *string `type:"string" required:"true"`
+	OrganizationId *string `min:"34" type:"string" required:"true"`
 }
 
 // String returns the string representation
@@ -9627,6 +11978,9 @@ func (s *UpdatePrimaryEmailAddressInput) Validate() error {
 	}
 	if s.OrganizationId == nil {
 		invalidParams.Add(request.NewErrParamRequired("OrganizationId"))
+	}
+	if s.OrganizationId != nil && len(*s.OrganizationId) < 34 {
+		invalidParams.Add(request.NewErrParamMinLen("OrganizationId", 34))
 	}
 
 	if invalidParams.Len() > 0 {
@@ -9680,12 +12034,12 @@ type UpdateResourceInput struct {
 	// updated.
 	//
 	// OrganizationId is a required field
-	OrganizationId *string `type:"string" required:"true"`
+	OrganizationId *string `min:"34" type:"string" required:"true"`
 
 	// The identifier of the resource to be updated.
 	//
 	// ResourceId is a required field
-	ResourceId *string `type:"string" required:"true"`
+	ResourceId *string `min:"34" type:"string" required:"true"`
 }
 
 // String returns the string representation
@@ -9707,8 +12061,14 @@ func (s *UpdateResourceInput) Validate() error {
 	if s.OrganizationId == nil {
 		invalidParams.Add(request.NewErrParamRequired("OrganizationId"))
 	}
+	if s.OrganizationId != nil && len(*s.OrganizationId) < 34 {
+		invalidParams.Add(request.NewErrParamMinLen("OrganizationId", 34))
+	}
 	if s.ResourceId == nil {
 		invalidParams.Add(request.NewErrParamRequired("ResourceId"))
+	}
+	if s.ResourceId != nil && len(*s.ResourceId) < 34 {
+		invalidParams.Add(request.NewErrParamMinLen("ResourceId", 34))
 	}
 
 	if invalidParams.Len() > 0 {
@@ -9850,6 +12210,14 @@ const (
 	AccessControlRuleEffectDeny = "DENY"
 )
 
+// AccessControlRuleEffect_Values returns all elements of the AccessControlRuleEffect enum
+func AccessControlRuleEffect_Values() []string {
+	return []string{
+		AccessControlRuleEffectAllow,
+		AccessControlRuleEffectDeny,
+	}
+}
+
 const (
 	// EntityStateEnabled is a EntityState enum value
 	EntityStateEnabled = "ENABLED"
@@ -9861,6 +12229,67 @@ const (
 	EntityStateDeleted = "DELETED"
 )
 
+// EntityState_Values returns all elements of the EntityState enum
+func EntityState_Values() []string {
+	return []string{
+		EntityStateEnabled,
+		EntityStateDisabled,
+		EntityStateDeleted,
+	}
+}
+
+const (
+	// FolderNameInbox is a FolderName enum value
+	FolderNameInbox = "INBOX"
+
+	// FolderNameDeletedItems is a FolderName enum value
+	FolderNameDeletedItems = "DELETED_ITEMS"
+
+	// FolderNameSentItems is a FolderName enum value
+	FolderNameSentItems = "SENT_ITEMS"
+
+	// FolderNameDrafts is a FolderName enum value
+	FolderNameDrafts = "DRAFTS"
+
+	// FolderNameJunkEmail is a FolderName enum value
+	FolderNameJunkEmail = "JUNK_EMAIL"
+)
+
+// FolderName_Values returns all elements of the FolderName enum
+func FolderName_Values() []string {
+	return []string{
+		FolderNameInbox,
+		FolderNameDeletedItems,
+		FolderNameSentItems,
+		FolderNameDrafts,
+		FolderNameJunkEmail,
+	}
+}
+
+const (
+	// MailboxExportJobStateRunning is a MailboxExportJobState enum value
+	MailboxExportJobStateRunning = "RUNNING"
+
+	// MailboxExportJobStateCompleted is a MailboxExportJobState enum value
+	MailboxExportJobStateCompleted = "COMPLETED"
+
+	// MailboxExportJobStateFailed is a MailboxExportJobState enum value
+	MailboxExportJobStateFailed = "FAILED"
+
+	// MailboxExportJobStateCancelled is a MailboxExportJobState enum value
+	MailboxExportJobStateCancelled = "CANCELLED"
+)
+
+// MailboxExportJobState_Values returns all elements of the MailboxExportJobState enum
+func MailboxExportJobState_Values() []string {
+	return []string{
+		MailboxExportJobStateRunning,
+		MailboxExportJobStateCompleted,
+		MailboxExportJobStateFailed,
+		MailboxExportJobStateCancelled,
+	}
+}
+
 const (
 	// MemberTypeGroup is a MemberType enum value
 	MemberTypeGroup = "GROUP"
@@ -9868,6 +12297,14 @@ const (
 	// MemberTypeUser is a MemberType enum value
 	MemberTypeUser = "USER"
 )
+
+// MemberType_Values returns all elements of the MemberType enum
+func MemberType_Values() []string {
+	return []string{
+		MemberTypeGroup,
+		MemberTypeUser,
+	}
+}
 
 const (
 	// PermissionTypeFullAccess is a PermissionType enum value
@@ -9880,6 +12317,15 @@ const (
 	PermissionTypeSendOnBehalf = "SEND_ON_BEHALF"
 )
 
+// PermissionType_Values returns all elements of the PermissionType enum
+func PermissionType_Values() []string {
+	return []string{
+		PermissionTypeFullAccess,
+		PermissionTypeSendAs,
+		PermissionTypeSendOnBehalf,
+	}
+}
+
 const (
 	// ResourceTypeRoom is a ResourceType enum value
 	ResourceTypeRoom = "ROOM"
@@ -9887,6 +12333,34 @@ const (
 	// ResourceTypeEquipment is a ResourceType enum value
 	ResourceTypeEquipment = "EQUIPMENT"
 )
+
+// ResourceType_Values returns all elements of the ResourceType enum
+func ResourceType_Values() []string {
+	return []string{
+		ResourceTypeRoom,
+		ResourceTypeEquipment,
+	}
+}
+
+const (
+	// RetentionActionNone is a RetentionAction enum value
+	RetentionActionNone = "NONE"
+
+	// RetentionActionDelete is a RetentionAction enum value
+	RetentionActionDelete = "DELETE"
+
+	// RetentionActionPermanentlyDelete is a RetentionAction enum value
+	RetentionActionPermanentlyDelete = "PERMANENTLY_DELETE"
+)
+
+// RetentionAction_Values returns all elements of the RetentionAction enum
+func RetentionAction_Values() []string {
+	return []string{
+		RetentionActionNone,
+		RetentionActionDelete,
+		RetentionActionPermanentlyDelete,
+	}
+}
 
 const (
 	// UserRoleUser is a UserRole enum value
@@ -9898,3 +12372,12 @@ const (
 	// UserRoleSystemUser is a UserRole enum value
 	UserRoleSystemUser = "SYSTEM_USER"
 )
+
+// UserRole_Values returns all elements of the UserRole enum
+func UserRole_Values() []string {
+	return []string{
+		UserRoleUser,
+		UserRoleResource,
+		UserRoleSystemUser,
+	}
+}

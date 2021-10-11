@@ -1,0 +1,37 @@
+node_modules
+.vscode
+*.zip
+.terraform
+.tfstate
+out
+coverage
+server/website
+website/build
+authToken.txt
+report.*.json
+.tmp
+*.tar.gz
+
+// Ignore development files for testing
+*.output.txt
+.tf.init.json
+
+// Ignore compiled
+cli/pipeline-service-cli
+
+// Ignore temporary files
+cli/workflow.config.json
+cli/pipeline-service-cli-*
+server/cli/pipeline-service-cli-*
+server/dist/server.bundle.js
+server/pre-flight/pkg
+server/pre-flight/bin
+
+.workflow.config.json
+
+*.pem
+*.csr
+terraform/pipeline-services.tar.gz
+pre-flight/pkg
+
+*.log

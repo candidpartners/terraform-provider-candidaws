@@ -177,6 +177,7 @@ func Provider() terraform.ResourceProvider {
 			"aws_quicksight_namespace":                resourceAwsQuickSightNamespace(),
 			"aws_internet_gateway_detach":             resourceAwsInternetGatewayDetach(),
 			"aws_internet_gateway_delete":             resourceAwsInternetGatewayDelete(),
+			"aws_default_network_acl":                                 resourceAwsDefaultNetworkAcl(),
 		},
 	}
 

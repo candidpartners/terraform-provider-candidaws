@@ -3,11 +3,12 @@ package aws
 import (
 	"fmt"
 	"log"
+	"time"
 
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/service/ec2"
+	"github.com/hashicorp/terraform-plugin-sdk/helper/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
-	"github.com/terraform-providers/terraform-provider-aws/aws/internal/keyvaluetags"
 )
 
 // ACL Network ACLs all contain explicit deny-all rules that cannot be
@@ -25,7 +26,6 @@ func resourceAwsDefaultNetworkAcl() *schema.Resource {
 		// We reuse aws_network_acl's read method, the operations are the same
 		Read:   resourceAwsNetworkAclRead,
 		Delete: resourceAwsDefaultNetworkAclDelete,
-		Update: resourceAwsDefaultNetworkAclUpdate,
 
 		Schema: map[string]*schema.Schema{
 			"vpc_id": {
@@ -154,96 +154,66 @@ func resourceAwsDefaultNetworkAcl() *schema.Resource {
 }
 
 func resourceAwsDefaultNetworkAclCreate(d *schema.ResourceData, meta interface{}) error {
+	conn := meta.(*AWSClient).ec2conn
 	d.SetId(d.Get("default_network_acl_id").(string))
 
 	// revoke all default and pre-existing rules on the default network acl.
 	// In the UPDATE method, we'll apply only the rules in the configuration.
 	log.Printf("[DEBUG] Revoking default ingress and egress rules for Default Network ACL for %s", d.Id())
-	err := revokeAllNetworkACLEntries(d.Id(), meta)
-	if err != nil {
-		return err
+	err1 := revokeAllNetworkACLEntries(d.Id(), meta)
+	if err1 != nil {
+		return err1
 	}
 
-	return resourceAwsDefaultNetworkAclUpdate(d, meta)
-}
-
-func resourceAwsDefaultNetworkAclUpdate(d *schema.ResourceData, meta interface{}) error {
-	conn := meta.(*AWSClient).ec2conn
-
-	if d.HasChange("ingress") {
-		err := updateNetworkAclEntries(d, "ingress", conn)
+	log.Printf("[INFO] Deleting Network Acl: %s", d.Id())
+	input := &ec2.DeleteNetworkAclInput{
+		NetworkAclId: aws.String(d.Id()),
+	}
+	err := resource.Retry(5*time.Minute, func() *resource.RetryError {
+		_, err := conn.DeleteNetworkAcl(input)
 		if err != nil {
-			return err
-		}
-	}
+			if isAWSErr(err, "InvalidNetworkAclID.NotFound", "") {
+				return nil
+			}
+			if isAWSErr(err, "DependencyViolation", "") {
+				err = cleanUpDependencyViolations(d, conn)
+				if err != nil {
+					return resource.NonRetryableError(err)
+				}
+				return resource.RetryableError(fmt.Errorf("Dependencies found and cleaned up, retrying"))
+			}
 
-	if d.HasChange("egress") {
-		err := updateNetworkAclEntries(d, "egress", conn)
+			return resource.NonRetryableError(err)
+
+		}
+		log.Printf("[Info] Deleted network ACL %s successfully", d.Id())
+		return nil
+	})
+	if isResourceTimeoutError(err) {
+		_, err = conn.DeleteNetworkAcl(input)
+		if err != nil && isAWSErr(err, "InvalidNetworkAclID.NotFound", "") {
+			return nil
+		}
+		err = cleanUpDependencyViolations(d, conn)
 		if err != nil {
-			return err
-		}
-	}
-
-	if d.HasChange("subnet_ids") {
-		o, n := d.GetChange("subnet_ids")
-		if o == nil {
-			o = new(schema.Set)
-		}
-		if n == nil {
-			n = new(schema.Set)
-		}
-
-		os := o.(*schema.Set)
-		ns := n.(*schema.Set)
-
-		remove := os.Difference(ns).List()
-		add := ns.Difference(os).List()
-
-		if len(remove) > 0 {
-			//
-			// NO-OP
-			//
-			// Subnets *must* belong to a Network ACL. Subnets are not "removed" from
-			// Network ACLs, instead their association is replaced. In a normal
-			// Network ACL, any removal of a Subnet is done by replacing the
-			// Subnet/ACL association with an association between the Subnet and the
-			// Default Network ACL. Because we're managing the default here, we cannot
-			// do that, so we simply log a NO-OP. In order to remove the Subnet here,
-			// it must be destroyed, or assigned to different Network ACL. Those
-			// operations are not handled here
-			log.Printf("[WARN] Cannot remove subnets from the Default Network ACL. They must be re-assigned or destroyed")
-		}
-
-		if len(add) > 0 {
-			for _, a := range add {
-				association, err := findNetworkAclAssociation(a.(string), conn)
-				if err != nil {
-					return fmt.Errorf("Failed to find acl association: acl %s with subnet %s: %s", d.Id(), a, err)
-				}
-				log.Printf("[DEBUG] Updating Network Association for Default Network ACL (%s) and Subnet (%s)", d.Id(), a.(string))
-				_, err = conn.ReplaceNetworkAclAssociation(&ec2.ReplaceNetworkAclAssociationInput{
-					AssociationId: association.NetworkAclAssociationId,
-					NetworkAclId:  aws.String(d.Id()),
-				})
-				if err != nil {
-					return err
-				}
+			// This seems excessive but is probably the best way to make sure it's actually deleted
+			_, err = conn.DeleteNetworkAcl(input)
+			if err != nil && isAWSErr(err, "InvalidNetworkAclID.NotFound", "") {
+				return nil
 			}
 		}
 	}
-
-	if d.HasChange("tags") {
-		o, n := d.GetChange("tags")
-
-		if err := keyvaluetags.Ec2UpdateTags(conn, d.Id(), o, n); err != nil {
-			return fmt.Errorf("error updating EC2 Default Network ACL (%s) tags: %s", d.Id(), err)
-		}
+	if err != nil {
+		return fmt.Errorf("Error destroying Network ACL (%s): %s", d.Id(), err)
 	}
 
-	// Re-use the exiting Network ACL Resources READ method
-	return resourceAwsNetworkAclRead(d, meta)
+	return resourceAwsDefaultNetworkAclRead(d, meta)
 }
 
+func resourceAwsDefaultNetworkAclRead(d *schema.ResourceData, meta interface{}) error {
+	log.Printf("Default rt has been deleted")
+	return nil
+}
 func resourceAwsDefaultNetworkAclDelete(d *schema.ResourceData, meta interface{}) error {
 	log.Printf("[WARN] Cannot destroy Default Network ACL. Terraform will remove this resource from the state file, however resources may remain.")
 	return nil

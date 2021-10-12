@@ -3,6 +3,7 @@ package aws
 import (
 	"log"
 
+	"github.com/hashicorp/terraform-plugin-sdk/helper/mutexkv"
 	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
 	"github.com/hashicorp/terraform-plugin-sdk/terraform"
 	homedir "github.com/mitchellh/go-homedir"
@@ -177,7 +178,18 @@ func Provider() terraform.ResourceProvider {
 			"aws_quicksight_namespace":                resourceAwsQuickSightNamespace(),
 			"aws_internet_gateway_detach":             resourceAwsInternetGatewayDetach(),
 			"aws_internet_gateway_delete":             resourceAwsInternetGatewayDelete(),
-			"aws_default_network_acl":                                 resourceAwsDefaultNetworkAcl(),
+			"aws_default_network_acl":                 resourceAwsDefaultNetworkAcl(),
+			"aws_network_acl":                         resourceAwsNetworkAcl(),
+			"aws_default_route_table":                 resourceAwsDefaultRouteTable(),
+			"aws_route_table":                         resourceAwsRouteTable(),
+			"aws_default_security_group":              resourceAwsDefaultSecurityGroup(),
+			"aws_security_group":                      resourceAwsSecurityGroup(),
+			"aws_security_group_rule":                 resourceAwsSecurityGroupRule(),
+			"aws_subnet":                              resourceAwsSubnet(),
+			"aws_default_subnet":                      resourceAwsDefaultSubnet(),
+			"aws_network_interface":                   resourceAwsNetworkInterface(),
+			"aws_default_vpc":                         resourceAwsDefaultVpc(),
+			"aws_vpc":                                 resourceAwsVpc(),
 		},
 	}
 
@@ -486,6 +498,9 @@ func providerConfigure(d *schema.ResourceData, terraformVersion string) (interfa
 
 	return config.Client()
 }
+
+// This is a global MutexKV for use within this plugin.
+var awsMutexKV = mutexkv.NewMutexKV()
 
 func assumeRoleSchema() *schema.Schema {
 	return &schema.Schema{

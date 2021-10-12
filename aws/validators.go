@@ -2,9 +2,11 @@ package aws
 
 import (
 	"fmt"
+	"net"
+	"regexp"
+
 	"github.com/aws/aws-sdk-go/aws/arn"
 	"github.com/hashicorp/terraform-plugin-sdk/helper/structure"
-	"regexp"
 )
 
 const (
@@ -113,6 +115,42 @@ func validateIamRolePolicyNamePrefix(v interface{}, k string) (ws []string, erro
 	}
 	if !regexp.MustCompile(`^[\w+=,.@-]+$`).MatchString(value) {
 		errors = append(errors, fmt.Errorf(`%q must match [\w+=,.@-]`, k))
+	}
+	return
+}
+
+// validateCIDRNetworkAddress ensures that the string value is a valid CIDR that
+// represents a network address - it adds an error otherwise
+func validateCIDRNetworkAddress(v interface{}, k string) (ws []string, errors []error) {
+	value := v.(string)
+	_, ipnet, err := net.ParseCIDR(value)
+	if err != nil {
+		errors = append(errors, fmt.Errorf(
+			"%q must contain a valid CIDR, got error parsing: %s", k, err))
+		return
+	}
+
+	if ipnet == nil || value != ipnet.String() {
+		errors = append(errors, fmt.Errorf(
+			"%q must contain a valid network CIDR, got %q", k, value))
+	}
+
+	return
+}
+func validateSecurityGroupRuleDescription(v interface{}, k string) (ws []string, errors []error) {
+	value := v.(string)
+	if len(value) > 255 {
+		errors = append(errors, fmt.Errorf(
+			"%q cannot be longer than 255 characters: %q", k, value))
+	}
+
+	// https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_IpRange.html. Note that
+	// "" is an allowable description value.
+	pattern := `^[A-Za-z0-9 \.\_\-\:\/\(\)\#\,\@\[\]\+\=\&\;\{\}\!\$\*]*$`
+	if !regexp.MustCompile(pattern).MatchString(value) {
+		errors = append(errors, fmt.Errorf(
+			"%q doesn't comply with restrictions (%q): %q",
+			k, pattern, value))
 	}
 	return
 }

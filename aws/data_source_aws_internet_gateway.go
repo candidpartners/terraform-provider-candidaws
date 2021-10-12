@@ -20,7 +20,7 @@ func dataSourceAwsInternetGateway() *schema.Resource {
 				Optional: true,
 				Computed: true,
 			},
-			"filter": ec2CustomFiltersSchema(),
+			"filter": ec2CustomFiltersSchema2(),
 			"tags":   tagsSchemaComputed(),
 			"attachments": {
 				Type:     schema.TypeList,

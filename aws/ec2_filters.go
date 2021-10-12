@@ -147,6 +147,27 @@ func ec2CustomFiltersSchema() *schema.Schema {
 		},
 	}
 }
+func ec2CustomFiltersSchema2() *schema.Schema {
+	return &schema.Schema{
+		Type:     schema.TypeSet,
+		Optional: true,
+		Elem: &schema.Resource{
+			Schema: map[string]*schema.Schema{
+				"name": {
+					Type:     schema.TypeString,
+					Required: true,
+				},
+				"values": {
+					Type:     schema.TypeSet,
+					Optional: true,
+					Elem: &schema.Schema{
+						Type: schema.TypeString,
+					},
+				},
+			},
+		},
+	}
+}
 
 // buildEC2CustomFilterList takes the set value extracted from a schema
 // attribute conforming to the schema returned by ec2CustomFiltersSchema,

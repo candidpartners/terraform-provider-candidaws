@@ -18,13 +18,14 @@ func resourceAwsDefaultRouteTable() *schema.Resource {
 		Schema: map[string]*schema.Schema{
 			"default_route_table_id": {
 				Type:     schema.TypeString,
-				Required: true,
 				ForceNew: true,
+				Optional: true,
 			},
 
 			"vpc_id": {
 				Type:     schema.TypeString,
 				Computed: true,
+				ForceNew: true,
 			},
 
 			"propagating_vgws": {
@@ -32,6 +33,7 @@ func resourceAwsDefaultRouteTable() *schema.Resource {
 				Optional: true,
 				Elem:     &schema.Schema{Type: schema.TypeString},
 				Set:      schema.HashString,
+				ForceNew: true,
 			},
 
 			"route": {
@@ -39,6 +41,7 @@ func resourceAwsDefaultRouteTable() *schema.Resource {
 				ConfigMode: schema.SchemaConfigModeAttr,
 				Computed:   true,
 				Optional:   true,
+				ForceNew:   true,
 				Elem: &schema.Resource{
 					Schema: map[string]*schema.Schema{
 						"cidr_block": {
@@ -90,11 +93,12 @@ func resourceAwsDefaultRouteTable() *schema.Resource {
 				Set: resourceAwsRouteTableHash,
 			},
 
-			"tags": tagsSchema(),
+			"tags": tagsSchema2(),
 
 			"owner_id": {
 				Type:     schema.TypeString,
 				Computed: true,
+				ForceNew: true,
 			},
 		},
 	}

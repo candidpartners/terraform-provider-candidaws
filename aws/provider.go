@@ -159,6 +159,7 @@ func Provider() terraform.ResourceProvider {
 		DataSourcesMap: map[string]*schema.Resource{
 			"aws_caller_identity":  dataSourceAwsCallerIdentity(),
 			"aws_internet_gateway": dataSourceAwsInternetGateway(),
+			"aws_vpc":              dataSourceAwsVpc(),
 		},
 
 		ResourcesMap: map[string]*schema.Resource{

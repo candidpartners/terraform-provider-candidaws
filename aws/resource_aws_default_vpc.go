@@ -3,9 +3,11 @@ package aws
 import (
 	"fmt"
 	"log"
+	"time"
 
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/service/ec2"
+	"github.com/hashicorp/terraform-plugin-sdk/helper/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
 )
 
@@ -14,6 +16,7 @@ func resourceAwsDefaultVpc() *schema.Resource {
 	dvpc := resourceAwsVpc()
 	dvpc.Create = resourceAwsDefaultVpcCreate
 	dvpc.Delete = resourceAwsDefaultVpcDelete
+	dvpc.Read = resourceAwsDefaultVpcRead
 
 	// cidr_block is a computed value for Default VPCs
 	dvpc.Schema["cidr_block"] = &schema.Schema{
@@ -47,16 +50,52 @@ func resourceAwsDefaultVpcCreate(d *schema.ResourceData, meta interface{}) error
 
 	resp, err := conn.DescribeVpcs(req)
 	if err != nil {
-		return err
+		return nil
 	}
 
 	if resp.Vpcs == nil || len(resp.Vpcs) == 0 {
-		return fmt.Errorf("No default VPC found in this region.")
+		return nil
 	}
 
 	d.SetId(aws.StringValue(resp.Vpcs[0].VpcId))
 
-	return resourceAwsVpcUpdate(d, meta)
+	vpcID := d.Id()
+	deleteVpcOpts := &ec2.DeleteVpcInput{
+		VpcId: &vpcID,
+	}
+	log.Printf("[INFO] Deleting VPC: %s", d.Id())
+
+	err2 := resource.Retry(5*time.Minute, func() *resource.RetryError {
+		_, err2 := conn.DeleteVpc(deleteVpcOpts)
+		if err2 == nil {
+			return nil
+		}
+
+		if isAWSErr(err2, "InvalidVpcID.NotFound", "") {
+			return nil
+		}
+		if isAWSErr(err2, "DependencyViolation", "") {
+			return resource.RetryableError(err2)
+		}
+		return resource.NonRetryableError(fmt.Errorf("Error deleting VPC: %s", err2))
+	})
+	if isResourceTimeoutError(err2) {
+		_, err2 = conn.DeleteVpc(deleteVpcOpts)
+		if isAWSErr(err2, "InvalidVpcID.NotFound", "") {
+			return nil
+		}
+	}
+
+	if err != nil {
+		return fmt.Errorf("Error deleting VPC: %s", err)
+	}
+
+	return resourceAwsDefaultVpcRead(d, meta)
+}
+
+func resourceAwsDefaultVpcRead(d *schema.ResourceData, meta interface{}) error {
+	log.Printf("Default vpc has been deleted")
+	return nil
 }
 
 func resourceAwsDefaultVpcDelete(d *schema.ResourceData, meta interface{}) error {

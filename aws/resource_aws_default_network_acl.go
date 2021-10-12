@@ -31,10 +31,11 @@ func resourceAwsDefaultNetworkAcl() *schema.Resource {
 			"vpc_id": {
 				Type:     schema.TypeString,
 				Computed: true,
+				ForceNew: true,
 			},
 			"default_network_acl_id": {
 				Type:     schema.TypeString,
-				Required: true,
+				Optional: true,
 				ForceNew: true,
 			},
 			// We want explicit management of Subnets here, so we do not allow them to be
@@ -48,6 +49,7 @@ func resourceAwsDefaultNetworkAcl() *schema.Resource {
 				Optional: true,
 				Elem:     &schema.Schema{Type: schema.TypeString},
 				Set:      schema.HashString,
+				ForceNew: true,
 			},
 			// We want explicit management of Rules here, so we do not allow them to be
 			// computed. Instead, an empty config will enforce just that; removal of the
@@ -55,6 +57,7 @@ func resourceAwsDefaultNetworkAcl() *schema.Resource {
 			"ingress": {
 				Type:     schema.TypeSet,
 				Optional: true,
+				ForceNew: true,
 				Elem: &schema.Resource{
 					Schema: map[string]*schema.Schema{
 						"from_port": {
@@ -100,6 +103,7 @@ func resourceAwsDefaultNetworkAcl() *schema.Resource {
 			"egress": {
 				Type:     schema.TypeSet,
 				Optional: true,
+				ForceNew: true,
 				Elem: &schema.Resource{
 					Schema: map[string]*schema.Schema{
 						"from_port": {
@@ -143,11 +147,12 @@ func resourceAwsDefaultNetworkAcl() *schema.Resource {
 				Set: resourceAwsNetworkAclEntryHash,
 			},
 
-			"tags": tagsSchema(),
+			"tags": tagsSchema2(),
 
 			"owner_id": {
 				Type:     schema.TypeString,
 				Computed: true,
+				ForceNew: true,
 			},
 		},
 	}

@@ -44,7 +44,7 @@ func resourceAwsInternetGatewayDetachCreate(d *schema.ResourceData, meta interfa
 	if err != nil {
 		return fmt.Errorf("error detaching igw: %s", err)
 	}
-	d.SetId(fmt.Sprintf("%s/%s", awsVpcID, awsInternetGatewayID))
+	d.SetId(awsInternetGatewayID)
 	return resourceAwsInternetGatewayDetachRead(d, meta)
 }
 func resourceAwsInternetGatewayDetachRead(d *schema.ResourceData, meta interface{}) error {

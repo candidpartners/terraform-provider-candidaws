@@ -334,3 +334,283 @@ func ServiceTagPackage(serviceName string) string {
 		return serviceName
 	}
 }
+
+// ServiceResourceNotFoundErrorCode determines the error code of tagable resources when not found
+func ServiceResourceNotFoundErrorCode(serviceName string) string {
+	switch serviceName {
+	default:
+		return "ResourceNotFoundException"
+	}
+}
+
+// ServiceResourceNotFoundErrorCode determines the common substring of error codes of tagable resources when not found
+// This value takes precedence over ServiceResourceNotFoundErrorCode when defined for a service.
+func ServiceResourceNotFoundErrorCodeContains(serviceName string) string {
+	switch serviceName {
+	case "ec2":
+		return ".NotFound"
+	default:
+		return ""
+	}
+}
+
+// ServiceRetryCreationOnResourceNotFound determines if tag creation should be retried when the tagable resource is not found
+// This should only be used for services with eventual consistency considerations.
+func ServiceRetryCreationOnResourceNotFound(serviceName string) string {
+	switch serviceName {
+	case "ec2":
+		return "yes"
+	default:
+		return ""
+	}
+}
+
+// ServiceTagFunction determines the service tagging function.
+func ServiceTagFunction(serviceName string) string {
+	switch serviceName {
+	case "acm":
+		return "AddTagsToCertificate"
+	case "acmpca":
+		return "TagCertificateAuthority"
+	case "cloudtrail":
+		return "AddTags"
+	case "cloudwatchlogs":
+		return "TagLogGroup"
+	case "databasemigrationservice":
+		return "AddTagsToResource"
+	case "datapipeline":
+		return "AddTags"
+	case "directoryservice":
+		return "AddTagsToResource"
+	case "docdb":
+		return "AddTagsToResource"
+	case "ec2":
+		return "CreateTags"
+	case "elasticache":
+		return "AddTagsToResource"
+	case "elasticbeanstalk":
+		return "UpdateTagsForResource"
+	case "elasticsearchservice":
+		return "AddTags"
+	case "elb":
+		return "AddTags"
+	case "elbv2":
+		return "AddTags"
+	case "emr":
+		return "AddTags"
+	case "firehose":
+		return "TagDeliveryStream"
+	case "glacier":
+		return "AddTagsToVault"
+	case "kinesis":
+		return "AddTagsToStream"
+	case "kinesisvideo":
+		return "TagStream"
+	case "medialive":
+		return "CreateTags"
+	case "mq":
+		return "CreateTags"
+	case "neptune":
+		return "AddTagsToResource"
+	case "rds":
+		return "AddTagsToResource"
+	case "redshift":
+		return "CreateTags"
+	case "resourcegroups":
+		return "Tag"
+	case "route53":
+		return "ChangeTagsForResource"
+	case "sagemaker":
+		return "AddTags"
+	case "sqs":
+		return "TagQueue"
+	case "ssm":
+		return "AddTagsToResource"
+	case "storagegateway":
+		return "AddTagsToResource"
+	default:
+		return "TagResource"
+	}
+}
+
+// ServiceTagFunctionBatchSize determines the batch size (if any) for tagging and untagging.
+func ServiceTagFunctionBatchSize(serviceName string) string {
+	switch serviceName {
+	case "kinesis":
+		return "10"
+	default:
+		return ""
+	}
+}
+
+// ServiceTagInputCustomValue determines any custom value for the service tagging tags field.
+func ServiceTagInputCustomValue(serviceName string) string {
+	switch serviceName {
+	case "cloudfront":
+		return "&cloudfront.Tags{Items: updatedTags.IgnoreAws().CloudfrontTags()}"
+	case "kinesis":
+		return "aws.StringMap(updatedTags.IgnoreAws().Map())"
+	case "pinpoint":
+		return "&pinpoint.TagsModel{Tags: updatedTags.IgnoreAws().PinpointTags()}"
+	default:
+		return ""
+	}
+}
+
+// ServiceTagInputIdentifierField determines the service tag identifier field.
+func ServiceTagInputIdentifierField(serviceName string) string {
+	switch serviceName {
+	case "acm":
+		return "CertificateArn"
+	case "acmpca":
+		return "CertificateAuthorityArn"
+	case "athena":
+		return "ResourceARN"
+	case "cloud9":
+		return "ResourceARN"
+	case "cloudfront":
+		return "Resource"
+	case "cloudhsmv2":
+		return "ResourceId"
+	case "cloudtrail":
+		return "ResourceId"
+	case "cloudwatch":
+		return "ResourceARN"
+	case "cloudwatchevents":
+		return "ResourceARN"
+	case "cloudwatchlogs":
+		return "LogGroupName"
+	case "codestarnotifications":
+		return "Arn"
+	case "datapipeline":
+		return "PipelineId"
+	case "dax":
+		return "ResourceName"
+	case "devicefarm":
+		return "ResourceARN"
+	case "directoryservice":
+		return "ResourceId"
+	case "docdb":
+		return "ResourceName"
+	case "ec2":
+		return "Resources"
+	case "efs":
+		return "ResourceId"
+	case "elasticache":
+		return "ResourceName"
+	case "elasticsearchservice":
+		return "ARN"
+	case "elb":
+		return "LoadBalancerNames"
+	case "elbv2":
+		return "ResourceArns"
+	case "emr":
+		return "ResourceId"
+	case "firehose":
+		return "DeliveryStreamName"
+	case "fsx":
+		return "ResourceARN"
+	case "gamelift":
+		return "ResourceARN"
+	case "glacier":
+		return "VaultName"
+	case "kinesis":
+		return "StreamName"
+	case "kinesisanalytics":
+		return "ResourceARN"
+	case "kinesisanalyticsv2":
+		return "ResourceARN"
+	case "kinesisvideo":
+		return "StreamARN"
+	case "kms":
+		return "KeyId"
+	case "lambda":
+		return "Resource"
+	case "lightsail":
+		return "ResourceName"
+	case "mediaconvert":
+		return "Arn"
+	case "mediastore":
+		return "Resource"
+	case "neptune":
+		return "ResourceName"
+	case "organizations":
+		return "ResourceId"
+	case "ram":
+		return "ResourceShareArn"
+	case "rds":
+		return "ResourceName"
+	case "redshift":
+		return "ResourceName"
+	case "resourcegroups":
+		return "Arn"
+	case "route53":
+		return "ResourceId"
+	case "secretsmanager":
+		return "SecretId"
+	case "sqs":
+		return "QueueUrl"
+	case "ssm":
+		return "ResourceId"
+	case "storagegateway":
+		return "ResourceARN"
+	case "transfer":
+		return "Arn"
+	case "waf":
+		return "ResourceARN"
+	case "wafregional":
+		return "ResourceARN"
+	case "wafv2":
+		return "ResourceARN"
+	default:
+		return "ResourceArn"
+	}
+}
+
+// ServiceTagInputIdentifierRequiresSlice determines if the service tagging resource field requires a slice.
+func ServiceTagInputIdentifierRequiresSlice(serviceName string) string {
+	switch serviceName {
+	case "ec2":
+		return "yes"
+	case "elb":
+		return "yes"
+	case "elbv2":
+		return "yes"
+	default:
+		return ""
+	}
+}
+
+// ServiceTagInputResourceTypeField determines the service tagging resource type field.
+func ServiceTagInputResourceTypeField(serviceName string) string {
+	switch serviceName {
+	case "route53":
+		return "ResourceType"
+	case "ssm":
+		return "ResourceType"
+	default:
+		return ""
+	}
+}
+
+// ServiceTagInputTagsField determines the service tagging tags field.
+func ServiceTagInputTagsField(serviceName string) string {
+	switch serviceName {
+	case "cloudhsmv2":
+		return "TagList"
+	case "cloudtrail":
+		return "TagsList"
+	case "elasticbeanstalk":
+		return "TagsToAdd"
+	case "elasticsearchservice":
+		return "TagList"
+	case "glue":
+		return "TagsToAdd"
+	case "pinpoint":
+		return "TagsModel"
+	case "route53":
+		return "AddTags"
+	default:
+		return "Tags"
+	}
+}

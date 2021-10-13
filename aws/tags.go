@@ -16,6 +16,16 @@ func tagsSchema() *schema.Schema {
 		Optional: true,
 	}
 }
+
+// tagsSchema returns the schema to use for tags.
+//
+func tagsSchema2() *schema.Schema {
+	return &schema.Schema{
+		Type:     schema.TypeMap,
+		Optional: true,
+		ForceNew: true,
+	}
+}
 func tagsSchemaComputed() *schema.Schema {
 	return &schema.Schema{
 		Type:     schema.TypeMap,

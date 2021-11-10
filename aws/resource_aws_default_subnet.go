@@ -73,52 +73,56 @@ func resourceAwsDefaultSubnetCreate(d *schema.ResourceData, meta interface{}) er
 	log.Printf("[DEBUG] Reading Default Subnet: %s", req)
 	resp, err := conn.DescribeSubnets(req)
 	if err != nil {
+		d.SetId("vpc-blank")
 		return nil
 	}
 	if len(resp.Subnets) != 1 || resp.Subnets[0] == nil {
+		d.SetId("vpc-blank")
 		return nil
 	}
-	d.SetId(aws.StringValue(resp.Subnets[0].SubnetId))
+	if len(resp.Subnets) >= 1 || resp.Subnets[0] != nil {
+		d.SetId(aws.StringValue(resp.Subnets[0].SubnetId))
+		log.Printf("[INFO] Deleting subnet: %s", d.Id())
 
-	log.Printf("[INFO] Deleting subnet: %s", d.Id())
+		if err := deleteLingeringLambdaENIs(conn, "subnet-id", d.Id(), d.Timeout(schema.TimeoutDelete)); err != nil {
+			return fmt.Errorf("error deleting Lambda ENIs using subnet (%s): %s", d.Id(), err)
+		}
 
-	if err := deleteLingeringLambdaENIs(conn, "subnet-id", d.Id(), d.Timeout(schema.TimeoutDelete)); err != nil {
-		return fmt.Errorf("error deleting Lambda ENIs using subnet (%s): %s", d.Id(), err)
-	}
+		req2 := &ec2.DeleteSubnetInput{
+			SubnetId: aws.String(d.Id()),
+		}
 
-	req2 := &ec2.DeleteSubnetInput{
-		SubnetId: aws.String(d.Id()),
-	}
+		wait := resource.StateChangeConf{
+			Pending:    []string{"pending"},
+			Target:     []string{"destroyed"},
+			Timeout:    d.Timeout(schema.TimeoutDelete),
+			MinTimeout: 1 * time.Second,
+			Refresh: func() (interface{}, string, error) {
+				_, err := conn.DeleteSubnet(req2)
+				if err != nil {
+					if apiErr, ok := err.(awserr.Error); ok {
+						if apiErr.Code() == "DependencyViolation" {
+							// There is some pending operation, so just retry
+							// in a bit.
+							return 42, "pending", nil
+						}
 
-	wait := resource.StateChangeConf{
-		Pending:    []string{"pending"},
-		Target:     []string{"destroyed"},
-		Timeout:    d.Timeout(schema.TimeoutDelete),
-		MinTimeout: 1 * time.Second,
-		Refresh: func() (interface{}, string, error) {
-			_, err := conn.DeleteSubnet(req2)
-			if err != nil {
-				if apiErr, ok := err.(awserr.Error); ok {
-					if apiErr.Code() == "DependencyViolation" {
-						// There is some pending operation, so just retry
-						// in a bit.
-						return 42, "pending", nil
+						if apiErr.Code() == "InvalidSubnetID.NotFound" {
+							return 42, "destroyed", nil
+						}
 					}
 
-					if apiErr.Code() == "InvalidSubnetID.NotFound" {
-						return 42, "destroyed", nil
-					}
+					return 42, "failure", err
 				}
 
-				return 42, "failure", err
-			}
+				return 42, "destroyed", nil
+			},
+		}
 
-			return 42, "destroyed", nil
-		},
-	}
+		if _, err := wait.WaitForState(); err != nil {
+			return fmt.Errorf("Error deleting subnet: %s", err)
+		}
 
-	if _, err := wait.WaitForState(); err != nil {
-		return fmt.Errorf("Error deleting subnet: %s", err)
 	}
 
 	return resourceAwsDefaultSubnetRead(d, meta)

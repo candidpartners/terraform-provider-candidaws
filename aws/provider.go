@@ -163,6 +163,7 @@ func Provider() terraform.ResourceProvider {
 		},
 
 		ResourcesMap: map[string]*schema.Resource{
+      "aws_kinesis_firehose_delivery_stream":             resourceAwsKinesisFirehoseDeliveryStream(),
 			"aws_transfer_server":                     resourceAwsTransferServer(),
 			"aws_lex_slot_type":                       resourceAwsLexSlotType(),
 			"aws_lex_intent":                          resourceAwsLexIntent(),

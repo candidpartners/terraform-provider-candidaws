@@ -7,7 +7,7 @@ import (
 
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/service/transfer"
-	"github.com/hashicorp/aws-sdk-go-base"
+	awsbase "github.com/hashicorp/aws-sdk-go-base/tfawserr"
 	"github.com/hashicorp/terraform-plugin-sdk/helper/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
 	"github.com/hashicorp/terraform-plugin-sdk/helper/validation"
@@ -252,7 +252,7 @@ func resourceAwsTransferServerCreate(d *schema.ResourceData, meta interface{}) e
 		err := resource.Retry(Ec2VpcEndpointCreationTimeout, func() *resource.RetryError {
 			_, err := conn.UpdateServer(updateOpts)
 
-			if awsbase.IsAWSErr(err, transfer.ErrCodeConflictException, "VPC Endpoint state is not yet available") {
+			if awsbase.ErrMessageContains(err, transfer.ErrCodeConflictException, "VPC Endpoint state is not yet available") {
 				return resource.RetryableError(err)
 			}
 

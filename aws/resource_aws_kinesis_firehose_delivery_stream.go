@@ -123,6 +123,11 @@ func s3ConfigurationSchema() *schema.Schema {
           Optional: true,
         },
 
+        "error_output_prefix": {
+          Type:     schema.TypeString,
+          Optional: true,
+        },
+
         "cloudwatch_logging_options": cloudWatchLoggingOptionsSchema(),
       },
     },
@@ -363,6 +368,7 @@ func flattenFirehoseS3Configuration(description *firehose.S3DestinationDescripti
     "bucket_arn":                 aws.StringValue(description.BucketARN),
     "cloudwatch_logging_options": flattenCloudwatchLoggingOptions(description.CloudWatchLoggingOptions),
     "compression_format":         aws.StringValue(description.CompressionFormat),
+    "error_output_prefix":        aws.StringValue(description.ErrorOutputPrefix),
     "prefix":                     aws.StringValue(description.Prefix),
     "role_arn":                   aws.StringValue(description.RoleARN),
   }
@@ -1398,6 +1404,7 @@ func createS3Config(d *schema.ResourceData) *firehose.S3DestinationConfiguration
       SizeInMBs:         aws.Int64(int64(s3["buffer_size"].(int))),
     },
     Prefix:                  extractPrefixConfiguration(s3),
+    ErrorOutputPrefix:       extractErrorOutputPrefixConfiguration(s3),
     CompressionFormat:       aws.String(s3["compression_format"].(string)),
     EncryptionConfiguration: extractEncryptionConfiguration(s3),
   }
@@ -1425,6 +1432,7 @@ func expandS3BackupConfig(d map[string]interface{}) *firehose.S3DestinationConfi
       SizeInMBs:         aws.Int64(int64(s3["buffer_size"].(int))),
     },
     Prefix:                  extractPrefixConfiguration(s3),
+    ErrorOutputPrefix:       extractErrorOutputPrefixConfiguration(s3),
     CompressionFormat:       aws.String(s3["compression_format"].(string)),
     EncryptionConfiguration: extractEncryptionConfiguration(s3),
   }
@@ -1447,6 +1455,7 @@ func createExtendedS3Config(d *schema.ResourceData) *firehose.ExtendedS3Destinat
       SizeInMBs:         aws.Int64(int64(s3["buffer_size"].(int))),
     },
     Prefix:                            extractPrefixConfiguration(s3),
+    ErrorOutputPrefix:                 extractErrorOutputPrefixConfiguration(s3),
     CompressionFormat:                 aws.String(s3["compression_format"].(string)),
     DataFormatConversionConfiguration: expandFirehoseDataFormatConversionConfiguration(s3["data_format_conversion_configuration"].([]interface{})),
     EncryptionConfiguration:           extractEncryptionConfiguration(s3),
@@ -1462,10 +1471,6 @@ func createExtendedS3Config(d *schema.ResourceData) *firehose.ExtendedS3Destinat
 
   if _, ok := s3["cloudwatch_logging_options"]; ok {
     configuration.CloudWatchLoggingOptions = extractCloudWatchLoggingConfiguration(s3)
-  }
-
-  if v, ok := s3["error_output_prefix"]; ok && v.(string) != "" {
-    configuration.ErrorOutputPrefix = aws.String(v.(string))
   }
 
   if s3BackupMode, ok := s3["s3_backup_mode"]; ok {
@@ -1487,6 +1492,7 @@ func updateS3Config(d *schema.ResourceData) *firehose.S3DestinationUpdate {
       SizeInMBs:         aws.Int64((int64)(s3["buffer_size"].(int))),
     },
     Prefix:                   extractPrefixConfiguration(s3),
+    ErrorOutputPrefix:        extractErrorOutputPrefixConfiguration(s3),
     CompressionFormat:        aws.String(s3["compression_format"].(string)),
     EncryptionConfiguration:  extractEncryptionConfiguration(s3),
     CloudWatchLoggingOptions: extractCloudWatchLoggingConfiguration(s3),
@@ -1515,6 +1521,7 @@ func updateS3BackupConfig(d map[string]interface{}) *firehose.S3DestinationUpdat
       SizeInMBs:         aws.Int64((int64)(s3["buffer_size"].(int))),
     },
     Prefix:                   extractPrefixConfiguration(s3),
+    ErrorOutputPrefix:        extractErrorOutputPrefixConfiguration(s3),
     CompressionFormat:        aws.String(s3["compression_format"].(string)),
     EncryptionConfiguration:  extractEncryptionConfiguration(s3),
     CloudWatchLoggingOptions: extractCloudWatchLoggingConfiguration(s3),
@@ -1538,6 +1545,7 @@ func updateExtendedS3Config(d *schema.ResourceData) *firehose.ExtendedS3Destinat
       SizeInMBs:         aws.Int64((int64)(s3["buffer_size"].(int))),
     },
     Prefix:                            extractPrefixConfiguration(s3),
+    ErrorOutputPrefix:                 extractErrorOutputPrefixConfiguration(s3),
     CompressionFormat:                 aws.String(s3["compression_format"].(string)),
     EncryptionConfiguration:           extractEncryptionConfiguration(s3),
     DataFormatConversionConfiguration: expandFirehoseDataFormatConversionConfiguration(s3["data_format_conversion_configuration"].([]interface{})),
@@ -1551,10 +1559,6 @@ func updateExtendedS3Config(d *schema.ResourceData) *firehose.ExtendedS3Destinat
 
   if _, ok := s3["cloudwatch_logging_options"]; ok {
     configuration.CloudWatchLoggingOptions = extractCloudWatchLoggingConfiguration(s3)
-  }
-
-  if v, ok := s3["error_output_prefix"]; ok && v.(string) != "" {
-    configuration.ErrorOutputPrefix = aws.String(v.(string))
   }
 
   if s3BackupMode, ok := s3["s3_backup_mode"]; ok {
@@ -1860,6 +1864,14 @@ func extractPrefixConfiguration(s3 map[string]interface{}) *string {
   return nil
 }
 
+func extractErrorOutputPrefixConfiguration(s3 map[string]interface{}) *string {
+  if v, ok := s3["error_output_prefix"]; ok {
+    return aws.String(v.(string))
+  }
+
+  return nil
+}
+
 func createRedshiftConfig(d *schema.ResourceData, s3Config *firehose.S3DestinationConfiguration) (*firehose.RedshiftDestinationConfiguration, error) {
   redshiftRaw, ok := d.GetOk("redshift_configuration")
   if !ok {
@@ -1888,8 +1900,20 @@ func createRedshiftConfig(d *schema.ResourceData, s3Config *firehose.S3Destinati
   if s3BackupMode, ok := redshift["s3_backup_mode"]; ok {
     configuration.S3BackupMode = aws.String(s3BackupMode.(string))
     configuration.S3BackupConfiguration = expandS3BackupConfig(d.Get("redshift_configuration").([]interface{})[0].(map[string]interface{}))
+
+    // An Amazon Redshift destination requires an S3 bucket as intermediate location.
+    // https://docs.aws.amazon.com/cli/latest/reference/firehose/create-delivery-stream.html
+    // So, this destination doesn't have ErrorOutputPrefix parameter.
+    if configuration.S3BackupConfiguration != nil {
+      configuration.S3BackupConfiguration.ErrorOutputPrefix = nil
+    }
   }
 
+
+  // An Amazon Redshift destination requires an S3 bucket as intermediate location.
+  // https://docs.aws.amazon.com/cli/latest/reference/firehose/create-delivery-stream.html
+  // So, this destination doesn't have ErrorOutputPrefix parameter.
+  configuration.S3Configuration.ErrorOutputPrefix = nil
   return configuration, nil
 }
 
@@ -1921,8 +1945,18 @@ func updateRedshiftConfig(d *schema.ResourceData, s3Update *firehose.S3Destinati
   if s3BackupMode, ok := redshift["s3_backup_mode"]; ok {
     configuration.S3BackupMode = aws.String(s3BackupMode.(string))
     configuration.S3BackupUpdate = updateS3BackupConfig(d.Get("redshift_configuration").([]interface{})[0].(map[string]interface{}))
+    // An Amazon Redshift destination requires an S3 bucket as intermediate location.
+    // https://docs.aws.amazon.com/cli/latest/reference/firehose/create-delivery-stream.html
+    // So, this destination doesn't have ErrorOutputPrefix parameter.
+    if configuration.S3BackupUpdate != nil {
+      configuration.S3BackupUpdate.ErrorOutputPrefix = nil
+    }
   }
 
+  // An Amazon Redshift destination requires an S3 bucket as intermediate location.
+  // https://docs.aws.amazon.com/cli/latest/reference/firehose/create-delivery-stream.html
+  // So, this destination doesn't have ErrorOutputPrefix parameter.
+  configuration.S3Update.ErrorOutputPrefix = nil
   return configuration, nil
 }
 

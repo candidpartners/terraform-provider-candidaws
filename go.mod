@@ -3,16 +3,22 @@ module github.com/terraform-providers/terraform-provider-aws
 go 1.13
 
 require (
-	github.com/aws/aws-sdk-go v1.35.8
+	github.com/aws/aws-sdk-go v1.42.2
+	github.com/beevik/etree v1.1.0 // indirect
 	github.com/bflad/tfproviderdocs v0.5.0
 	github.com/bflad/tfproviderlint v0.14.0
+	github.com/blang/semver v3.5.1+incompatible // indirect
 	github.com/client9/misspell v0.3.4
 	github.com/golangci/golangci-lint v1.23.8
-	github.com/hashicorp/aws-sdk-go-base v0.4.0
+	github.com/hashicorp/aws-sdk-go-base v1.0.0
+	github.com/hashicorp/hcl2 v0.0.0-20191002203319-fb75b3253c80 // indirect
+	github.com/hashicorp/hil v0.0.0-20210521165536-27a72121fd40 // indirect
+	github.com/hashicorp/terraform v0.11.9-beta1 // indirect
 	github.com/hashicorp/terraform-plugin-sdk v1.8.0
 	github.com/hashicorp/terraform-plugin-sdk/v2 v2.0.1
 	github.com/jen20/awspolicyequivalence v1.1.0
 	github.com/katbyte/terrafmt v0.2.1-0.20200303174203-e6a3e82cb21b
 	github.com/mitchellh/go-homedir v1.1.0
+	github.com/mitchellh/hashstructure v1.1.0 // indirect
 	gopkg.in/yaml.v2 v2.2.8
 )

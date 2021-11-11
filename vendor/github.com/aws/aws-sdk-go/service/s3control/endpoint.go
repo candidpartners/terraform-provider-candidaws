@@ -2,6 +2,7 @@ package s3control
 
 import (
 	"fmt"
+	"github.com/aws/aws-sdk-go/aws/endpoints"
 	"strings"
 
 	"github.com/aws/aws-sdk-go/aws"
@@ -119,18 +120,23 @@ func endpointHandler(req *request.Request) {
 // CreateBucket, ListRegionalBuckets which must resolve endpoint to s3-outposts.{region}.amazonaws.com
 // with region as client region and signed by s3-control if an outpost id is provided.
 func updateRequestOutpostIDEndpoint(request *request.Request) {
-	serviceEndpointLabel := "s3-outposts."
-	cfgRegion := aws.StringValue(request.Config.Region)
+	const s3Control = "s3-control"
+	const s3Outposts = "s3-outposts"
 
-	// request url
-	request.HTTPRequest.URL.Host = serviceEndpointLabel + cfgRegion + ".amazonaws.com"
+	if !hasCustomEndpoint(request) {
+		// add url host as s3-outposts
+		cfgHost := request.HTTPRequest.URL.Host
 
-	// disable the host prefix for outpost access points
-	request.Config.DisableEndpointHostPrefix = aws.Bool(true)
+		if strings.HasPrefix(cfgHost, s3Control) {
+			request.HTTPRequest.URL.Host = s3Outposts + cfgHost[len(s3Control):]
+		}
+
+		// disable the host prefix for outpost access points
+		request.Config.DisableEndpointHostPrefix = aws.Bool(true)
+	}
 
 	// signer redirection
-	request.ClientInfo.SigningName = "s3-outposts"
-	request.ClientInfo.SigningRegion = cfgRegion
+	request.ClientInfo.SigningName = s3Outposts
 }
 
 func updateRequestOutpostAccessPointEndpoint(req *request.Request, accessPoint arn.OutpostAccessPointARN) error {
@@ -169,7 +175,7 @@ func updateRequestOutpostBucketEndpoint(req *request.Request, bucketResource arn
 func validateEndpointRequestResource(req *request.Request, resource arn.Resource) error {
 	resReq := s3shared.ResourceRequest{Request: req, Resource: resource}
 
-	if resReq.IsCrossPartition() {
+	if len(resReq.Request.ClientInfo.PartitionID) != 0 && resReq.IsCrossPartition() {
 		return s3shared.NewClientPartitionMismatchError(resource,
 			req.ClientInfo.PartitionID, aws.StringValue(req.Config.Region), nil)
 	}
@@ -177,10 +183,6 @@ func validateEndpointRequestResource(req *request.Request, resource arn.Resource
 	if !resReq.AllowCrossRegion() && resReq.IsCrossRegion() {
 		return s3shared.NewClientRegionMismatchError(resource,
 			req.ClientInfo.PartitionID, aws.StringValue(req.Config.Region), nil)
-	}
-
-	if resReq.HasCustomEndpoint() {
-		return s3shared.NewInvalidARNWithCustomEndpointError(resource, nil)
 	}
 
 	// Accelerate not supported
@@ -193,24 +195,22 @@ func validateEndpointRequestResource(req *request.Request, resource arn.Resource
 
 // validations for fetching outpost endpoint
 func validateOutpostEndpoint(req *request.Request, resource arn.Resource) error {
-	resReq := s3shared.ResourceRequest{
-		Request:  req,
-		Resource: resource,
-	}
-
 	if err := validateEndpointRequestResource(req, resource); err != nil {
 		return err
 	}
 
-	// resource configured with FIPS as region is not supported by outposts
-	if resReq.ResourceConfiguredForFIPS() {
-		return s3shared.NewInvalidARNWithFIPSError(resource, nil)
-	}
-
 	// DualStack not supported
-	if aws.BoolValue(req.Config.UseDualStack) {
+	if isUseDualStackEndpoint(req) {
 		return s3shared.NewClientConfiguredForDualStackError(resource,
 			req.ClientInfo.PartitionID, aws.StringValue(req.Config.Region), nil)
 	}
+
 	return nil
+}
+
+func isUseDualStackEndpoint(req *request.Request) bool {
+	if req.Config.UseDualStackEndpoint != endpoints.DualStackEndpointStateUnset {
+		return req.Config.UseDualStackEndpoint == endpoints.DualStackEndpointStateEnabled
+	}
+	return aws.BoolValue(req.Config.UseDualStack)
 }
